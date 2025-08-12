@@ -1,0 +1,46 @@
+export interface UserInterface {
+	userId: string;
+	id: string;
+	monday: boolean;
+	tuesday: boolean;
+	wednesday: boolean;
+	thursday: boolean;
+	saturday: boolean;
+	friday: boolean;
+	sunday: boolean;
+	full_name: string;
+	address: string;
+	city: string;
+	days: boolean[];
+	country: string;
+	email: string;
+	phone: string;
+	profession: string;
+	studyArea: string;
+	university: string;
+	graduationYear: string;
+	specialties: { id: string; name: string }[];
+	certificates: string[];
+	documents: string[];
+	images: string[];
+	advertisePlatform: boolean;
+	advertiseProfile: boolean;
+	advertiseServices: string[];
+	availability: string;
+	collectionId: string;
+	collectionName: string;
+	consultationAddress: string;
+	created: string;
+	gender: string;
+	membership: string;
+	membershipPlan: string;
+	schedule: string;
+	services: string;
+	status: string;
+	updated: string;
+	avatar: string;
+	password: string;
+	type: string;
+	usertype: string;
+  }
+  

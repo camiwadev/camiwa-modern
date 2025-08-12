@@ -1,12 +1,48 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { HomeComponent } from "./components/home/home.component";
+import { GlobalService } from './services/global.service';
+import { HeaderComponent } from './components/ui/header/header.component';
+import { FooterComponent } from './components/ui/footer/footer.component';
+import { CategoriasSliderComponent } from './components/categorias-slider/categorias-slider.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { AboutComponent } from './components/about/about.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { ExplorerprofesionalsComponent } from "./components/explorerprofesionals/explorerprofesionals.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [RouterOutlet,
+    CommonModule, HomeComponent,
+    HeaderComponent,
+    FooterComponent,
+    LoginComponent,
+    RegisterComponent,
+    AboutComponent,
+    ContactComponent,
+    ExplorerprofesionalsComponent
+    /*     CategoriasSliderComponent,
+     */ , ExplorerprofesionalsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'camiwanew';
+  constructor( public globalService: GlobalService) {
+    
+  }
+  async ngOnInit(): Promise<void> {
+    try {
+      await Promise.all([
+        this.globalService.initCategoriasRealtime(),
+        this.globalService.initEspecialidadesRealtime(),
+        this.globalService.initProfesionalesRealtime()
+      ]);
+    } catch (error) {
+      console.error('Error initializing application data:', error);
+    }
+  }
 }

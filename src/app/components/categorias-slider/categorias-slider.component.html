@@ -1,0 +1,46 @@
+<!-- categorias-slider.component.html -->
+<div class="cs-slider cs-style1">
+    <!-- init="false" para inicializar manualmente cuando ya haya slides -->
+    <swiper-container #swiperRef init="false" class="cs-slider_container">
+      <swiper-slide *ngFor="let categoria of categorias; trackBy: trackById">
+        <div class="cs-slide">
+          <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
+            <span class="cs-card_like cs-primary_color">
+              <i class="fas fa-heart fa-fw"></i> 2.1K
+            </span>
+            <a class="cs-card_thumb cs-zoom_effect">
+              <img src="assets/img/general/general_23.jpeg" alt="Image" class="cs-zoom_item" />
+            </a>
+            <div class="cs-card_info">
+              <h3 class="cs-card_title" style="padding-top: 10px;"><a>Servicios</a></h3>
+              <div class="cs-card_price">{{ categoria.name }} <b class="cs-primary_color">0</b></div>
+              <hr />
+              <div class="cs-card_footer">
+                <span class="cs-card_btn_2" data-modal="#bid_1"><span>Ver profesionales</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </swiper-slide>
+    </swiper-container>
+  
+    <!-- Flechas personalizadas (ligadas al navigation de Swiper) -->
+    <div class="cs-slider_arrows cs-style1 cs-center cs-hidden_mobile">
+      <div class="cs-left_arrow cs-center cs-box_shadow" #prevEl>
+        <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.0269 7.55957H0.817552" stroke="currentColor" stroke-width="1.16474" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6.92188 1.45508L0.817222 7.55973L6.92188 13.6644" stroke="currentColor" stroke-width="1.16474" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="cs-right_arrow cs-center cs-box_shadow" #nextEl>
+        <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.816895 7.55957H13.0262" stroke="currentColor" stroke-width="1.16474" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6.92188 1.45508L13.0265 7.55973L6.92188 13.6644" stroke="currentColor" stroke-width="1.16474" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  
+    <!-- Paginación personalizada -->
+    <div class="cs-pagination cs-style1 cs-hidden" #paginationEl></div>
+  </div>
+  
