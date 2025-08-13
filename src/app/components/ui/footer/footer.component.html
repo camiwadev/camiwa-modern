@@ -23,24 +23,24 @@
               <div class="cs-footer_widget">
                 <h2 class="cs-widget_title">Cuenta</h2>
                 <ul class="cs-widget_nav">
-                  <li><a href="user-profile.html">Profile</a></li>
-                  <li><a href="user-items.html">My Collection</a></li>
+                  <li><a href="explore-1.html">Todos</a></li><!-- 
+                    <li><a href="user-items.html">My Collection</a></li>
                   <li><a href="create-items.html">Create & Upload</a></li>
                   <li><a href="user-account-settings.html">Account Setting</a></li>
                   <li><a href="connect-wallet.html">Connect wallet</a></li>
-                  <li><a href="explore-1.html">Wishlist</a></li>
+                  <li><a href="explore-1.html">Wishlist</a></li>-->
                 </ul>
               </div>
-            </div><!-- .col -->
+            </div>
             <div class="col-lg-4 col-sm-4">
               <div class="cs-footer_widget">
                 <h2 class="cs-widget_title">Camiwa</h2>
                 <ul class="cs-widget_nav">
-                  <li><a href="blog.html">Blog</a></li>
-                  <li><a href="how-it-works.html">Como funciona</a></li>
-                  <li><a href="about.html">Acerca de</a></li>
-                  <li><a href="contact.html">Contacto</a></li>
-                  <li><a href="faq.html">Ayuda & FAQ</a></li>
+                  <li><a (click)="global.setRouterActive('blog')">Blog</a></li>
+                  <li><a (click)="global.setRouterActive('about')">Como funciona</a></li>
+                  <li><a (click)="global.setRouterActive('about')">Acerca de</a></li>
+                  <li><a (click)="global.setRouterActive('contact')">Contacto</a></li>
+                  <li><a (click)="global.setRouterActive('contact')">Soporte</a></li>
                 </ul>
               </div>
             </div><!-- .col -->
@@ -49,14 +49,7 @@
         <div class="col-lg-4 col-sm-12">
           <div class="cs-footer_widget">
             <h2 class="cs-widget_title">Contacto</h2>
-            <form class="cs-footer_newsletter">
-              <input type="text" placeholder="Enter Your Email" class="cs-newsletter_input">
-              <button class="cs-newsletter_btn">
-                <svg width="25" height="16" viewBox="0 0 25 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M24.7014 9.03523C25.0919 8.64471 25.0919 8.01154 24.7014 7.62102L18.3374 1.25706C17.9469 0.866533 17.3137 0.866533 16.9232 1.25706C16.5327 1.64758 16.5327 2.28075 16.9232 2.67127L22.5801 8.32812L16.9232 13.985C16.5327 14.3755 16.5327 15.0087 16.9232 15.3992C17.3137 15.7897 17.9469 15.7897 18.3374 15.3992L24.7014 9.03523ZM0.806641 9.32812H23.9943V7.32812H0.806641V9.32812Z" fill="white"/>
-                </svg>                  
-              </button>
-            </form>
+            
             <div class="cs-footer_social_btns">
               <a href="index.html#"><i class="fab fa-facebook-f fa-fw"></i></a>
               <a href="index.html#"><i class="fab fa-twitter fa-fw"></i></a>
@@ -76,8 +69,8 @@
         <div class="cs-footer_bottom_in">
           <div class="cs-copyright">Copyright 2025. Camiwa. Todos los derechos reservados.</div>
           <ul class="cs-footer_menu">
-            <li><a href="privacy-policy.html">Politicas de Privacidad</a></li>
-            <li><a href="terms-condition.html">Terminos y Condiciones</a></li>
+            <li><a >Politicas de Privacidad</a></li>
+            <li><a >Terminos y Condiciones</a></li>
           </ul>
         </div>
       </div>

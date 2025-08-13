@@ -11,6 +11,9 @@ import { RegisterComponent } from './components/register/register.component';
 import { AboutComponent } from './components/about/about.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { ExplorerprofesionalsComponent } from "./components/explorerprofesionals/explorerprofesionals.component";
+import { BlogComponent } from './components/blog/blog.component';
+import { BlogdetailComponent } from './components/blogdetail/blogdetail.component';
+import { ProfesionalDetailComponent } from './components/profesional-detail/profesional-detail.component';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +28,12 @@ import { ExplorerprofesionalsComponent } from "./components/explorerprofesionals
     ContactComponent,
     ExplorerprofesionalsComponent
     /*     CategoriasSliderComponent,
-     */ , ExplorerprofesionalsComponent],
+     */ , ExplorerprofesionalsComponent,
+    BlogComponent,
+    BlogdetailComponent,
+    ProfesionalDetailComponent
+    
+    ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

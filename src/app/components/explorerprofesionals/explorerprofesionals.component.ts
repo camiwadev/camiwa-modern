@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GlobalService } from '../../services/global.service';
 
 @Component({
   selector: 'app-explorerprofesionals',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './explorerprofesionals.component.css'
 })
 export class ExplorerprofesionalsComponent {
-
+constructor (public global: GlobalService){}
 }
