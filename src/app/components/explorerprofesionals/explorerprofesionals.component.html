@@ -5,7 +5,7 @@
         <div class="cs-filter_sidebar">
           <div class="cs-search_widget">
             <form  class="cs-search">
-                <input type="text" class="cs-search_input" placeholder="¿Qué tipo de atención o apoyo buscas hoy?">
+                <input type="text" class="cs-search_input" placeholder="Búsca por servicios">
                 <button class="cs-search_btn">
                 <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M9.16667 16.3333C12.8486 16.3333 15.8333 13.3486 15.8333 9.66667C15.8333 5.98477 12.8486 3 9.16667 3C5.48477 3 2.5 5.98477 2.5 9.66667C2.5 13.3486 5.48477 16.3333 9.16667 16.3333Z" stroke="currentColor" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -16,7 +16,7 @@
           </div>
           <div class="cs-filter_widget">
             <h2 class="cs-filter_toggle_btn">
-              Catagory
+              Servicios
               <span class="cs-arrow_icon">
                 <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M0.679688 0.96582L4.67969 4.96582L8.67969 0.96582" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
@@ -25,220 +25,45 @@
             </h2>
             <div class="cs-filter_toggle_body">
               <ul>
-                <li>
+                <li *ngFor="let categoria of global.categorias$ | async">
+
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="category" id="Art" checked>
-                    <label class="form-check-label" for="Art">Art</label>
+                    <input class="form-check-input" type="radio" checked>
+                    <label class="form-check-label" for="categorias">{{categoria.name}}</label>
                   </div>
                 </li>
+               
+              </ul>
+             
+            </div>
+          </div> 
+        <div class="cs-filter_widget">
+            <h2 class="cs-filter_toggle_btn">
+              Especialidades
+              <span class="cs-arrow_icon">
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0.679688 0.96582L4.67969 4.96582L8.67969 0.96582" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>                  
+              </span>
+            </h2>
+            <div class="cs-filter_toggle_body">
+              <ul *ngFor="let especialidad of ($any(global.especialidades$ | async) | sortByName:'name') | slice:0:(mostrarTodas ? undefined : 10)">
                 <li>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="category" id="Fashion">
-                    <label class="form-check-label" for="Fashion">
-                      Fashion
-                    </label>
-                  </div>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="category" id="Music">
-                    <label class="form-check-label" for="Music">
-                      Music
-                    </label>
-                  </div>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="category" id="Video">
-                    <label class="form-check-label" for="Video">
-                      Video
-                    </label>
-                  </div>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="category" id="Games">
-                    <label class="form-check-label" for="Games">
-                      Games
-                    </label>
-                  </div>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="category" id="Sports">
-                    <label class="form-check-label" for="Sports">
-                      Sports
-                    </label>
-                  </div>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="category" id="Collectibles">
-                    <label class="form-check-label" for="Collectibles">
-                      Collectibles
-                    </label>
+                    <input class="form-check-input" type="radio" />
+                    <label class="form-check-label">{{ especialidad?.name }}</label>
                   </div>
                 </li>
               </ul>
+              
+              <button class="btn btn-link p-0 mt-2"
+                      *ngIf="($any(global.especialidades$ | async)?.length ?? 0) > 10"
+                      (click)="mostrarTodas = !mostrarTodas">
+                {{ mostrarTodas ? 'Ver menos' : 'Ver todas' }}
+              </button>
             </div>
-          </div> <!-- .cs-filter_widget -->
-          <div class="cs-filter_widget">
-            <h2 class="cs-filter_toggle_btn">
-              Status
-              <span class="cs-arrow_icon">
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0.679688 0.96582L4.67969 4.96582L8.67969 0.96582" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>                  
-              </span>
-            </h2>
-            <div class="cs-filter_toggle_body">
-              <ul>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckChecked" checked>
-                    <label class="form-check-label" for="flexCheckChecked">Buy Now</label>
-                  </div>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">In Auction</label>
-                  </div>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckDefault2">
-                    <label class="form-check-label" for="flexCheckDefault2">Looking to Sell</label>
-                  </div>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckDefault3">
-                    <label class="form-check-label" for="flexCheckDefault3">Has Offers</label>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div> <!-- .cs-filter_widget -->
-          <div class="cs-filter_widget">
-            <h2 class="cs-filter_toggle_btn">
-              Price
-              <span class="cs-arrow_icon">
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0.679688 0.96582L4.67969 4.96582L8.67969 0.96582" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>                  
-              </span>
-            </h2>
-            <div class="cs-filter_toggle_body">
-              <div class="cs-price_form">
-                <form class="row row-15">
-                  <div class="col-lg-12">
-                    <div class="cs-form_field_wrap cs-select_arrow">
-                      <select class="cs-form_field cs-field_sm">
-                        <option value="BTC">BTC</option>
-                        <option value="BTC">BTC</option>
-                        <option value="ETH">ETH</option>
-                        <option value="ADA">ADA</option>
-                      </select>
-                    </div>
-                    <div class="cs-height_15 cs-height_lg_15"></div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="cs-form_field_wrap">
-                      <input type="text" class="cs-form_field cs-field_sm" placeholder="Min">
-                    </div>
-                    <div class="cs-height_15 cs-height_lg_15"></div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="cs-form_field_wrap">
-                      <input type="text" class="cs-form_field cs-field_sm" placeholder="Max">
-                    </div>
-                    <div class="cs-height_10 cs-height_lg_10"></div>
-                  </div>
-                  <div class="col-lg-6">
-                    <input type="reset" class="cs-btn cs-style1 cs-color1 cs-btn_sm" value="Clear">
-                  </div>
-                  <div class="col-lg-6">
-                    <button class="cs-btn cs-style1 cs-btn_sm"><span>Apply</span></button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div> <!-- .cs-filter_widget -->
-          <div class="cs-filter_widget">
-            <h2 class="cs-filter_toggle_btn">
-              Collection
-              <span class="cs-arrow_icon">
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0.679688 0.96582L4.67969 4.96582L8.67969 0.96582" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>                  
-              </span>
-            </h2>
-            <div class="cs-filter_toggle_body">
-              <ul>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="collection" id="Audioglyphs" checked>
-                    <label class="form-check-label" for="Audioglyphs">Audioglyphs</label>
-                  </div>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="collection" id="Autoglyphs">
-                    <label class="form-check-label" for="Autoglyphs">
-                      Autoglyphs
-                    </label>
-                  </div>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="collection" id="CryptoCrystal">
-                    <label class="form-check-label" for="CryptoCrystal">
-                      CryptoCrystal
-                    </label>
-                  </div>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="collection" id="CryptoArte">
-                    <label class="form-check-label" for="CryptoArte">
-                      CryptoArte
-                    </label>
-                  </div>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="collection" id="CyberKongz">
-                    <label class="form-check-label" for="CyberKongz">
-                      CyberKongz
-                    </label>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div> <!-- .cs-filter_widget -->
-          <div class="cs-filter_widget">
-            <h2 class="cs-filter_toggle_btn">
-              Filter By Color
-              <span class="cs-arrow_icon">
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0.679688 0.96582L4.67969 4.96582L8.67969 0.96582" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>                  
-              </span>
-            </h2>
-            <div class="cs-filter_toggle_body">
-              <div class="cs-filter_by_color">
-                <div class="cs-color_item cs-color1"></div>
-                <div class="cs-color_item cs-color2"></div>
-                <div class="cs-color_item cs-color3"></div>
-                <div class="cs-color_item cs-color4"></div>
-                <div class="cs-color_item cs-color5"></div>
-                <div class="cs-color_item cs-color6"></div>
-                <div class="cs-color_item cs-color7"></div>
-                <div class="cs-color_item cs-color8"></div>
-              </div>
-            </div>
-          </div> <!-- .cs-filter_widget -->
+          </div> 
+         
         </div>
       </div>
       <div class="cs-sidebar_frame_right">
@@ -271,21 +96,23 @@
         </div>
         <div class="cs-height_30 cs-height_lg_30"></div>
         <div class="row">
-          <div class="col-xl-3 col-lg-4 col-sm-6">
+          
+
+          <div class="col-xl-3 col-lg-4 col-sm-6" *ngFor="let profesional of global.profesionales$ | async">
             <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
               <span class="cs-card_like cs-primary_color">
                 <i class="fas fa-heart fa-fw"></i>
                 2.1K
               </span>
-              <a href="explore-details.html" class="cs-card_thumb cs-zoom_effect">
+              <a  class="cs-card_thumb cs-zoom_effect">
                 <img src="assets/img/explore/1.jpeg" alt="Image" class="cs-zoom_item">
               </a>
               <div class="cs-card_info">
                 <a (click)="global.setRouterActive('profesional-detail')" class="cs-avatar cs-white_bg">
                   <img src="assets/img/avatar/avatar_12.png" alt="Avatar">
-                  <span>Johny E.</span>
+                  <span>{{profesional.name}}</span>
                 </a>
-                <h3 class="cs-card_title"><a href="explore-details.html">Art work #2134</a></h3>
+                <h3 class="cs-card_title"><a >Art work #2134</a></h3>
                 <div class="cs-card_price">Current Bid: <b class="cs-primary_color">0.29 ETH 7/21</b></div>
                 <hr>
                 <div class="cs-card_footer">
@@ -298,319 +125,11 @@
               </div>
             </div>
             <div class="cs-height_30 cs-height_lg_30"></div>
-          </div><!-- .col -->
-          <div class="col-xl-3 col-lg-4 col-sm-6">
-            <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
-              <span class="cs-card_like cs-primary_color">
-                <i class="fas fa-heart fa-fw"></i>
-                3.3K
-              </span>
-              <a href="explore-details.html" class="cs-card_thumb cs-zoom_effect">
-                <img src="assets/img/explore/2.jpeg" alt="Image" class="cs-zoom_item">
-              </a>
-              <div class="cs-card_info">
-                <a href="explore-1.html#" class="cs-avatar cs-white_bg">
-                  <img src="assets/img/avatar/avatar_13.png" alt="Avatar">
-                  <span>debit alex</span>
-                </a>
-                <h3 class="cs-card_title"><a href="explore-details.html">Cool octopus traveling</a></h3>
-                <div class="cs-card_price">Current Bid: <b class="cs-primary_color">0.24 ETH 4/17</b></div>
-                <hr>
-                <div class="cs-card_footer">
-                  <span class="cs-card_btn_1" data-modal="#history_1">
-                    <i class="fas fa-redo fa-fw"></i>
-                    View History
-                  </span>
-                  <span class="cs-card_btn_2" data-modal="#bid_1"><span>Place Bid</span></span>
-                </div>
-              </div>
-            </div>
-            <div class="cs-height_30 cs-height_lg_30"></div>
-          </div><!-- .col -->
-          <div class="col-xl-3 col-lg-4 col-sm-6">
-            <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
-              <span class="cs-card_like cs-primary_color">
-                <i class="fas fa-heart fa-fw"></i>
-                3.1K
-              </span>
-              <a href="explore-details.html" class="cs-card_thumb cs-zoom_effect">
-                <img src="assets/img/explore/3.jpeg" alt="Image" class="cs-zoom_item">
-              </a>
-              <div class="cs-card_info">
-                <a href="explore-1.html#" class="cs-avatar cs-white_bg">
-                  <img src="assets/img/avatar/avatar_12.png" alt="Avatar">
-                  <span>robert Alex</span>
-                </a>
-                <h3 class="cs-card_title"><a href="explore-details.html">Octopus eating icecrem</a></h3>
-                <div class="cs-card_price">Current Bid: <b class="cs-primary_color">0.09 ETH 1/9</b></div>
-                <hr>
-                <div class="cs-card_footer">
-                  <span class="cs-card_btn_1" data-modal="#history_1">
-                    <i class="fas fa-redo fa-fw"></i>
-                    View History
-                  </span>
-                  <span class="cs-card_btn_2" data-modal="#bid_1"><span>Place Bid</span></span>
-                </div>
-              </div>
-            </div>
-            <div class="cs-height_30 cs-height_lg_30"></div>
-          </div><!-- .col -->
-          <div class="col-xl-3 col-lg-4 col-sm-6">
-            <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
-              <span class="cs-card_like cs-primary_color">
-                <i class="fas fa-heart fa-fw"></i>
-                2.1K
-              </span>
-              <a href="explore-details.html" class="cs-card_thumb cs-zoom_effect">
-                <img src="assets/img/explore/4.jpeg" alt="Image" class="cs-zoom_item">
-              </a>
-              <div class="cs-card_info">
-                <a href="explore-1.html#" class="cs-avatar cs-white_bg">
-                  <img src="assets/img/avatar/avatar_12.png" alt="Avatar">
-                  <span>johny e.</span>
-                </a>
-                <h3 class="cs-card_title"><a href="explore-details.html">Panda with fish</a></h3>
-                <div class="cs-card_price">Current Bid: <b class="cs-primary_color">0.19 ETH 5/11</b></div>
-                <hr>
-                <div class="cs-card_footer">
-                  <span class="cs-card_btn_1" data-modal="#history_1">
-                    <i class="fas fa-redo fa-fw"></i>
-                    View History
-                  </span>
-                  <span class="cs-card_btn_2" data-modal="#bid_1"><span>Place Bid</span></span>
-                </div>
-              </div>
-            </div>
-            <div class="cs-height_30 cs-height_lg_30"></div>
-          </div><!-- .col -->
-          <div class="col-xl-3 col-lg-4 col-sm-6">
-            <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
-              <span class="cs-card_like cs-primary_color">
-                <i class="fas fa-heart fa-fw"></i>
-                1.2K
-              </span>
-              <a href="explore-details.html" class="cs-card_thumb cs-zoom_effect">
-                <img src="assets/img/explore/5.jpeg" alt="Image" class="cs-zoom_item">
-              </a>
-              <div class="cs-card_info">
-                <a href="explore-1.html#" class="cs-avatar cs-white_bg">
-                  <img src="assets/img/avatar/avatar_13.png" alt="Avatar">
-                  <span>austin R.</span>
-                </a>
-                <h3 class="cs-card_title"><a href="explore-details.html">Kawaii-bubble-tea</a></h3>
-                <div class="cs-card_price">Current Bid: <b class="cs-primary_color">0.29 ETH 11/19</b></div>
-                <hr>
-                <div class="cs-card_footer">
-                  <span class="cs-card_btn_1" data-modal="#history_1">
-                    <i class="fas fa-redo fa-fw"></i>
-                    View History
-                  </span>
-                  <span class="cs-card_btn_2" data-modal="#bid_1"><span>Place Bid</span></span>
-                </div>
-              </div>
-            </div>
-            <div class="cs-height_30 cs-height_lg_30"></div>
-          </div><!-- .col -->
-          <div class="col-xl-3 col-lg-4 col-sm-6">
-            <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
-              <span class="cs-card_like cs-primary_color">
-                <i class="fas fa-heart fa-fw"></i>
-                1.1k
-              </span>
-              <a href="explore-details.html" class="cs-card_thumb cs-zoom_effect">
-                <img src="assets/img/explore/6.jpeg" alt="Image" class="cs-zoom_item">
-              </a>
-              <div class="cs-card_info">
-                <a href="explore-1.html#" class="cs-avatar cs-white_bg">
-                  <img src="assets/img/avatar/avatar_12.png" alt="Avatar">
-                  <span>robert</span>
-                </a>
-                <h3 class="cs-card_title"><a href="explore-details.html">Cute monsters hallo</a></h3>
-                <div class="cs-card_price">Current Bid: <b class="cs-primary_color">0.19 ETH 7/13</b></div>
-                <hr>
-                <div class="cs-card_footer">
-                  <span class="cs-card_btn_1" data-modal="#history_1">
-                    <i class="fas fa-redo fa-fw"></i>
-                    View History
-                  </span>
-                  <span class="cs-card_btn_2" data-modal="#bid_1"><span>Place Bid</span></span>
-                </div>
-              </div>
-            </div>
-            <div class="cs-height_30 cs-height_lg_30"></div>
-          </div><!-- .col -->
-          <div class="col-xl-3 col-lg-4 col-sm-6">
-            <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
-              <span class="cs-card_like cs-primary_color">
-                <i class="fas fa-heart fa-fw"></i>
-                2.2k
-              </span>
-              <a href="explore-details.html" class="cs-card_thumb cs-zoom_effect">
-                <img src="assets/img/explore/7.jpeg" alt="Image" class="cs-zoom_item">
-              </a>
-              <div class="cs-card_info">
-                <a href="explore-1.html#" class="cs-avatar cs-white_bg">
-                  <img src="assets/img/avatar/avatar_13.png" alt="Avatar">
-                  <span>debit alex</span>
-                </a>
-                <h3 class="cs-card_title"><a href="explore-details.html">Cat-mascot-character</a></h3>
-                <div class="cs-card_price">Current Bid: <b class="cs-primary_color">0.28 ETH 21/91</b></div>
-                <hr>
-                <div class="cs-card_footer">
-                  <span class="cs-card_btn_1" data-modal="#history_1">
-                    <i class="fas fa-redo fa-fw"></i>
-                    View History
-                  </span>
-                  <span class="cs-card_btn_2" data-modal="#bid_1"><span>Place Bid</span></span>
-                </div>
-              </div>
-            </div>
-            <div class="cs-height_30 cs-height_lg_30"></div>
-          </div><!-- .col -->
-          <div class="col-xl-3 col-lg-4 col-sm-6">
-            <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
-              <span class="cs-card_like cs-primary_color">
-                <i class="fas fa-heart fa-fw"></i>
-                1.4k
-              </span>
-              <a href="explore-details.html" class="cs-card_thumb cs-zoom_effect">
-                <img src="assets/img/explore/8.jpeg" alt="Image" class="cs-zoom_item">
-              </a>
-              <div class="cs-card_info">
-                <a href="explore-1.html#" class="cs-avatar cs-white_bg">
-                  <img src="assets/img/avatar/avatar_12.png" alt="Avatar">
-                  <span>debit alex</span>
-                </a>
-                <h3 class="cs-card_title"><a href="explore-details.html">Small kid with orange</a></h3>
-                <div class="cs-card_price">Current Bid: <b class="cs-primary_color">0.17 ETH 14/23</b></div>
-                <hr>
-                <div class="cs-card_footer">
-                  <span class="cs-card_btn_1" data-modal="#history_1">
-                    <i class="fas fa-redo fa-fw"></i>
-                    View History
-                  </span>
-                  <span class="cs-card_btn_2" data-modal="#bid_1"><span>Place Bid</span></span>
-                </div>
-              </div>
-            </div>
-            <div class="cs-height_30 cs-height_lg_30"></div>
-          </div><!-- .col -->
-          <div class="col-xl-3 col-lg-4 col-sm-6">
-            <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
-              <span class="cs-card_like cs-primary_color">
-                <i class="fas fa-heart fa-fw"></i>
-                1.9k
-              </span>
-              <a href="explore-details.html" class="cs-card_thumb cs-zoom_effect">
-                <img src="assets/img/explore/9.jpeg" alt="Image" class="cs-zoom_item">
-              </a>
-              <div class="cs-card_info">
-                <a href="explore-1.html#" class="cs-avatar cs-white_bg">
-                  <img src="assets/img/avatar/avatar_13.png" alt="Avatar">
-                  <span>austin r.</span>
-                </a>
-                <h3 class="cs-card_title"><a href="explore-details.html">Digital Cat Illustration</a></h3>
-                <div class="cs-card_price">Current Bid: <b class="cs-primary_color">0.09 ETH 10/91</b></div>
-                <hr>
-                <div class="cs-card_footer">
-                  <span class="cs-card_btn_1" data-modal="#history_1">
-                    <i class="fas fa-redo fa-fw"></i>
-                    View History
-                  </span>
-                  <span class="cs-card_btn_2" data-modal="#bid_1"><span>Place Bid</span></span>
-                </div>
-              </div>
-            </div>
-            <div class="cs-height_30 cs-height_lg_30"></div>
-          </div><!-- .col -->
-          <div class="col-xl-3 col-lg-4 col-sm-6">
-            <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
-              <span class="cs-card_like cs-primary_color">
-                <i class="fas fa-heart fa-fw"></i>
-                9.3k
-              </span>
-              <a href="explore-details.html" class="cs-card_thumb cs-zoom_effect">
-                <img src="assets/img/explore/10.jpeg" alt="Image" class="cs-zoom_item">
-              </a>
-              <div class="cs-card_info">
-                <a href="explore-1.html#" class="cs-avatar cs-white_bg">
-                  <img src="assets/img/avatar/avatar_12.png" alt="Avatar">
-                  <span>gallant j.</span>
-                </a>
-                <h3 class="cs-card_title"><a href="explore-details.html">Fictional character</a></h3>
-                <div class="cs-card_price">Current Bid: <b class="cs-primary_color">0.06 ETH 11/109</b></div>
-                <hr>
-                <div class="cs-card_footer">
-                  <span class="cs-card_btn_1" data-modal="#history_1">
-                    <i class="fas fa-redo fa-fw"></i>
-                    View History
-                  </span>
-                  <span class="cs-card_btn_2" data-modal="#bid_1"><span>Place Bid</span></span>
-                </div>
-              </div>
-            </div>
-            <div class="cs-height_30 cs-height_lg_30"></div>
-          </div><!-- .col -->
-          <div class="col-xl-3 col-lg-4 col-sm-6">
-            <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
-              <span class="cs-card_like cs-primary_color">
-                <i class="fas fa-heart fa-fw"></i>
-                4.2k
-              </span>
-              <a href="explore-details.html" class="cs-card_thumb cs-zoom_effect">
-                <img src="assets/img/explore/11.jpeg" alt="Image" class="cs-zoom_item">
-              </a>
-              <div class="cs-card_info">
-                <a href="explore-1.html#" class="cs-avatar cs-white_bg">
-                  <img src="assets/img/avatar/avatar_13.png" alt="Avatar">
-                  <span>robert alex</span>
-                </a>
-                <h3 class="cs-card_title"><a href="explore-details.html">Octopus eating icecrem</a></h3>
-                <div class="cs-card_price">Current Bid: <b class="cs-primary_color">0.09 ETH 1/9</b></div>
-                <hr>
-                <div class="cs-card_footer">
-                  <span class="cs-card_btn_1" data-modal="#history_1">
-                    <i class="fas fa-redo fa-fw"></i>
-                    View History
-                  </span>
-                  <span class="cs-card_btn_2" data-modal="#bid_1"><span>Place Bid</span></span>
-                </div>
-              </div>
-            </div>
-            <div class="cs-height_30 cs-height_lg_30"></div>
-          </div><!-- .col -->
-          <div class="col-xl-3 col-lg-4 col-sm-6">
-            <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
-              <span class="cs-card_like cs-primary_color">
-                <i class="fas fa-heart fa-fw"></i>
-                5.2k
-              </span>
-              <a href="explore-details.html" class="cs-card_thumb cs-zoom_effect">
-                <img src="assets/img/explore/12.jpeg" alt="Image" class="cs-zoom_item">
-              </a>
-              <div class="cs-card_info">
-                <a href="explore-1.html#" class="cs-avatar cs-white_bg">
-                  <img src="assets/img/avatar/avatar_13.png" alt="Avatar">
-                  <span>robert</span>
-                </a>
-                <h3 class="cs-card_title"><a href="explore-details.html">Cute monsters hallo</a></h3>
-                <div class="cs-card_price">Current Bid: <b class="cs-primary_color">0.19 ETH 7/13</b></div>
-                <hr>
-                <div class="cs-card_footer">
-                  <span class="cs-card_btn_1" data-modal="#history_1">
-                    <i class="fas fa-redo fa-fw"></i>
-                    View History
-                  </span>
-                  <span class="cs-card_btn_2" data-modal="#bid_1"><span>Place Bid</span></span>
-                </div>
-              </div>
-            </div>
-            <div class="cs-height_30 cs-height_lg_30"></div>
-          </div><!-- .col -->
+          </div>
         </div>
         <div class="cs-height_10 cs-height_lg_10"></div>
         <div class="text-center">
-          <a href="explore-1.html#" class="cs-btn cs-style1 cs-btn_lg"><span>Load More</span></a>
+          <a  class="cs-btn cs-style1 cs-btn_lg"><span>...</span></a>
         </div>
       </div>
     </div>

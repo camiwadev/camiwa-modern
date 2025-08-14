@@ -358,3 +358,23 @@ input[type="radio"],input[type="checkbox"]{
   .wizard-forms .inner{ padding: 28px 22px; }
   .multisteps-form__progress{ justify-content:center; }
 }
+.toast-wrap{ position:fixed; right:16px; bottom:16px; z-index:9999; }
+.toast{
+  display:flex; align-items:center; gap:12px; max-width:360px;
+  padding:12px 16px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.15);
+  background:#dbeafe; border:1px solid #3b82f6; color:#111;
+}
+.toast.success{ background:#d1fae5; border-color:#10b981; }
+.toast.warn{ background:#fef3c7; border-color:#f59e0b; }
+.toast.error{ background:#fee2e2; border-color:#ef4444; }
+.toast .close{ background:transparent; border:0; font-size:18px; margin-left:auto; cursor:pointer; }
+
+.toast-target-highlight{
+  animation:pulse-outline 1.2s ease-in-out 2;
+  outline:2px solid #3b82f6; outline-offset:2px;
+}
+@keyframes pulse-outline{
+  0%{ box-shadow:0 0 0 0 rgba(59,130,246,.6); }
+  70%{ box-shadow:0 0 0 10px rgba(59,130,246,0); }
+  100%{ box-shadow:0 0 0 0 rgba(59,130,246,0); }
+}

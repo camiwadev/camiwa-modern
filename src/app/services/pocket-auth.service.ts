@@ -12,7 +12,7 @@ export class PocketAuthService {
   private pb: PocketBase;
 
   constructor(public global:GlobalService) {
-    this.pb = new PocketBase('https://db.buckapi.lat:4545');
+    this.pb = new PocketBase('https://db.camiwa.com:250');
   }
 
   async saveCategor(categoryData:any): Promise<any> {
@@ -92,6 +92,42 @@ export class PocketAuthService {
     );
   }
   
+// pocket-auth.service.ts  (añade estos métodos)
+async saveSpecialist(specialistData: any): Promise<any> {
+  try {
+    const record = await this.pb.collection('camiwaSpecialists').create(specialistData);
+    console.log('Especialista guardado exitosamente:', record);
+    return record;
+  } catch (error) {
+    console.error('Error al guardar el especialista:', error);
+    throw error;
+  }
+}
+
+/** Flujo combinado: crea user y luego specialist */
+createProfessionalAndSpecialist(
+  email: string,
+  password: string,
+  username: string,
+  specialistDataBuilder: (userId: string) => any
+): Observable<any> {
+  const userData = {
+    email,
+    password,
+    passwordConfirm: password,
+    type: 'professional',
+    username,
+    name: username
+  };
+
+  return from(
+    this.pb.collection('users').create(userData).then(async (user) => {
+      const specialistPayload = specialistDataBuilder(user.id);
+      const specialist = await this.pb.collection('camiwaSpecialists').create(specialistPayload);
+      return { user, specialist };
+    })
+  );
+}
 
   
 
@@ -112,7 +148,7 @@ export class PocketAuthService {
     this.pb.authStore.clear();
     this.global.routerActive = "home";
     return new Observable<any>(observer => {
-      observer.next(); // Indicar que la operación de cierre de sesión ha completado
+      observer.next(undefined); 
       observer.complete();
     });
   }
@@ -127,4 +163,5 @@ export class PocketAuthService {
     localStorage.setItem("currentUser", user_string);
     localStorage.setItem("type", type);
   }
+  
 }

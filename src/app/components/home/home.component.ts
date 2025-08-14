@@ -3,6 +3,28 @@ import { GlobalService } from '../../services/global.service';
 import { CommonModule } from '@angular/common';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { CategoriasSliderComponent } from '../categorias-slider/categorias-slider.component';
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({ name: 'firstCategoryImage', standalone: true })
+export class FirstCategoryImagePipe implements PipeTransform {
+  transform(raw: any, fallback = 'assets/img/default-category.jpg'): string {
+    try {
+      if (!raw) return fallback;
+      if (Array.isArray(raw)) return raw[0] || fallback;
+      if (typeof raw === 'string') {
+        const t = raw.trim();
+        if (t.startsWith('[')) {
+          const arr = JSON.parse(t);
+          return (Array.isArray(arr) && arr[0]) ? arr[0] : fallback;
+        }
+        return t || fallback;
+      }
+      return fallback;
+    } catch {
+      return fallback;
+    }
+  }
+}
 
 @Component({
   selector: 'app-home',

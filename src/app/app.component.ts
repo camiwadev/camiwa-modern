@@ -14,6 +14,10 @@ import { ExplorerprofesionalsComponent } from "./components/explorerprofesionals
 import { BlogComponent } from './components/blog/blog.component';
 import { BlogdetailComponent } from './components/blogdetail/blogdetail.component';
 import { ProfesionalDetailComponent } from './components/profesional-detail/profesional-detail.component';
+import { TermsComponent } from './components/terms/terms.component';
+import { PrivacyComponent } from './components/privacy/privacy.component';
+import { ScriptService } from './services/script.services';
+import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +35,10 @@ import { ProfesionalDetailComponent } from './components/profesional-detail/prof
      */ , ExplorerprofesionalsComponent,
     BlogComponent,
     BlogdetailComponent,
-    ProfesionalDetailComponent
+    ProfesionalDetailComponent,
+    TermsComponent,
+    PrivacyComponent,
+    PatientProfileComponent
     
     ],
   templateUrl: './app.component.html',
@@ -39,8 +46,21 @@ import { ProfesionalDetailComponent } from './components/profesional-detail/prof
 })
 export class AppComponent {
   title = 'camiwanew';
-  constructor( public globalService: GlobalService) {
-    
+  constructor( public globalService: GlobalService,
+    public script: ScriptService
+  ) {
+    this.script.load(
+      'jquery', 
+      'jquery-3.6.0',
+      'isotope', 
+      'jquery-slick', 
+      'main',
+      
+    ) 
+      .then(() => {
+        console.log('Todos los scripts se cargaron correctamente');
+      })
+      .catch(error => console.log(error));
   }
   async ngOnInit(): Promise<void> {
     try {

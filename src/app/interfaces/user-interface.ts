@@ -1,4 +1,4 @@
-export interface UserInterface {
+/* export interface UserInterface {
 	userId: string;
 	id: string;
 	monday: boolean;
@@ -42,5 +42,36 @@ export interface UserInterface {
 	password: string;
 	type: string;
 	usertype: string;
+	username:string;
+  } */
+  // user-interface.ts
+export interface UserInterface {
+	id: string;
+	email: string;
+	username: string;
+	type: string;           // 'client' | 'partner' | 'admin' | ...
+  
+	// Haz opcionales todo lo demás
+	password?: string;
+	full_name?: string;
+	phone?: string;
+	images?: any;
+	address?: string;
+	created?: string;
+	updated?: string;
+	avatar?: string;
+	status?: string;
+	gender?: string;
+  
+	// Si tu versión anterior incluía muchos flags/días/etc., márcalos opcionales:
+	userId?: string;
+	monday?: boolean;
+	tuesday?: boolean;
+	wednesday?: boolean;
+	thursday?: boolean;
+	friday?: boolean;
+	saturday?: boolean;
+	sunday?: boolean;
+	// ... y así con los 26+ que te pedía TS
   }
   

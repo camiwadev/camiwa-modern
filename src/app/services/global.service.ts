@@ -5,22 +5,188 @@ import { RealtimeCategoriasService } from './realtime-categorias.service';
 import { Especialidad, RealtimeEspecialidadesService } from './realtime-especialidades.service';
 import { Profesional, RealtimeProfesionalesService } from './realtime-profesionales.service';
 
+interface especialidades {
+  name: string;
+  id: string;
+  fatherId: string;
+}
+interface categoria {
+  id: string;
+}
+interface profesional {
+  id: string;
+  collectionId: string;
+  collectionName: string;
+  created: string;
+  updated: string;
+  address: string;
+  advertisePlatform: boolean;
+  advertiseProfile: boolean;
+  advertiseServices: string[];
+  availability: string;
+  certificates: string[];
+  city: string;
+  consultationAddress: string;
+  country: string;
+  days: string[];
+  email: string;
+  friday: boolean;
+  full_name: string;
+  gender: string;
+  graduationYear: string;
+  membership: string;
+  membershipPlan: string;
+  monday: boolean;
+  phone: string;
+  profession: string;
+  saturday: boolean;
+  schedule: string;
+  services: string;
+  studyArea: string;
+  sunday: boolean;
+  thursday: boolean;
+  tuesday: boolean;
+  university: string;
+  wednesday: boolean;
+  documents: string[];
+  status: 'pending' | 'active' | 'approved'| 'new';
+  images: string[];
+  especialidades: Especialidad[];
+  avatar: string[];
+  userId: string;
+}
 @Injectable({
   providedIn: 'root'
 })
+
 export class GlobalService {
   routerActive:string= "home";
   pb = new PocketBase('https://db.camiwa.com:250');
-
+  profesionales=[];
   // Observables de datos
   private clientesSubject = new BehaviorSubject<any[]>([]);
   clientes$ = this.clientesSubject.asObservable();
   private categoriasSubject = new BehaviorSubject<any[]>([]);
   categorias$ = this.categoriasSubject.asObservable();
-  private especialidadesSubject = new BehaviorSubject<any[]>([]);
+  public especialidadesSubject = new BehaviorSubject<any[]>([]);
   especialidades$ = this.especialidadesSubject.asObservable();
   private profesionalesSubject = new BehaviorSubject<any[]>([]);
   profesionales$ = this.profesionalesSubject.asObservable();
+
+  previewRequest: {
+    userId: string;
+    id: string;
+    monday: boolean;
+    tuesday: boolean;
+    wednesday: boolean;
+    thursday: boolean;
+    saturday: boolean;
+    friday: boolean;
+    sunday: boolean;
+    full_name: string;
+    address: string;
+    city: string;
+    days: boolean[];
+    country: string;
+    email: string;
+    phone: string;
+    profession: string;
+    studyArea: string;
+    university: string;
+    graduationYear: string;
+    specialties: { id: string; name: string }[];
+    certificates: string[];
+    documents: string[];
+    images: string[];
+    advertisePlatform: boolean;
+    advertiseProfile: boolean;
+    advertiseServices: string[];
+    availability: string;
+    collectionId: string;
+    collectionName: string;
+    consultationAddress: string;
+    created: string;
+    gender: string;
+    membership: string;
+    membershipPlan: string;
+    schedule: string;
+    services: string;
+    status: string;
+    updated: string;
+    avatar: string;
+    password: string;
+    type: string;
+    usertype: string;
+  } = {
+    userId: '',
+    id: '',
+    monday: false,
+    tuesday: false,
+    wednesday: false,
+    thursday: false,
+    saturday: false,
+    friday: false,
+    sunday: false,
+    full_name: '',
+    address: '',
+    city: '',
+    days: [],
+    country: '',
+    email: '',
+    phone: '',
+    profession: '',
+    studyArea: '',
+    university: '',
+    graduationYear: '',
+    specialties: [],
+    certificates: [],
+    documents: [],
+    images: [],
+    advertisePlatform: false,
+    advertiseProfile: false,
+    advertiseServices: [],
+    availability: '',
+    collectionId: '',
+    collectionName: '',
+    consultationAddress: '',
+    created: '',
+    gender: '',
+    membership: '',
+    membershipPlan: '',
+    schedule: '',
+    services: '',
+    status: '',
+    updated: '',
+    avatar: '',
+    password: '',
+    type: '',
+    usertype: '',
+  };
+  previewCard: {
+    ticketNumber: string;
+    image: string;
+    ticketsQuantity: number;
+    ticketPrice: number;
+    description: string;
+    selected: { [key: number]: boolean };
+    ticketNumbers: any;
+  } = {
+    ticketNumber: '',
+    image: '',
+    ticketsQuantity: 100,
+    ticketPrice: 2,
+    description: '',
+    selected: {
+      8: true,
+      4: true,
+      9: true,
+      48: true,
+    },
+    ticketNumbers: {},
+  };
+  categorySelected: any = false;
+  specialtiesFilteredSelected = false;
+  specialtiesFiltered: any[] = [];
 
   constructor(
     public realtimeCategoriasService: RealtimeCategoriasService,

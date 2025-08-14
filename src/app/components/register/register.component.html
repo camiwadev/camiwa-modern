@@ -6,8 +6,7 @@
       <form [formGroup]="form" (ngSubmit)="submit()" class="cs-form_card cs-style1 cs-box_shadow cs-white_bg">
         <div class="cs-form_card_in">
 
-          <h2 class="cs-form_title text-center">Crear cuenta</h2>
-          
+          <h2 id="patient-welcome" class="cs-form_title text-center">Crear cuenta</h2>          
           <!-- Selector de rol -->
           <div class="d-flex justify-content-center gap-2 mt-3">
             <button  type="button"
@@ -100,7 +99,6 @@
                           <p>Por favor complete su información personal.</p>
                           <div class="form-inner-area">
                             <input type="text" class="form-control" placeholder="Nombre completo *" formControlName="full_name">
-                            <input type="text" class="form-control" placeholder="correo *" formControlName="email">
                             <input type="text" class="form-control" placeholder="Telefono *" formControlName="phone">
                             <input type="text" class="form-control" placeholder="Dirección de habitación *" formControlName="address">
                             <input type="text" class="form-control" placeholder="Dirección de consultorio *" formControlName="consultationAddress">
@@ -169,19 +167,22 @@
                             <input type="text" class="form-control" placeholder="Año de egreso * (YYYY)" formControlName="graduationYear">
                           </div>
 
-                          <div class="language-select">
-                            <p>Seleccione la profesión a la que pertenece: </p>
-                            <select class="form-control" formControlName="category">
-                              <option [ngValue]="null">Seleccione Profesión</option>
-                              <option *ngFor="let c of categories" [ngValue]="c.item_id">{{ c.item_text }}</option>
-                            </select>
-                          </div>
+                          <!-- Paso 2: Información profesional -->
+                          <div class="language-select" [formGroup]="pwProf">
+                            <p>Seleccione la profesión a la que pertenece:</p>
 
-                          <div class="language-select" *ngIf="pwProf.get('category')?.value">
-                            <p>Seleccione la especialidad:</p>
-                            <select class="form-control" formControlName="specialties" multiple>
-                              <option *ngFor="let s of specialtiesFiltered" [ngValue]="s.item_id">{{ s.item_text }}</option>
-                            </select>
+                            <ng-multiselect-dropdown
+                            formControlName="category"
+                            [data]="categoriesOptions"
+                            [settings]="dropdownSettingsCategory">
+                          </ng-multiselect-dropdown>
+                          </div>
+                          <div class="language-select" *ngIf="(pwProf.get('category')?.value || []).length">
+                            <ng-multiselect-dropdown
+                              formControlName="specialties"
+                              [data]="especialidadOptionsFiltered"
+                              [settings]="dropdownSettingsSpecialties">
+                            </ng-multiselect-dropdown>
                           </div>
 
                           <div class="upload-documents">
@@ -292,4 +293,17 @@
 </div>
 
 <div class="cs-height_90 cs-height_lg_80"></div>
+
+<!-- Toast simple local -->
+<div *ngIf="toastVisible()" class="toast-wrap">
+  <div class="toast" [ngClass]="{
+      'success': toast()?.level==='success',
+      'info':    toast()?.level==='info',
+      'warn':    toast()?.level==='warn',
+      'error':   toast()?.level==='error'
+    }">
+    <span>{{ toast()?.message }}</span>
+    <button type="button" class="close" (click)="hideToast()">×</button>
+  </div>
+</div>
 

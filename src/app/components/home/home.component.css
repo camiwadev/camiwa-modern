@@ -170,3 +170,14 @@
 .fab__item:hover{ box-shadow: 0 12px 26px rgba(0,0,0,.4), inset 0 0 20px rgba(39,229,255,.18); }
 .fab__icon{ font-size:16px; }
 @media (max-width: 560px){ .fab__text{ display:none; } .fab__item{ padding:10px; border-radius:50%; } }
+
+
+.cs-isotop_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px; /* espacio entre tarjetas */
+}
+
+.cs-isotop_item {
+  display: flex;
+}
