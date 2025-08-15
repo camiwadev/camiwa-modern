@@ -64,13 +64,13 @@ export class GlobalService {
   pb = new PocketBase('https://db.camiwa.com:250');
   profesionales=[];
   // Observables de datos
-  private clientesSubject = new BehaviorSubject<any[]>([]);
+  public clientesSubject = new BehaviorSubject<any[]>([]);
   clientes$ = this.clientesSubject.asObservable();
-  private categoriasSubject = new BehaviorSubject<any[]>([]);
+  public categoriasSubject = new BehaviorSubject<any[]>([]);
   categorias$ = this.categoriasSubject.asObservable();
   public especialidadesSubject = new BehaviorSubject<any[]>([]);
   especialidades$ = this.especialidadesSubject.asObservable();
-  private profesionalesSubject = new BehaviorSubject<any[]>([]);
+  public profesionalesSubject = new BehaviorSubject<any[]>([]);
   profesionales$ = this.profesionalesSubject.asObservable();
 
   previewRequest: {
@@ -202,14 +202,34 @@ public async initCategoriasRealtime() {
   try {
     console.log('Loading categorias...');
     const result = await this.pb.collection('camiwaCategories').getFullList();
-    console.log('Categorias loaded:', result);
-    this.categoriasSubject.next(result);
+
+    const categoriasProcesadas = result.map((cat: any) => {
+      let imagesArray: string[] = [];
+
+      if (Array.isArray(cat.image)) {
+        imagesArray = cat.image;
+      } else {
+        try {
+          imagesArray = JSON.parse(cat.image); // si viene como string JSON
+        } catch {
+          imagesArray = [cat.image]; // si es una sola URL
+        }
+      }
+
+      return {
+        ...cat,
+        image: imagesArray
+      };
+    });
+
+    this.categoriasSubject.next(categoriasProcesadas);
     this.subscribeRealtime('camiwaCategories', this.categoriasSubject);
   } catch (error) {
     console.error('Error loading categorias:', error);
     throw error;
   }
 }
+
 
 public async initEspecialidadesRealtime() {
   try {

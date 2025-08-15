@@ -142,7 +142,13 @@
 <app-terms [hidden]="globalService.routerActive!=='terms'"></app-terms>
 <app-privacy [hidden]="globalService.routerActive!=='privacy'"></app-privacy>
 <app-patient-profile [hidden]="globalService.routerActive!=='patient-profile'"></app-patient-profile>
+<div >
 
+<app-chatbot *ngIf="mostrarChatbot"></app-chatbot>  
+  <button class="chatbot-btn" (click)="mostrarChatbot = !mostrarChatbot">
+    <i class="fa fa-comment"></i>
+  </button>
+</div>
 <!-- <app-categorias-slider></app-categorias-slider>
  --><router-outlet></router-outlet>
 <app-footer></app-footer>

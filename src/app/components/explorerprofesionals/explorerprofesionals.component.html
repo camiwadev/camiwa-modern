@@ -4,13 +4,18 @@
       <div class="cs-sidebar_frame_left">
         <div class="cs-filter_sidebar">
           <div class="cs-search_widget">
-            <form  class="cs-search">
-                <input type="text" class="cs-search_input" placeholder="Búsca por servicios">
-                <button class="cs-search_btn">
+            <form class="cs-search" (submit)="$event.preventDefault()">
+              <input
+                type="text"
+                class="cs-search_input"
+                placeholder="Búsca por servicios o especialidades"
+                [formControl]="searchCtrl"
+              />
+              <button type="button" class="cs-search_btn" (click)="searchCtrl.setValue(searchCtrl.value)">
                 <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M9.16667 16.3333C12.8486 16.3333 15.8333 13.3486 15.8333 9.66667C15.8333 5.98477 12.8486 3 9.16667 3C5.48477 3 2.5 5.98477 2.5 9.66667C2.5 13.3486 5.48477 16.3333 9.16667 16.3333Z" stroke="currentColor" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M17.5 18L13.875 14.375" stroke="currentColor" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>                  
+                </svg>
               </button>
             </form>
           </div>
@@ -25,16 +30,21 @@
             </h2>
             <div class="cs-filter_toggle_body">
               <ul>
-                <li *ngFor="let categoria of global.categorias$ | async">
-
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" checked>
-                    <label class="form-check-label" for="categorias">{{categoria.name}}</label>
+                <li *ngFor="let categoria of categoriasFiltradas$ | async">
+                  <div class="form-check d-flex align-items-center">
+            
+                    <img [src]="categoria.image[0]" 
+                         alt="{{categoria.name}}" 
+                         class="cs-zoom_item categoria-img me-2" style="background: white;
+  border-radius: 50%; padding: 3%;">
+              
+                    <label class="form-check-label mb-0">
+                      {{ categoria.name }}
+                    </label>
                   </div>
                 </li>
-               
               </ul>
-             
+              
             </div>
           </div> 
         <div class="cs-filter_widget">
@@ -47,8 +57,8 @@
               </span>
             </h2>
             <div class="cs-filter_toggle_body">
-              <ul *ngFor="let especialidad of ($any(global.especialidades$ | async) | sortByName:'name') | slice:0:(mostrarTodas ? undefined : 10)">
-                <li>
+              <ul>
+                <li *ngFor="let especialidad of (especialidadesFiltradas$ | async) | slice:0:(mostrarTodas ? undefined : 10)">
                   <div class="form-check">
                     <input class="form-check-input" type="radio" />
                     <label class="form-check-label">{{ especialidad?.name }}</label>
@@ -56,11 +66,13 @@
                 </li>
               </ul>
               
-              <button class="btn btn-link p-0 mt-2"
-                      *ngIf="($any(global.especialidades$ | async)?.length ?? 0) > 10"
-                      (click)="mostrarTodas = !mostrarTodas">
-                {{ mostrarTodas ? 'Ver menos' : 'Ver todas' }}
-              </button>
+              <button
+  class="btn btn-link p-0 mt-2"
+  *ngIf="((especialidadesFiltradas$ | async) ?? []).length > 10"
+  (click)="mostrarTodas = !mostrarTodas"
+>
+  {{ mostrarTodas ? 'Ver menos' : 'Ver todas' }}
+</button>
             </div>
           </div> 
          
@@ -101,26 +113,31 @@
           <div class="col-xl-3 col-lg-4 col-sm-6" *ngFor="let profesional of global.profesionales$ | async">
             <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
               <span class="cs-card_like cs-primary_color">
-                <i class="fas fa-heart fa-fw"></i>
-                2.1K
+                <i class="fas fa-award fa-fw"></i>
               </span>
               <a  class="cs-card_thumb cs-zoom_effect">
-                <img src="assets/img/explore/1.jpeg" alt="Image" class="cs-zoom_item">
+                <img [src]="profesional.images[0]" alt="Image" class="cs-zoom_item">
               </a>
               <div class="cs-card_info">
-                <a (click)="global.setRouterActive('profesional-detail')" class="cs-avatar cs-white_bg">
-                  <img src="assets/img/avatar/avatar_12.png" alt="Avatar">
-                  <span>{{profesional.name}}</span>
-                </a>
-                <h3 class="cs-card_title"><a >Art work #2134</a></h3>
-                <div class="cs-card_price">Current Bid: <b class="cs-primary_color">0.29 ETH 7/21</b></div>
+            
+                <span class="fw-bold">{{ profesional.full_name }}</span>
+                <div class="d-flex align-items-center">
+                  <i class="fa fa-star text-warning me-1"></i>
+                  <span>{{ profesional.rating }} / 5</span>
+                  <small class="text-muted ms-2">({{ profesional.comentarios }} comentarios)</small>
+                </div>
+                <h3 class="cs-card_title"><a >{{profesional.especialidad}}</a></h3>
+                <div class="cs-card_price">
+                  Consulta: <b class="cs-primary_color">{{profesional.price}}</b>
+                </div>
                 <hr>
                 <div class="cs-card_footer">
                   <span class="cs-card_btn_1" data-modal="#history_1">
-                    <i class="fas fa-redo fa-fw"></i>
-                    View History
+                    <i class="far fa-calendar fa-fw"></i> Agendar 
                   </span>
-                  <span class="cs-card_btn_2" data-modal="#bid_1"><span>Place Bid</span></span>
+                  <span class="cs-card_btn_2 btn btn-accent" data-modal="#bid_1">
+                    <span>Ver perfil</span>
+                  </span>
                 </div>
               </div>
             </div>

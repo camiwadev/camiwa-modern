@@ -1,0 +1,7 @@
+.categoria-img {
+    width: 40px; /* tamaño pequeño */
+    height: 40px;
+    object-fit: cover; /* recorta sin deformar */
+    border-radius: 5px; /* esquinas redondeadas opcionales */
+  }
+  

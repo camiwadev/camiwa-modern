@@ -28,7 +28,7 @@
                     <i class="fas fa-heart fa-fw"></i>
                   </span>
                   <a  class="cs-card_thumb cs-zoom_effect">
-                    <img src="{{categoria.image}}" alt="" class="cs-zoom_item">
+                    <img [src]="categoria.image[0]" alt="{{categoria.name}}" class="cs-zoom_item">
 
                   </a>
                   <div class="cs-card_info">
@@ -122,28 +122,30 @@
       <div class="cs-isotop_item" *ngFor="let profesional of globalService.profesionales$ | async">
         <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
           <span class="cs-card_like cs-primary_color">
-            <i class="fas fa-heart fa-fw"></i>
-            2.1K
+            <i class="fas fa-award fa-fw"></i>
           </span>
-          <a href="explore-details.html" class="cs-card_thumb cs-zoom_effect">
-            <img src="assets/img/explore/1.jpeg" alt="Image" class="cs-zoom_item">
+          <a  class="cs-card_thumb cs-zoom_effect">
+            <img [src]="profesional.images[0]" alt="Image" class="cs-zoom_item">
           </a>
           <div class="cs-card_info">
-            <a href="#" class="cs-avatar cs-white_bg">
-              <img src="assets/img/avatar/avatar_12.png" alt="Avatar">
-              <span>{{profesional.name}}</span>
-            </a>
-            <h3 class="cs-card_title"><a href="explore-details.html">Art work #2134</a></h3>
+            
+            <span class="fw-bold">{{ profesional.full_name }}</span>
+            <div class="d-flex align-items-center">
+              <i class="fa fa-star text-warning me-1"></i>
+              <span>{{ profesional.rating }} / 5</span>
+              <small class="text-muted ms-2">({{ profesional.comentarios }} comentarios)</small>
+            </div>
+            <h3 class="cs-card_title"><a >{{profesional.especialidad}}</a></h3>
             <div class="cs-card_price">
-              Current Bid: <b class="cs-primary_color">0.29 ETH 7/21</b>
+              Consulta: <b class="cs-primary_color">{{profesional.price}}</b>
             </div>
             <hr>
             <div class="cs-card_footer">
               <span class="cs-card_btn_1" data-modal="#history_1">
-                <i class="fas fa-redo fa-fw"></i> View History
+                <i class="far fa-calendar fa-fw"></i> Agendar 
               </span>
-              <span class="cs-card_btn_2" data-modal="#bid_1">
-                <span>Place Bid</span>
+              <span class="cs-card_btn_2 btn btn-accent" data-modal="#bid_1">
+                <span>Ver perfil</span>
               </span>
             </div>
           </div>

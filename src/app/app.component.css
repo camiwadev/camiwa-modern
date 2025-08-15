@@ -170,3 +170,21 @@
 .fab__item:hover{ box-shadow: 0 12px 26px rgba(0,0,0,.4), inset 0 0 20px rgba(39,229,255,.18); }
 .fab__icon{ font-size:16px; }
 @media (max-width: 560px){ .fab__text{ display:none; } .fab__item{ padding:10px; border-radius:50%; } }
+.chatbot-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  background-color: #2c9283;
+  color: white;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.chatbot-btn:hover {
+  background-color: #2c9283;
+}

@@ -18,6 +18,7 @@ import { TermsComponent } from './components/terms/terms.component';
 import { PrivacyComponent } from './components/privacy/privacy.component';
 import { ScriptService } from './services/script.services';
 import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
+import { ChatbotComponent } from './components/chatbot/chatbot.component';
 
 @Component({
   selector: 'app-root',
@@ -38,7 +39,8 @@ import { PatientProfileComponent } from './components/patient-profile/patient-pr
     ProfesionalDetailComponent,
     TermsComponent,
     PrivacyComponent,
-    PatientProfileComponent
+    PatientProfileComponent,
+    ChatbotComponent
     
     ],
   templateUrl: './app.component.html',
@@ -46,6 +48,8 @@ import { PatientProfileComponent } from './components/patient-profile/patient-pr
 })
 export class AppComponent {
   title = 'camiwanew';
+  mostrarChatbot = false;
+
   constructor( public globalService: GlobalService,
     public script: ScriptService
   ) {

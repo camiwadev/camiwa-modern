@@ -135,7 +135,7 @@ a {
 
 a:hover {
   text-decoration: none;
-  color: #3772ff;
+  color: #32ceff;
 }
 
 button {
@@ -190,7 +190,7 @@ kbd {
 @media screen and (max-width: 991px) {
   body,
   html {
-    font-size: 14px;
+    font-size: 17px;
   }
   h2 {
     font-size: 36px;
@@ -660,7 +660,7 @@ kbd {
   line-height: 1.5em;
   color: #fff;
   font-weight: 500;
-  background-color: #3772ff;
+  background-color: #32ceff;
   border-radius: 1.6em;
   padding: 8px 25px;
   position: relative;
@@ -714,7 +714,7 @@ kbd {
 
 .cs-btn.cs-style1.cs-color1:hover {
   color: #fff;
-  background: #3772ff;
+  background: #32ceff;
 }
 
 .cs-btn.cs-style1.cs-color2 {
@@ -736,7 +736,7 @@ kbd {
 }
 
 .cs-btn.cs-style1.cs-color3:hover {
-  background-color: #3772ff;
+  background-color: #32ceff;
 }
 
 .cs-btn.cs-style1.cs-color3:hover::after {
@@ -960,7 +960,7 @@ kbd {
 
 .cs-section_toggle .cs-toggle_body {
   padding: 10px 0;
-  font-size: 14px;
+  font-size: 17px;
   width: 170px;
   border-radius: 5px;
   line-height: 1.6em;
@@ -1012,11 +1012,11 @@ kbd {
 }
 
 .cs-accent_color {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .cs-accent_bg {
-  background-color: #3772ff;
+  background-color: #32ceff;
 }
 
 .cs-zoom_effect {
@@ -1059,7 +1059,7 @@ kbd {
 }
 
 .cs-countdown .cs-countdown_text {
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5em;
   margin-bottom: 0;
   font-weight: 400;
@@ -1332,7 +1332,7 @@ kbd {
 }
 
 .cs-media.cs-style1 .cs-media_title span {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .cs-media.cs-style1 .cs-media_subtitle {
@@ -1487,7 +1487,7 @@ kbd {
 }
 
 .cs-filter_widget ul {
-  font-size: 14px;
+  font-size: 17px;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -1498,7 +1498,7 @@ kbd {
 }
 
 .cs-filter_toggle_btn {
-  font-size: 14px;
+  font-size: 17px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1515,7 +1515,7 @@ kbd {
 }
 
 .cs-filter_toggle_btn:hover {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .cs-filter_toggle_btn .cs-arrow_icon {
@@ -1535,8 +1535,8 @@ kbd {
 }
 
 .form-check-input:checked {
-  background-color: #3772ff;
-  border-color: #3772ff;
+  background-color: #32ceff;
+  border-color: #32ceff;
 }
 
 .form-check-input {
@@ -1652,7 +1652,7 @@ kbd {
 }
 
 .cs-color_item.cs-color1 {
-  background-color: #3772FF;
+  background-color: #32ceff;
 }
 
 .cs-color_item.cs-color2 {
@@ -1725,7 +1725,7 @@ kbd {
           box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.05);
   border-radius: 10px;
   padding: 10px 15px;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5em;
 }
 
@@ -1766,7 +1766,7 @@ kbd {
 }
 
 .cs-clear_btn {
-  color: #3772ff;
+  color: #32ceff;
   font-weight: 500;
 }
 
@@ -1821,7 +1821,7 @@ kbd {
 }
 
 .cs-text_box.cs-style1:hover {
-  background-color: #3772ff;
+  background-color: #32ceff;
   color: #fff;
 }
 
@@ -1842,7 +1842,7 @@ kbd {
 .cs-text_box.cs-style2 span {
   display: block;
   border-radius: inherit;
-  padding: 14px 15px;
+  padding: 17px 15px;
 }
 
 .cs-text_box.cs-style2:hover {
@@ -1917,13 +1917,13 @@ kbd {
 }
 
 .cs-collection_user {
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.6em;
   margin-bottom: 10px;
 }
 
 .cs-collection_user span {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .cs-collection_avatar_name {
@@ -2019,7 +2019,7 @@ kbd {
 }
 
 .cs-form_card.cs-style1 .form-check {
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5em;
   color: rgba(115, 122, 153, 0.5);
   margin-left: 20px;
@@ -2027,7 +2027,7 @@ kbd {
 }
 
 .cs-form_card.cs-style1 .cs-form_footer a {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .cs-form_card.cs-style1 .cs-form_footer a:hover {
@@ -2117,7 +2117,7 @@ kbd {
       -ms-flex-pack: center;
           justify-content: center;
   border-radius: 50%;
-  background-color: #3772ff;
+  background-color: #32ceff;
   color: #fff;
   position: relative;
   margin: 7px;
@@ -2179,7 +2179,7 @@ kbd {
 }
 
 .cs-tag_widget a:hover {
-  background-color: #3772ff;
+  background-color: #32ceff;
   color: #fff;
 }
 
@@ -2191,7 +2191,7 @@ kbd {
 }
 
 .cs-recent_post .cs-posted_by {
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.3em;
 }
 
@@ -2236,7 +2236,7 @@ kbd {
   left: 0;
   top: 9px;
   border-radius: 50%;
-  background-color: #3772ff;
+  background-color: #32ceff;
 }
 
 .cs-widget_list li:not(:last-child) {
@@ -2277,7 +2277,7 @@ kbd {
 }
 
 .cs-activity .cs-activity_text span {
-  color: #3772ff;
+  color: #32ceff;
   font-weight: 700;
 }
 
@@ -2287,7 +2287,7 @@ kbd {
 }
 
 .cs-activity .cs-activity_text a:hover {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .cs-activity .cs-activity_icon {
@@ -2438,7 +2438,7 @@ kbd {
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5em;
   -ms-flex-pack: distribute;
       justify-content: space-around;
@@ -2471,7 +2471,7 @@ kbd {
 }
 
 .cs-profile_nav a:hover, .cs-profile_nav a.active {
-  background-color: #3772ff;
+  background-color: #32ceff;
   color: #fff;
 }
 
@@ -2493,7 +2493,7 @@ kbd {
 
 .cs-edit_profile p {
   margin: 0;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5em;
   color: rgba(115, 122, 153, 0.5);
 }
@@ -2528,7 +2528,7 @@ kbd {
 }
 
 .cs-upload_btn:hover {
-  background-color: #3772ff;
+  background-color: #32ceff;
   color: #fff;
 }
 
@@ -2694,7 +2694,7 @@ kbd {
 }
 
 .cs-large_radio input:checked + .cs-large_radio_in {
-  background: #3772ff;
+  background: #32ceff;
   color: #fff;
 }
 
@@ -4205,7 +4205,7 @@ kbd {
 
 .comment-list .comment-meta {
   display: block;
-  font-size: 14px;
+  font-size: 17px;
   margin-bottom: 10px;
   line-height: 1.2em;
   margin-top: 5px;
@@ -4221,7 +4221,7 @@ kbd {
 }
 
 .comment-list .comment-meta a:hover {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .comment-list .comment-meta + p,
@@ -4243,7 +4243,7 @@ kbd {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  color: #3772ff;
+  color: #32ceff;
   line-height: inherit;
 }
 
@@ -4445,7 +4445,7 @@ kbd {
 .cs-profile_box .cs-user_balance {
   font-size: 18px;
   font-weight: 600;
-  color: #3772ff;
+  color: #32ceff;
   margin-bottom: 12px;
 }
 
@@ -4462,7 +4462,7 @@ kbd {
   background-color: #fff;
   border-radius: inherit;
   position: relative;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5em;
   padding: 5px 20px 5px 10px;
 }
@@ -4482,7 +4482,7 @@ kbd {
 }
 
 .cs-profile_box .cs-user_profile_link button:hover {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .cs-profile_box ul {
@@ -4510,7 +4510,7 @@ kbd {
 
 .cs-profile_box .cs-btn.cs-style1 {
   padding: 7px 35px;
-  font-size: 14px;
+  font-size: 17px;
 }
 
 .cs-notification_box .cs-toggle_body {
@@ -4586,7 +4586,7 @@ kbd {
 
 .cs-notification_box .cs-btn.cs-style1 {
   padding: 7px 35px;
-  font-size: 14px;
+  font-size: 17px;
   margin-top: 18px;
 }
 
@@ -4841,7 +4841,7 @@ li.menu-item-has-children
 
 @media screen and (max-width: 1480px) {
   .cs-site_header {
-    font-size: 14px;
+    font-size: 17px;
   }
   .cs-search {
     width: 180px;
@@ -4852,7 +4852,7 @@ li.menu-item-has-children
   }
   .cs-header_btns > .cs-btn {
     padding: 10px 15px;
-    font-size: 14px;
+    font-size: 17px;
   }
 }
 
@@ -5333,7 +5333,7 @@ li.menu-item-has-children
 }
 
 .cs-hero_btn.cs-style1.cs-color3 {
-  background-color: #3772ff;
+  background-color: #32ceff;
   color: #fff;
 }
 
@@ -5853,7 +5853,7 @@ li.menu-item-has-children
   .cs-hero.cs-style4 .cs-hero_subtitle,
   .cs-hero.cs-style5 .cs-hero_subtitle {
     margin-bottom: 20px;
-    font-size: 14px;
+    font-size: 17px;
   }
   .cs-hero.cs-style1 {
     height: 480px;
@@ -5965,7 +5965,7 @@ li.menu-item-has-children
 }
 
 .cs-card.cs-style1:hover .cs-card_title {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .cs-card.cs-style2 {
@@ -5990,7 +5990,7 @@ li.menu-item-has-children
 }
 
 .cs-card.cs-style2 .cs-card_subtitle {
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5em;
   margin-bottom: 10px;
   color: rgba(115, 122, 153, 0.5);
@@ -6030,7 +6030,7 @@ li.menu-item-has-children
   display: -ms-inline-flexbox;
   display: inline-flex;
   line-height: 1.5em;
-  border: 1px solid #3772ff;
+  border: 1px solid #32ceff;
   padding: 4px 15px;
   border-radius: 1.6em;
   color: #050023;
@@ -6038,7 +6038,7 @@ li.menu-item-has-children
 
 .cs-card.cs-style2 .cs-card_btn:hover {
   color: #fff;
-  background-color: #3772ff;
+  background-color: #32ceff;
 }
 
 .cs-card.cs-style2 .cs-card_info {
@@ -6069,7 +6069,7 @@ li.menu-item-has-children
 }
 
 .cs-card.cs-style3 .cs-card_subtitle {
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5em;
   margin-bottom: 10px;
   display: -webkit-box;
@@ -6131,7 +6131,7 @@ li.menu-item-has-children
 }
 
 .cs-card.cs-style3 .cs-catd_meta_item {
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.6em;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -6166,22 +6166,22 @@ li.menu-item-has-children
 
 .cs-card.cs-style3 .cs-catd_footer h4 {
   font-weight: 500;
-  font-size: 14px;
+  font-size: 17px;
   color: rgba(115, 122, 153, 0.5);
   margin: 0;
 }
 
 .cs-card.cs-style3 .cs-catd_footer p {
   margin: 0;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.6em;
 }
 
 .cs-card.cs-style3 .cs-avatar_status {
   display: block;
   position: absolute;
-  height: 14px;
-  width: 14px;
+  height: 17px;
+  width: 17px;
   border-radius: 50%;
   background-color: #21A85A;
   top: 5px;
@@ -6195,7 +6195,7 @@ li.menu-item-has-children
   right: 20px;
   top: 20px;
   background-color: #fff;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5em;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -6226,11 +6226,10 @@ li.menu-item-has-children
 
 .cs-card.cs-style4 .cs-card_thumb img {
   width: 100%;
-  border-radius: inherit;
-}
+  border-radius: 10px;}
 
 .cs-card.cs-style4 .cs-avatar {
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5em;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -6245,7 +6244,7 @@ li.menu-item-has-children
 }
 
 .cs-card.cs-style4 .cs-avatar:hover {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .cs-card.cs-style4 .cs-avatar img {
@@ -6259,7 +6258,7 @@ li.menu-item-has-children
 }
 
 .cs-card.cs-style4 .cs-card_info {
-  padding: 0 10px;
+  padding: 25px 10px;
   margin-top: -16px;
 }
 
@@ -6270,13 +6269,13 @@ li.menu-item-has-children
 }
 
 .cs-card.cs-style4 .cs-card_price {
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.6em;
   margin-bottom: 10px;
 }
 
 .cs-card.cs-style4 .cs-card_btn_1 {
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5em;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -6294,7 +6293,7 @@ li.menu-item-has-children
 }
 
 .cs-card.cs-style4 .cs-card_btn_1:hover {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .cs-card.cs-style4 hr {
@@ -6305,10 +6304,10 @@ li.menu-item-has-children
 
 .cs-card.cs-style4 .cs-card_btn_2 {
   font-weight: 500;
-  font-size: 12px;
+  font-size: 17px;
   color: #fff;
-  background-color: #3772ff;
-  border-radius: 1.6em;
+  background: linear-gradient( 135deg, #27e5ff 0%, #6a5cff 100%);
+  border-radius: 0.6em;
   line-height: 1.5em;
   padding: 4px 16px;
   position: relative;
@@ -6412,7 +6411,7 @@ li.menu-item-has-children
 }
 
 .cs-card.cs-style5 p {
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.2em;
   margin: 0;
 }
@@ -6445,7 +6444,7 @@ li.menu-item-has-children
 }
 
 .cs-card.cs-style5 ul {
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5em;
 }
 
@@ -6575,13 +6574,13 @@ li.menu-item-has-children
 }
 
 .cs-card.cs-style7 .cs-card_media h4 {
-  font-size: 14px;
+  font-size: 17px;
   color: #fff;
   margin: 0;
 }
 
 .cs-card.cs-style7 .cs-card_media p {
-  font-size: 14px;
+  font-size: 17px;
   color: rgba(255, 255, 255, 0.8);
   margin: 0;
   line-height: 1.2em;
@@ -6649,7 +6648,7 @@ li.menu-item-has-children
 }
 
 .cs-card.cs-style8 p a {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .cs-card.cs-style8 p a:hover {
@@ -6675,7 +6674,7 @@ li.menu-item-has-children
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 5px;
   color: #fff;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5em;
   padding: 3px 15px;
   margin: 5px;
@@ -6841,7 +6840,7 @@ li.menu-item-has-children
 }
 
 .cs-iconbox.cs-style3 .cs-iconbox_btn {
-  color: #3772ff;
+  color: #32ceff;
   font-weight: 600;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -6857,7 +6856,7 @@ li.menu-item-has-children
 
 .cs-iconbox.cs-style3 .cs-iconbox_btn:hover {
   text-decoration: underline;
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .cs-iconbox.cs-style4 {
@@ -6917,7 +6916,7 @@ li.menu-item-has-children
 }
 
 .cs-post_avatar .cs-post_meta {
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.5em;
 }
 
@@ -7064,7 +7063,7 @@ li.menu-item-has-children
 
 .cs-cta.cs-style2 .cs-cta_title {
   font-size: 36px;
-  margin-bottom: 14px;
+  margin-bottom: 17px;
 }
 
 .cs-cta.cs-style2 .cs-cta_subtitle {
@@ -7137,7 +7136,7 @@ li.menu-item-has-children
     font-size: 28px;
   }
   .cs-cta.cs-style2 .cs-cta_subtitle {
-    font-size: 14px;
+    font-size: 17px;
   }
   .cs-cta.cs-style2 {
     padding: 65px 30px 70px;
@@ -7265,7 +7264,7 @@ li.menu-item-has-children
 }
 
 .cs-team.cs-style1 .cs-member_social_links a {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .cs-team.cs-style1 .cs-member_social_links a:hover {
@@ -7315,7 +7314,7 @@ li.menu-item-has-children
 
 .cs-accordians .cs-accordian_head:hover .cs-accordian_toggle,
 .cs-accordians .cs-accordian_head:hover .cs-accordian_title {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 .cs-accordians .cs-accordian_title {
@@ -7503,7 +7502,7 @@ body.cs-dark .cs-slider_arrows.cs-style1 {
 
 body.cs-dark .cs-cta.cs-style2 .cs-btn,
 body.cs-dark .cs-profile_nav a:hover, body.cs-dark .cs-profile_nav a.active {
-  background-color: #3772ff;
+  background-color: #32ceff;
   color: #fff;
 }
 
@@ -7518,11 +7517,11 @@ body.cs-dark .cs-upload_btn {
 
 body.cs-dark .cs-upload_btn:hover {
   color: #fff;
-  background-color: #3772ff;
+  background-color: #32ceff;
 }
 
 body.cs-dark .cs-delete_btn:hover {
-  color: #3772ff;
+  color: #32ceff;
 }
 
 body.cs-dark .cs-form_field::-webkit-input-placeholder {
