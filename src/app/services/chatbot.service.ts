@@ -100,7 +100,7 @@ if (pregunta.includes('especialidad')) {
     }
 
     // Armar texto final
-    let resultado = 'Estas son las especialidades médicas disponibles agrupadas por servicios:\n\n';
+    let resultado = 'Estas son las especialidades médicas disponibles :\n\n';
     for (const catName of Object.keys(agrupadas)) {
       resultado += `🩺 ${catName}:\n${agrupadas[catName].join('\n')}\n\n`;
     }

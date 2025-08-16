@@ -25,7 +25,7 @@ export class ChatbotComponent {
      public global: GlobalService) {}
  
 
-    async ngOnInit() {
+   /*  async ngOnInit() {
       const pb = new PocketBase(environment.apiUrl);
     
       // 1. Verificamos si el usuario está autenticado
@@ -52,15 +52,39 @@ export class ChatbotComponent {
       this.chatbotService.listenMensajes(this.userId, (nuevo) => {
         this.mensajes.push(nuevo);
       });
-    }
-    
+    } */
+      ngOnInit() {
+        const pb = new PocketBase(environment.apiUrl);
+        this.isAuthenticated = pb.authStore.isValid;
+        this.userId = this.isAuthenticated
+          ? pb.authStore.model?.['id'] || this.getAnonUserId()
+          : this.getAnonUserId();
+      
+        this.cargarMensajes();
+      
+        const bienvenidaKey = 'chat_bienvenida_mostrada';
+        if (!localStorage.getItem(bienvenidaKey)) {
+          this.mensajes.push({
+            message: '👋 ¡Hola! Soy tu asistente virtual...',
+            sender: 'bot',
+            timestamp: new Date().toISOString()
+          });
+          this.mostrarSugerencias = true;
+          localStorage.setItem(bienvenidaKey, 'true');
+        }
+      
+        this.chatbotService.listenMensajes(this.userId, (nuevo) => {
+          this.mensajes.push(nuevo);
+        });
+      }
+      
   async cargarMensajes() {
     this.mensajes = await this.chatbotService.obtenerMensajes(this.userId);
   }
   handleBoton(action: string) {
     switch(action) {
       case 'ver-especialistas':
-        this.global.routerActive = 'mapwrapper'; // o donde muestres los especialistas
+        this.global.setRouterActive('explorerprofesionals'); // o donde muestres los especialistas
         break;
       default:
         console.warn('Acción no reconocida:', action);

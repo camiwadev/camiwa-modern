@@ -394,8 +394,10 @@
     
             // 3) Crear traveler (⚠️ usa los NOMBRES reales del schema)
             const traveler = await this.pb.collection('camiwaTravelers').create({
-              userId: user.id,                   // relation -> users
-              full_name: fullName,               // ⚠️ si en tu schema es "full_name"
+              userId: user.id,
+              full_name: fullName,                // si existe en schema
+              name: fullName,                      // nuevo campo para nombre
+              username: fullName.replace(/\s+/g, '_').toLowerCase(), // opcional
               email,
               phone,
               address,
@@ -403,6 +405,7 @@
               images: [],
               documents: [],
             });
+            
     
             // 4) Guardar sesión y perfil
             const token = this.pb.authStore.token;

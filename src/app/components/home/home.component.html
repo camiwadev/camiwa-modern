@@ -1,19 +1,52 @@
 <div class="cs-height_90 cs-height_lg_80"></div>
-
-<!-- Start Hero -->
- <section class="cs-hero cs-style4 cs-bg cs-center" data-src="assets/img/hero_bg4.jpeg">
+<section class="cs-hero cs-style3 cs-bg cs-center" data-src="assets/img/hero_bg3.jpeg">
   <div class="container-fluid">
     <div class="cs-hero_in">
       <div class="cs-hero_in_left">
         <div class="cs-hero_text">
-          <h1 class="cs-hero_title cs-white_color">Bienvenidos a <span class="brand">CAMIWA</span> <br>
-            Conecta con tu especialista, donde y cuando lo necesites            </h1>
-          <div class="cs-hero_subtitle cs-medium cs-white_color">Salud y bienestar al alcance de un clic.
-            Con nuestra tecnología impulsada por IA, encuentra al profesional ideal para ti en cualquier parte del mundo, ya sea presencial o en línea.</div>
+          <h1 class="cs-hero_title cs-white_color">Bienvenidos a <span class="brand">CAMIWA</span> </h1>
+          <h2> Conecta con tu especialista, donde y cuando lo necesites</h2>
+          <div class="cs-hero_subtitle cs-medium cs-white_color">Salud y bienestar al alcance de un clic.</div>
           <div class="cs-hero_btns">
             <div class="hero__actions">
+              <button class="btn btn-outline" (click)="globalService.setRouterActive('about')">Saber más</button>
               <button class="btn btn-accent" (click)="globalService.setRouterActive('register')">Registrarse</button>
-              <button class="btn btn-outline" (click)="globalService.setRouterActive('login')">Iniciar sesión</button>
+           </div>
+          </div>
+        </div>
+      </div>
+      <div class="cs-hero_in_right">
+        <div class="">
+          <h3 class="cs-hero_category_title text-center cs-white_color">Top Servicios</h3>
+          <div class="cs-hero_categories">
+            <a  class="cs-card cs-style1 cs-box_shadow text-center cs-white_bg"    *ngFor="let categoria of (globalService.categorias$ | async) | slice:0:6">
+              <div class="cs-card_thumb">
+                <img [src]="categoria.image[0]" alt="{{categoria.name}}" class="cs-zoom_item">
+              </div>
+              <p class="cs-card_title">{{categoria.name}}</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Start Hero -->
+ <!--  <section class="cs-hero cs-style4 cs-bg cs-center" data-src="assets/img/hero_bg4.jpeg">
+  <div class="container-fluid">
+    <div class="cs-hero_in">
+      <div class="cs-hero_in_left">
+        <div class="cs-hero_text">
+          <h1 class="cs-hero_title cs-white_color">Bienvenidos a <span class="brand">CAMIWA</span> </h1>
+           <h2> Conecta con tu especialista, donde y cuando lo necesites</h2>
+          <div class="cs-hero_subtitle cs-medium cs-white_color">Salud y bienestar al alcance de un clic.
+            </div> 
+            
+          <div class="cs-hero_btns">
+            <div class="hero__actions">
+              <button class="btn btn-outline" (click)="globalService.setRouterActive('about')">Saber más</button>
+
+              <button class="btn btn-accent" (click)="globalService.setRouterActive('register')">Registrarse</button>
             </div>
           </div>
         </div>
@@ -24,9 +57,7 @@
             <div class="cs-slider_wrapper" >
             <div class="cs-slide" *ngFor="let categoria of globalService.categorias$ | async">
                 <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
-                  <span class="cs-card_like cs-primary_color">
-                    <i class="fas fa-heart fa-fw"></i>
-                  </span>
+                 
                   <a  class="cs-card_thumb cs-zoom_effect">
                     <img [src]="categoria.image[0]" alt="{{categoria.name}}" class="cs-zoom_item">
 
@@ -63,10 +94,83 @@
           <div class="cs-pagination cs-style1 cs-hidden"></div>
         </div>
       </div> 
-<!--     <app-categorias-slider></app-categorias-slider>
- -->    </div>
+ </div>
   </div>
-</section> 
+</section>   -->
+
+<!-- Start Cómo funciona -->
+<section>
+  <div class="container">
+    <h2 class="cs-section_heading cs-style1 text-center">Cómo funciona Camiwa</h2>
+    <div class="cs-height_45 cs-height_lg_45"></div>
+
+    <div class="row text-center">
+      <!-- 1. Busca un especialista -->
+      <div class="col-lg-4 col-sm-12">
+        <div class="cs-iconbox cs-style1 cs-white_bg">
+          <div class="cs-iconbox_icon">
+            <ng-lottie
+              [options]="searchAnimation"
+              style="width:80px;height:80px">
+            </ng-lottie>
+
+          </div>
+          
+          <h2 class="cs-iconbox_title">Busca un especialista</h2>
+          <div class="cs-iconbox_subtitle">
+            Encuentra el profesional ideal según tu necesidad, idioma o ubicación.
+          </div>
+        </div>
+        <div class="cs-height_30 cs-height_lg_30"></div>
+      </div>
+
+      <!-- 2. Reserva online -->
+      <div class="col-lg-4 col-sm-12">
+        <div class="cs-iconbox cs-style1 cs-white_bg">
+          <div class="cs-iconbox_icon">
+            <ng-lottie
+            [options]="calendarAnimation"
+            style="width:80px;height:80px">
+          </ng-lottie>          </div>
+          <h2 class="cs-iconbox_title">Reserva online</h2>
+          <div class="cs-iconbox_subtitle">
+            Agenda fácilmente tu cita en el horario que más te convenga.
+          </div>
+        </div>
+        <div class="cs-height_30 cs-height_lg_30"></div>
+      </div>
+
+      <!-- 3. Conéctate -->
+      <div class="col-lg-4 col-sm-12">
+        <div class="cs-iconbox cs-style1 cs-white_bg">
+          <div class="cs-iconbox_icon">
+            <ng-lottie
+            [options]="ChatAnimation"
+            style="width:80px;height:80px">
+          </ng-lottie>          </div>
+          <h2 class="cs-iconbox_title">Conéctate por video o presencial</h2>
+          <div class="cs-iconbox_subtitle">
+            Consulta desde cualquier lugar o asiste en persona, según prefieras.
+          </div>
+        </div>
+        <div class="cs-height_30 cs-height_lg_30"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Cómo funciona -->
+
+<div class="cs-height_70 cs-height_lg_40"></div>
+<div class="container">
+  <div class="cs-cta cs-style2 text-center cs-white_bg">
+    <h2 class="cs-cta_title">Únete a miles de personas que ya cuidan su salud con <span class="brand">Camiwa</span></h2>
+    <p class="lead mb-4">¡Empieza gratis hoy y vive una experiencia de salud sin fronteras!</p>
+
+<!--     <div class="cs-cta_subtitle">Exercitation veniam consequat sunt nostrud amet. It is a long  <br>established fact that a reader</div>
+ -->    <a (click)="globalService.setRouterActive('register')" class=" cs-style1 btn btn-accent"><span>      Registrarse gratis
+    </span></a>
+  </div>
+</div>
 
 
 
@@ -109,9 +213,9 @@
       <div class="cs-section_left">
         <h2 class="cs-section_title">Profesionales recientes</h2>
       </div>
-      <div class="cs-section_right">
-        <a (click)="globalService.setRouterActive('explorerprofesionals')" class="cs-btn cs-style1">
-          <span>Ver todos</span>
+      <div class="cs-section_right btn btn-accent">
+        <a (click)="globalService.setRouterActive('explorerprofesionals')" class=" cs-style1">
+          <span style="color: #000;  font-weight: 700;">Ver todos</span>
         </a>
       </div>
     </div>
@@ -141,11 +245,11 @@
             </div>
             <hr>
             <div class="cs-card_footer">
-              <span class="cs-card_btn_1" data-modal="#history_1">
+              <span class="cs-card_btn_1" data-modal="#history_1" >
                 <i class="far fa-calendar fa-fw"></i> Agendar 
               </span>
               <span class="cs-card_btn_2 btn btn-accent" data-modal="#bid_1">
-                <span>Ver perfil</span>
+                <span style="color: #000;  font-weight: 500;">Ver perfil</span>
               </span>
             </div>
           </div>

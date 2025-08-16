@@ -877,7 +877,8 @@ kbd {
 .cs-section_heading.cs-style3 .cs-section_seperator {
   width: 112px;
   height: 2px;
-  background: linear-gradient(116.85deg, #FC466B 0%, #3F5EFB 100%);
+  /* background: linear-gradient(116.85deg, #FC466B 0%, #3F5EFB 100%); */
+  background: linear-gradient(93.48deg, rgba(63, 94, 251, 0.5) 2.71%, rgba(63, 94, 251, 0.09) 101.72%)
 }
 
 .cs-section_heading.cs-style4 {
@@ -1552,7 +1553,8 @@ kbd {
 }
 
 .cs-search {
-  background: linear-gradient(116.85deg, rgba(252, 70, 107, 0.3) 0%, rgba(63, 94, 251, 0.3) 100%);
+  /* background: linear-gradient(116.85deg, rgba(252, 70, 107, 0.3) 0%, rgba(63, 94, 251, 0.3) 100%); */
+  background: linear-gradient(93.48deg, rgba(63, 94, 251, 0.5) 2.71%, rgba(63, 94, 251, 0.38) 101.72%);
   padding: 1px;
   position: relative;
   border-radius: 30px;
@@ -4377,7 +4379,8 @@ kbd {
 .cs-header_icon_btn {
   height: 44px;
   width: 44px;
-  background: linear-gradient(116.85deg, #FC466B 0%, #3F5EFB 100%);
+  /* background: linear-gradient(116.85deg, #FC466B 0%, #3F5EFB 100%); */
+  background:linear-gradient( 135deg, #27e5ff 0%, #6a5cff 100%);
   border-radius: 50%;
   color: #fff;
   position: relative;
@@ -5169,7 +5172,8 @@ li.menu-item-has-children
 .cs-footer.cs-style1 .cs-footer_separetor {
   height: 1px;
   width: 100%;
-  background: linear-gradient(116.85deg, rgba(252, 70, 107, 0.5) 0%, rgba(63, 94, 251, 0.5) 100%);
+  /* background: linear-gradient(116.85deg, rgba(252, 70, 107, 0.5) 0%, rgba(63, 94, 251, 0.5) 100%); */
+  background:linear-gradient( 135deg, #27e5ff 0%, #6a5cff 100%);
 }
 
 .cs-footer.cs-style1 .cs-footer_widget {
@@ -7472,7 +7476,10 @@ body.cs-dark .cs-large_radio_in,
 body.cs-dark .cs-contact_card,
 body.cs-dark .cs-contact_box,
 body.cs-dark .cs-modal_container_in {
-  background: linear-gradient(116.85deg, rgba(252, 70, 107, 0.2) 0%, rgba(63, 94, 251, 0.2) 100%);
+/*    background: linear-gradient(116.85deg, rgba(252, 70, 107, 0.38) 0%, rgba(95, 114, 255, 0.63) 100%)
+ */    background:linear-gradient(93.48deg, rgba(63, 94, 251, 0.5) 2.71%, rgba(63, 94, 251, 0.09) 101.72%) 
+/*   background: linear-gradient(116.85deg, rgba(252, 70, 107, 0.2) 0%, rgba(63, 94, 251, 0.2) 100%);
+ */ /*  background:linear-gradient(116.85deg, #FC466B 0%, #3F5EFB 100%) */
 }
 
 body.cs-dark .cs-site_header,

@@ -19,6 +19,7 @@ import { PrivacyComponent } from './components/privacy/privacy.component';
 import { ScriptService } from './services/script.services';
 import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
+import { FaqsComponent } from './components/faqs/faqs.component';
 
 @Component({
   selector: 'app-root',
@@ -40,7 +41,8 @@ import { ChatbotComponent } from './components/chatbot/chatbot.component';
     TermsComponent,
     PrivacyComponent,
     PatientProfileComponent,
-    ChatbotComponent
+    ChatbotComponent,
+    FaqsComponent
     
     ],
   templateUrl: './app.component.html',
@@ -49,7 +51,7 @@ import { ChatbotComponent } from './components/chatbot/chatbot.component';
 export class AppComponent {
   title = 'camiwanew';
   mostrarChatbot = false;
-
+  
   constructor( public globalService: GlobalService,
     public script: ScriptService
   ) {
@@ -77,4 +79,8 @@ export class AppComponent {
       console.error('Error initializing application data:', error);
     }
   }
+  toggleChatbot() {
+    this.mostrarChatbot = !this.mostrarChatbot;
+  }
+
 }

@@ -50,11 +50,7 @@
               <small class="text-danger" *ngIf="form.get('patient.fullName')?.touched && form.get('patient.fullName')?.invalid">
                 Requerido (mín. 3)
               </small>
-            </div>
-            <div class="cs-height_20 cs-height_lg_20"></div>
-            <div class="cs-form_field_wrap">
-              <input type="text" formControlName="phone" class="cs-form_field" placeholder="Teléfono (opcional)">
-            </div>
+            </div>            
           </div>
 
 
@@ -277,10 +273,28 @@
           </div>
 
           <div class="cs-height_20 cs-height_lg_20"></div>
-          <button class="cs-btn cs-style1 cs-btn_lg w-100" type="submit" *ngIf="!showProWizard()">
-            <span *ngIf="isPatient()">Crear cuenta</span>
-            <span *ngIf="isProfessional()">Continuar con el registro</span>
+          <!-- Botón para Paciente -->
+          <button 
+          *ngIf="isPatient() && !loading() && !showProWizard()" 
+          class="cs-btn cs-style1 cs-btn_lg w-100" 
+          type="submit">
+          Crear cuenta
           </button>
+
+          <!-- Botón para Profesional -->
+          <button 
+          *ngIf="isProfessional() && !loading() && !showProWizard()" 
+          class="cs-btn cs-style1 cs-btn_lg w-100" 
+          type="submit">
+          Continuar con el registro
+          </button>
+
+          <!-- Loader global (se muestra si loading === true para cualquiera de los dos) -->
+          <div *ngIf="loading()" class="text-center mt-3">
+          <i class="fa fa-spinner fa-spin fa-2x"></i>
+          <p>Creando tu cuenta...</p>
+          </div>
+
 
           <div class="cs-height_30 cs-height_lg_30"></div>
           <div class="cs-form_footer text-center">

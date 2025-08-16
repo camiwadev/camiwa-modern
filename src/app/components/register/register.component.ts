@@ -6,14 +6,15 @@ import { GlobalService } from '../../services/global.service';
 import { PocketAuthService } from '../../services/pocket-auth.service';
 import { AuthPocketbaseService } from '../../services/AuthPocketbase.service';
 import { firstValueFrom } from 'rxjs';
-
+import { EmailService } from '../../services/email.service';
+import Swal from 'sweetalert2';
 
 type Rol = 'patient' | 'professional';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, NgMultiSelectDropDownModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, NgMultiSelectDropDownModule,],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'] // <-- corregido
 })
@@ -67,7 +68,8 @@ errorMsg = signal<string | null>(null);
     public global: GlobalService,
     private fb: FormBuilder,
     public pocketAuthService: PocketAuthService,
-    public auth: AuthPocketbaseService
+    public auth: AuthPocketbaseService,
+    public emailService: EmailService
   ) {
 
     // Form de registro base
@@ -90,8 +92,7 @@ errorMsg = signal<string | null>(null);
 
       // Registro paciente
       patient: this.fb.group({
-        fullName: [''],
-        phone: ['']
+        fullName: ['', [Validators.required, Validators.minLength(3)]],
       })
     });
 
@@ -251,7 +252,7 @@ errorMsg = signal<string | null>(null);
     }
     
     
-    private async submitPatient() {
+   /*  private async submitPatient() {
       this.errorMsg.set(null);
       this.loading.set(true);
     
@@ -260,7 +261,7 @@ errorMsg = signal<string | null>(null);
         const email    = (this.form.get('email')?.value ?? '').toString().trim();
         const password = (this.form.get('password')?.value ?? '').toString().trim();
         const pat = (this.form.get('patient') as FormGroup).value as {
-          fullName: string; phone?: string; address?: string;
+          name: string; phone?: string; address?: string;
         };
     
         if (!username || username.length < 3) { this.errorMsg.set('Usuario requerido (mín. 3).'); return; }
@@ -271,15 +272,28 @@ errorMsg = signal<string | null>(null);
           this.auth.registerTravelerAndLogin(
             email,
             password,
-            (pat.fullName || username).trim(),
+            (pat.name || username).trim(),
             (pat.phone ?? '').trim(),
             (pat.address ?? '').trim()
           )
         );
     
         // 1) Mostrar toast de éxito (visible en esta vista)
+        Swal.fire({
+          icon: 'success',
+          title: 'Registro exitoso',
+          text: 'Tu cuenta ha sido creada e iniciada sesión.',
+          confirmButtonText: 'Continuar'
+        }).then(() => this.auth.permision());
+        
         this.showToast({ level: 'success', message: 'Cuenta creada e inicio de sesión exitoso.' });
-    
+        await this.emailService.sendWelcome({
+          toEmail: email,
+          toName: pat.name || username,
+          userType: 'paciente',
+          params: { plan: 'basic' }
+        }).catch(err => console.warn('Welcome email failed:', err));
+        
         // 2) Navegar por permisos (elige una de estas dos líneas):
     
         // Opción A: usa tu lógica centralizada
@@ -295,9 +309,65 @@ errorMsg = signal<string | null>(null);
       } finally {
         this.loading.set(false);
       }
-    }
+    } */
     
-    
+      private async submitPatient() {
+        this.errorMsg.set(null);
+        this.loading.set(true);
+      
+        try {
+          const username = (this.form.get('username')?.value ?? '').trim();
+          const email    = (this.form.get('email')?.value ?? '').trim();
+          const password = (this.form.get('password')?.value ?? '').trim();
+      
+          if (!username || username.length < 3) { 
+            Swal.fire('Error', 'Usuario requerido (mín. 3 caracteres)', 'error');
+            return;
+          }
+          if (!email) { 
+            Swal.fire('Error', 'Correo requerido.', 'error');
+            return;
+          }
+          if (!password || password.length < 6) { 
+            Swal.fire('Error', 'Contraseña mínima 6 caracteres.', 'error');
+            return;
+          }
+      
+          await firstValueFrom(
+            this.auth.registerTravelerAndLogin(
+              email,
+              password,
+              username,
+              '',
+              ''
+            )
+          );
+      
+          // Email de bienvenida
+          await this.emailService.sendWelcome({
+            toEmail: email,
+            toName: username,
+            userType: 'paciente',
+            params: { username }
+          }).catch(err => console.warn('Welcome email failed:', err));
+      
+          Swal.fire('¡Registro exitoso!', 'Tu cuenta ha sido creada.', 'success');
+          setTimeout(() => this.auth.permision(), 400);
+      
+        } catch (e: any) {
+          console.error('submitPatient error:', e);
+      
+          // Si el error viene de email duplicado
+          if (e?.message?.includes('validation_email_taken') || e?.message?.includes('already in use')) {
+            Swal.fire('Correo en uso', 'El correo ingresado ya está registrado.', 'warning');
+          } else {
+            Swal.fire('Error', e?.message || 'Ocurrió un error al registrar el paciente.', 'error');
+          }
+      
+        } finally {
+          this.loading.set(false);
+        }
+      }
   setRole(r: Rol) {
     this.rol.set(r);
     this.form.get('role')?.setValue(r);

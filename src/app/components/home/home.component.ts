@@ -1,9 +1,16 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { GlobalService } from '../../services/global.service';
 import { CommonModule } from '@angular/common';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { CategoriasSliderComponent } from '../categorias-slider/categorias-slider.component';
 import { Pipe, PipeTransform } from '@angular/core';
+import lottie, { AnimationItem, AnimationConfig } from 'lottie-web';
+import player from 'lottie-web';
+import { provideLottieOptions } from 'ngx-lottie';
+import { LottieComponent } from 'ngx-lottie';
+export function playerFactory() {
+  return player;
+}
 
 @Pipe({ name: 'firstCategoryImage', standalone: true })
 export class FirstCategoryImagePipe implements PipeTransform {
@@ -29,14 +36,25 @@ export class FirstCategoryImagePipe implements PipeTransform {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  imports: [CommonModule, LottieComponent],
+  templateUrl: './home.component.html', 
+  styleUrl: './home.component.css',
+  template: `
+    <ng-lottie [options]="{ path: 'assets/animations/search.json' }"
+               style="width:120px;height:120px">
+    </ng-lottie>
+  `,
 })
 export class HomeComponent implements OnInit, OnDestroy {
   loading = true;
   private destroy$ = new Subject<void>();
   private subscriptions = new Subscription();
+
+  // Configuración de la animación
+  
+  searchAnimation = { path: 'assets/animations/search.json' };
+calendarAnimation = { path: 'assets/animations/calendar.json' };
+ChatAnimation = { path: 'assets/animations/Chat.json' };
 
   constructor(
     public globalService: GlobalService,
@@ -45,25 +63,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     try {
-      // Initialize data loading in sequence instead of parallel
       await this.globalService.initCategoriasRealtime();
       await this.globalService.initEspecialidadesRealtime();
       await this.globalService.initProfesionalesRealtime();
 
-      // Subscribe to data changes
       this.globalService.categorias$
         .pipe(takeUntil(this.destroy$))
-        .subscribe(categorias => {
-          console.log('Categorías actualizadas:', categorias);
-          this.cdr.detectChanges();
-        });
+        .subscribe(() => this.cdr.detectChanges());
 
       this.globalService.especialidades$
         .pipe(takeUntil(this.destroy$))
-        .subscribe(especialidades => {
-          console.log('Especialidades actualizadas:', especialidades);
-          this.cdr.detectChanges();
-        });
+        .subscribe(() => this.cdr.detectChanges());
 
       this.loading = false;
       this.cdr.detectChanges();
@@ -78,6 +88,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
+  
   private initializeSliders(): void {
     // Reinitialize sliders after data is loaded
     setTimeout(() => {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,  } from '@angular/core';
 import { CommonModule, NgFor, AsyncPipe } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Observable, combineLatest, debounceTime, map, startWith } from 'rxjs';
@@ -26,7 +26,7 @@ export class SortByNamePipe implements PipeTransform {
     ReactiveFormsModule,
     AsyncPipe,
     NgFor,
-    SortByNamePipe
+    
   ],
   templateUrl: './explorerprofesionals.component.html',
   styleUrls: ['./explorerprofesionals.component.css']
