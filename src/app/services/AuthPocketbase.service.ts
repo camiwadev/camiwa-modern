@@ -243,34 +243,8 @@
     setToken(token: string, model: RecordModel): void {
       this.pb.authStore.save(token, model);
     }
-   /*  async permision() {
-      // Espera hasta que authStore esté listo
-      await new Promise(resolve => {
-        const check = () => this.pb.authStore.isValid ? resolve(true) : setTimeout(check, 50);
-        check();
-      });
     
-      if (!this.isAuthenticated()) {
-        this.global.setRouterActive('home');
-        return;
-      }
-      
-      const user = this.getCurrentUser();
-      if (!user?.type) {
-        this.global.setRouterActive('home');
-        return;
-      }
-    
-      // Redirige según rol
-      if (user.type === 'profesional') {
-        this.global.setRouterActive('profile');
-      } else if (user.type === 'paciente') {
-        this.global.setRouterActive('patient-profile');
-      } else {
-        this.global.setRouterActive('login');
-      }
-    } */
-    async permision() {
+  async permision() {
         const isValid = await new Promise<boolean>(r=>{
           const check = () => this.pb.authStore.isValid ? r(true) : setTimeout(check, 50);
           check();
@@ -436,4 +410,6 @@
           }
         })());
       }
+    
+    
   }

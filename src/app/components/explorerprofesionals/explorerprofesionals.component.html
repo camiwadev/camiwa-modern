@@ -29,21 +29,34 @@
               </span>
             </h2>
             <div class="cs-filter_toggle_body">
-              <ul>
+               <ul>
                 <li *ngFor="let categoria of categoriasFiltradas$ | async">
                   <div class="form-check d-flex align-items-center">
             
                     <img [src]="categoria.image[0]" 
                          alt="{{categoria.name}}" 
                          class="cs-zoom_item categoria-img me-2" style="background: white;
-  border-radius: 50%; padding: 3%;">
+                        border-radius: 50%; padding: 3%;">
               
                     <label class="form-check-label mb-0">
                       {{ categoria.name }}
                     </label>
                   </div>
                 </li>
-              </ul>
+              </ul> 
+<!--               <ul>
+                <li *ngFor="let categoria of (categoriasFiltradas$ | async) ?? []; trackBy: trackById">
+                  <button type="button"
+                          class="form-check d-flex align-items-center w-100 text-start"
+                          (click)="selectCategoria(categoria)">
+                    <img [src]="firstImage(categoria) || 'assets/img/placeholder-cat.png'"
+                         alt="{{categoria.name}}"
+                         class="cs-zoom_item categoria-img me-2"
+                         style="background:white;border-radius:50%;padding:3%;">
+                    <span class="form-check-label mb-0">{{ categoria.name }}</span>
+                  </button>
+                </li>
+              </ul> -->
               
             </div>
           </div> 
@@ -60,19 +73,19 @@
               <ul>
                 <li *ngFor="let especialidad of (especialidadesFiltradas$ | async) | slice:0:(mostrarTodas ? undefined : 10)">
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" />
-                    <label class="form-check-label">{{ especialidad?.name }}</label>
+                    
+                    <label class="form-check-label"><i class="fa fa-medkit"></i> {{ especialidad?.name }}</label>
                   </div>
                 </li>
               </ul>
               
               <button
-  class="btn btn-link p-0 mt-2"
-  *ngIf="((especialidadesFiltradas$ | async) ?? []).length > 10"
-  (click)="mostrarTodas = !mostrarTodas"
->
-  {{ mostrarTodas ? 'Ver menos' : 'Ver todas' }}
-</button>
+                class="btn btn-link p-0 mt-2"
+                *ngIf="((especialidadesFiltradas$ | async) ?? []).length > 10"
+                (click)="mostrarTodas = !mostrarTodas"
+              >
+                {{ mostrarTodas ? 'Ver menos' : 'Ver todas' }}
+              </button>
             </div>
           </div> 
          
@@ -85,32 +98,74 @@
             <div class="cs-form_field_wrap">
               <input type="text" class="cs-form_field cs-field_sm" placeholder="¿Qué tipo de atención o apoyo buscas hoy?">
             </div>
-            <a  class="cs-clear_btn">Limpiar</a>
+            <a  class="cs-clear_btn"><i class="fa fa-search"></i></a>
           </div>
-         <!--  <div class="cs-filter_head_right">
-            <div class="cs-form_field_wrap cs-select_arrow">
-              <select class="cs-form_field cs-field_sm">
-                <option value="11">Sort By</option>
-                <option value="22">Last 7 days</option>
-                <option value="33">Last 30 days</option>
-                <option value="44">All time</option>
+          
+           <div class="cs-filter_head_right">
+             <button class="btn btn-outline" type="button" (click)="toggleCategorias()">Ver categorías</button>
+            <div class="cs-form_field_wrap cs-select_arrow" *ngIf="mostrarCategorias">
+              <select class="cs-form_field cs-field_sm" [formControl]="categoriaCtrl">
+                <option [value]="''" disabled selected>Selecciona una categoría</option>
+                <option *ngFor="let categoria of (categoriasFiltradas$ | async)" 
+                        [value]="categoria.id">
+                  {{ categoria.name }}
+                </option>
               </select>
             </div>
-            <div class="cs-form_field_wrap cs-select_arrow">
-              <select class="cs-form_field cs-field_sm">
-                <option value="1">Likes</option>
-                <option value="2">Most popular</option>
-                <option value="3">By price</option>
-                <option value="4">By published</option>
+
+            <button class="btn btn-outline" type="button" (click)="toggleEspecialidades()">Ver especialidades</button>
+            <div class="cs-form_field_wrap cs-select_arrow" *ngIf="mostrarEspecialidades">
+              <select class="cs-form_field cs-field_sm" [formControl]="especialidadesCtrl">
+                <option [value]="''" disabled selected>Selecciona una categoría</option>
+                <option *ngFor="let especialidad of (especialidadesFiltradas$ | async)" 
+                        [value]="especialidad.id">
+                  {{ especialidad.name }}
+                </option>
+              </select>
+            </div> 
+           <!--  <div class="cs-form_field_wrap cs-select_arrow">
+              <select class="cs-form_field cs-field_sm" [formControl]="categoriaCtrl">
+                <option [value]="''" disabled selected>Selecciona una categoría</option>
+                <option *ngFor="let categoria of (categoriasFiltradas$ | async) ?? []; trackBy: trackById"
+                        [value]="categoria.id">
+                  {{ categoria.name }}
+                </option>
               </select>
             </div>
-          </div> -->
+            
+            <div class="cs-form_field_wrap cs-select_arrow">
+              <select class="cs-form_field cs-field_sm" [formControl]="especialidadesCtrl">
+                <option [value]="''" disabled selected>Selecciona una especialidad</option>
+                <option *ngFor="let esp of (especialidadesDeCategoria$ | async) ?? []; trackBy: trackById"
+                        [value]="esp.id">
+                  {{ esp.name }}
+                </option>
+              </select>
+            </div> -->
+            
+          </div> 
         </div>
         <div class="cs-height_30 cs-height_lg_30"></div>
         <div class="row">
+         <!--  <div class="cs-isotop_filter cs-style1 cs-center">
+            <ul class="cs-mp0 cs-center">
+              <li [class.active]="!especialidadesCtrl.value">
+                <button type="button" (click)="selectEspecialidad(null)"><span>Todos</span></button>
+              </li>
           
+              <li *ngFor="let esp of (especialidadesDeCategoria$ | async) ?? []; trackBy: trackById"
+                  [class.active]="especialidadesCtrl.value === esp.id">
+                <button type="button" (click)="selectEspecialidad(esp.id)">
+                  <span>{{ esp.name }}</span>
+                </button>
+              </li>
+            </ul>
+          </div> -->
+          
+          <div class="cs-height_30 cs-height_lg_30"></div>
 
-          <div class="col-xl-3 col-lg-4 col-sm-6" *ngFor="let profesional of global.profesionales$ | async">
+           <div class="col-xl-3 col-lg-4 col-sm-6" *ngFor="let profesional of globalServices.profesionales$ | async"> 
+            <!-- <div class="col-xl-3 col-lg-4 col-sm-6" *ngFor="let profesional of (profesionalesFiltrados$ | async) ?? []"> -->
             <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
               <span class="cs-card_like cs-primary_color">
                 <i class="fas fa-award fa-fw"></i>
@@ -136,7 +191,7 @@
                     <i class="far fa-calendar fa-fw"></i> Agendar 
                   </span>
                   <span class="cs-card_btn_2 btn btn-accent" data-modal="#bid_1">
-                    <span>Ver perfil</span>
+                    <span (click)="globalServices.viewDetail(profesional)">Ver perfil</span>
                   </span>
                 </div>
               </div>

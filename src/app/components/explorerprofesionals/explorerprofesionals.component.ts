@@ -1,6 +1,6 @@
 import { Component,  } from '@angular/core';
 import { CommonModule, NgFor, AsyncPipe } from '@angular/common';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, combineLatest, debounceTime, map, startWith } from 'rxjs';
 import { Pipe, PipeTransform } from '@angular/core';
 import { GlobalService } from '../../services/global.service';
@@ -16,8 +16,19 @@ export class SortByNamePipe implements PipeTransform {
     );
   }
 }
+interface Categoria {
+  id: string;
+  name: string;
+  image?: string; // en tu DB viene como string JSON con array
+}
 
-/* --------- Componente --------- */
+interface Especialidad {
+  id: string;
+  name: string;
+  fatherId?: string; // <- relación a Categoria.id
+  category?: string; // <- por si a veces guardaste el id o el nombre aquí
+}
+
 @Component({
   selector: 'app-explorerprofesionals',
   standalone: true,
@@ -26,12 +37,14 @@ export class SortByNamePipe implements PipeTransform {
     ReactiveFormsModule,
     AsyncPipe,
     NgFor,
+    FormsModule
     
   ],
   templateUrl: './explorerprofesionals.component.html',
   styleUrls: ['./explorerprofesionals.component.css']
 })
 export class ExplorerprofesionalsComponent {
+  
   mostrarTodas = false;
   mostrarTodasCategorias = false;
 
@@ -40,8 +53,12 @@ export class ExplorerprofesionalsComponent {
 
   categoriasFiltradas$!: Observable<any[]>;
   especialidadesFiltradas$!: Observable<any[]>;
+  mostrarCategorias = false;
+  categoriaCtrl = new FormControl<string | null>(null);
+  mostrarEspecialidades= false;
+  especialidadesCtrl = new FormControl<string | null>(null);
 
-  constructor(public global: GlobalService) {
+  constructor(public globalServices: GlobalService) {
     // Normaliza texto (quita acentos y pasa a minúsculas)
     const norm = (v: string | null | undefined) =>
       (v ?? '')
@@ -51,7 +68,7 @@ export class ExplorerprofesionalsComponent {
         .toLowerCase();
 
     this.categoriasFiltradas$ = combineLatest([
-      this.global.categorias$,
+      this.globalServices.categorias$,
       this.searchCtrl.valueChanges.pipe(startWith(''), debounceTime(150)),
     ]).pipe(
       map(([cats, q]) => {
@@ -61,7 +78,7 @@ export class ExplorerprofesionalsComponent {
     );
 
     this.especialidadesFiltradas$ = combineLatest([
-      this.global.especialidades$,
+      this.globalServices.especialidades$,
       this.searchCtrl.valueChanges.pipe(startWith(''), debounceTime(150)),
     ]).pipe(
       map(([esp, q]) => {
@@ -69,5 +86,11 @@ export class ExplorerprofesionalsComponent {
         return (esp ?? []).filter(e => norm(e?.name).includes(qn));
       })
     );
+  }
+  toggleCategorias() {
+    this.mostrarCategorias = !this.mostrarCategorias;
+  }
+  toggleEspecialidades(){
+    this.mostrarEspecialidades = !this.mostrarEspecialidades;
   }
 }

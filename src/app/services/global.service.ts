@@ -61,6 +61,7 @@ interface profesional {
 
 export class GlobalService {
   routerActive:string= "home";
+  currentUser: any;
   pb = new PocketBase('https://db.camiwa.com:250');
   profesionales=[];
   // Observables de datos
@@ -72,6 +73,7 @@ export class GlobalService {
   especialidades$ = this.especialidadesSubject.asObservable();
   public profesionalesSubject = new BehaviorSubject<any[]>([]);
   profesionales$ = this.profesionalesSubject.asObservable();
+  workingDays: any[] = [];
 
   previewRequest: {
     userId: string;
@@ -275,6 +277,50 @@ public subscribeRealtime(collection: string, subject: BehaviorSubject<any[]>) {
     subject.next(current);
   });
 }
+ClientFicha(): any {
+  let client_string = localStorage.getItem('clientFicha');
+  if (client_string) {
+    let client: any = JSON.parse(client_string!);
+    return client;
+  } else {
+    return { cldisponible: 0 };
+  }
+}
+type(): string | null {
+  const typeString = localStorage.getItem('type');
+  if (typeString) {
+    try {
+      return typeString;
+    } catch (error) {
+      console.error('Error parsing JSON from localStorage:', error);
+      return null;
+    }
+  }
+  return null;
+}
+viewDetail(profesional: any) {
+  const daysMap = [
+    'sunday',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+  ];
+  const workingDays = profesional.days
+    .map((isWorking: boolean, index: number) =>
+      isWorking ? daysMap[index] : null
+    ) // Mapea a los días si es true
+    .filter((day: string | null): day is string => day !== null); // Filtra los nulls y asegura que day es string
 
+  // Asigna el resultado a this.global.workingDays
+  this.workingDays = workingDays;
+  console.log(JSON.stringify(this.workingDays));
 
+  // Actualiza la vista de detalle y la ruta
+  this.previewRequest = profesional;
+
+  this.setRouterActive('profesional-detail');
+}
 }

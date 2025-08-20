@@ -4,4 +4,26 @@
     object-fit: cover; /* recorta sin deformar */
     border-radius: 5px; /* esquinas redondeadas opcionales */
   }
+  .btn{
+    appearance:none; border:0; cursor:pointer;
+    padding:12px 18px; border-radius:14px; font-weight:700;
+    font-size:16px; transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  }
+  .hero__actions{ display:flex; gap:12px; flex-wrap:wrap; }
+  
+  .btn-accent{
+    color:#021018;
+    background: linear-gradient(135deg, #27e5ff 0%, #6a5cff 100%);
+    box-shadow: 0 10px 26px rgba(0,212,255,.28), 0 0 0 1px rgba(39,229,255,.35) inset;
+  }
+  .btn-accent:hover{ transform: translateY(-2px); box-shadow: 0 14px 30px rgba(0,212,255,.38); }
+  
+  .btn-outline{
+    color:#8aabff;
+    background: rgba(255,255,255,.04);
+    border:1px solid rgb(86, 132, 255);
+    backdrop-filter: blur(6px);
+  }
+  .btn-outline:hover{ background: rgba(255,255,255,.08); transform: translateY(-2px); }
   

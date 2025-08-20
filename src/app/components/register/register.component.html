@@ -1,30 +1,35 @@
 <div class="cs-height_100 cs-height_lg_70"></div>
 
 <div class="container">
-  <div class="row">
-    <div class="col-xl-6 col-md-8 offset-xl-3 offset-md-2">
-      <form [formGroup]="form" (ngSubmit)="submit()" class="cs-form_card cs-style1 cs-box_shadow cs-white_bg">
+  <div class="row align-items-center min-vh-80 g-4">
+
+    <!-- Columna: Formulario -->
+    <div class="col-lg-6 order-2 order-lg-1">
+      <form [formGroup]="form" (ngSubmit)="submit()" class="cs-form_card cs-style1 cs-box_shadow cs-white_bg p-4 rounded-4">
         <div class="cs-form_card_in">
 
-          <h2 id="patient-welcome" class="cs-form_title text-center">Crear cuenta</h2>          
+          <!-- <h2 id="patient-welcome" class="cs-form_title text-center">Crear cuenta</h2> -->
+          <h3 style="text-align: center;">Únete a <span class="brand">Camiwa</span></h3>
+      <p>Pacientes y profesionales conectados en un solo lugar.</p>
           <!-- Selector de rol -->
           <div class="d-flex justify-content-center gap-2 mt-3">
-            <button  type="button"
+            <button type="button"
                     (click)="setRole('patient')"
-                    class="btn btn-outline"
+                    class="btn"
                     [ngClass]="{ 'btn-primary': isPatient(), 'btn-outline-primary': !isPatient() }">
               Soy paciente <i class="fa fa-user"></i>
             </button>
             <button type="button"
                     (click)="setRole('professional')"
-                    class="btn btn-accent"
+                    class="btn"
                     [ngClass]="{ 'btn-primary': isProfessional(), 'btn-outline-primary': !isProfessional() }">
               Soy profesional <i class="far fa-user"></i>
             </button>
           </div>
+
           <div class="cs-height_30 cs-height_lg_30"></div>
 
-          <!-- Comunes -->
+          <!-- Campos comunes -->
           <div class="cs-form_field_wrap">
             <input type="text" formControlName="username" class="cs-form_field" placeholder="Usuario">
             <small class="text-danger" *ngIf="f['username'].touched && f['username'].invalid">Mínimo 3 caracteres.</small>
@@ -39,233 +44,226 @@
           <div class="cs-height_20 cs-height_lg_20"></div>
           <div class="cs-form_field_wrap">
             <input type="password" formControlName="password" class="cs-form_field" placeholder="Contraseña">
-            <!-- ✅ Usa brackets: f['password'] -->
             <small class="text-danger" *ngIf="f['password'].touched && f['password'].invalid">Mínimo 6 caracteres.</small>
           </div>
 
           <!-- Paciente -->
-          <div *ngIf="isPatient() && !showProWizard()" class="mt-3" formGroupName="patient">            <h5 class="mb-2">Datos de paciente</h5>
+          <div *ngIf="isPatient() && !showProWizard()" class="mt-3" formGroupName="patient">
+            <h5 class="mb-2">Datos de paciente</h5>
             <div class="cs-form_field_wrap">
               <input type="text" formControlName="fullName" class="cs-form_field" placeholder="Nombre completo">
               <small class="text-danger" *ngIf="form.get('patient.fullName')?.touched && form.get('patient.fullName')?.invalid">
                 Requerido (mín. 3)
               </small>
-            </div>            
+            </div>
           </div>
 
-
-          <!-- WIZARD PROFESIONAL -->
+          <!-- WIZARD PROFESIONAL (sin forms anidados) -->
           <div class="multisteps-form__form" id="wizard" role="form">
             <div class="wrapper" *ngIf="showProWizard()" [formGroup]="proWizard">
-            <div class="steps-area steps-area-fixed">
-              <div class="image-holder">
-                <img src="assets/specialist-register/img/side-img.jpg" alt="">
+
+              <!-- Header/progreso -->
+              <div class="steps-area steps-area-fixed">
+                <div class="image-holder d-none d-md-block">
+                  <img src="assets/specialist-register/img/side-img.jpg" alt="">
+                </div>
+                <div class="steps clearfix">
+                  <ul class="tablist multisteps-form__progress">
+                    <li class="multisteps-form__progress-btn"
+                        [class.js-active]="proStep()===1"
+                        [class.js-complete]="proStep()>1"
+                        (click)="goStep(1)"><span>1</span></li>
+
+                    <li class="multisteps-form__progress-btn"
+                        [class.js-active]="proStep()===2"
+                        [class.js-complete]="proStep()>2"
+                        (click)="goStep(2)"><span>2</span></li>
+
+                    <li class="multisteps-form__progress-btn last"
+                        [class.js-active]="proStep()===3"
+                        (click)="goStep(3)"><span>3</span></li>
+                  </ul>
+                </div>
               </div>
-              <div class="steps clearfix">
-                <ul class="tablist multisteps-form__progress">
-                  <li class="multisteps-form__progress-btn"
-                      [class.js-active]="proStep()===1"
-                      [class.js-complete]="proStep()>1"
-                      (click)="goStep(1)"><span>1</span></li>
-                
-                  <li class="multisteps-form__progress-btn"
-                      [class.js-active]="proStep()===2"
-                      [class.js-complete]="proStep()>2"
-                      (click)="goStep(2)"><span>2</span></li>
-                
-                  <li class="multisteps-form__progress-btn last"
-                      [class.js-active]="proStep()===3"
-                      (click)="goStep(3)"><span>3</span></li>
-                </ul>
-                
-              </div>
-            </div>
-            <div class="multisteps-form__form" id="wizard" role="form">
-            <form class="multisteps-form__form" id="wizard" (ngSubmit)="finishOnboarding()">
-              <div class="form-area position-relative">
-                
-                <!-- Paso 1: Información personal -->
-                <div *ngIf="proStep()===1" class="js-active" data-animation="slideHorz" [formGroup]="pwPersonal">
-                  <div class="wizard-forms">
-                    <div class="inner pb-100 clearfix">
-                      <div class="form-content pera-content">
-                        <div class="step-inner-content">
-                          <span class="step-no">Paso 1</span>
-                          <h2>Información personal</h2>
-                          <p>Por favor complete su información personal.</p>
-                          <div class="form-inner-area">
-                            <input type="text" class="form-control" placeholder="Nombre completo *" formControlName="full_name">
-                            <input type="text" class="form-control" placeholder="Telefono *" formControlName="phone">
-                            <input type="text" class="form-control" placeholder="Dirección de habitación *" formControlName="address">
-                            <input type="text" class="form-control" placeholder="Dirección de consultorio *" formControlName="consultationAddress">
-                            <input type="text" class="form-control" placeholder="Ciudad *" formControlName="city">
-                            <input type="text" class="form-control" placeholder="País *" formControlName="country">
 
-                        </div>
-                          
+              <!-- Contenido de pasos -->
+              <div class="multisteps-form__content">
+                <div class="form-area position-relative">
 
-                          <div class="gender-selection">
-                            <h3>Género:</h3>
-                            <label><input type="radio" value="Male"   formControlName="gender"><span class="checkmark"></span>Masculino</label>
-                            <label><input type="radio" value="Female" formControlName="gender"><span class="checkmark"></span>Femenino</label>
-                            <label><input type="radio" value="Other"  formControlName="gender"><span class="checkmark"></span>Otro</label>
+                  <!-- Paso 1 -->
+                  <div *ngIf="proStep()===1" class="js-active" data-animation="slideHorz" [formGroup]="pwPersonal">
+                    <div class="wizard-forms">
+                      <div class="inner pb-100 clearfix">
+                        <div class="form-content pera-content">
+                          <div class="step-inner-content">
+                            <span class="step-no">Paso 1</span>
+                            <h2>Información personal</h2>
+                            <p>Por favor complete su información personal.</p>
+
+                            <div class="form-inner-area">
+                              <input type="text" class="form-control" placeholder="Nombre completo *" formControlName="full_name">
+                              <input type="text" class="form-control" placeholder="Telefono *" formControlName="phone">
+                              <input type="text" class="form-control" placeholder="Dirección de habitación *" formControlName="address">
+                              <input type="text" class="form-control" placeholder="Dirección de consultorio *" formControlName="consultationAddress">
+                              <input type="text" class="form-control" placeholder="Ciudad *" formControlName="city">
+                              <input type="text" class="form-control" placeholder="País *" formControlName="country">
+                            </div>
+
+                            <div class="gender-selection">
+                              <h3>Género:</h3>
+                              <label><input type="radio" value="Male"   formControlName="gender"><span class="checkmark"></span>Masculino</label>
+                              <label><input type="radio" value="Female" formControlName="gender"><span class="checkmark"></span>Femenino</label>
+                              <label><input type="radio" value="Other"  formControlName="gender"><span class="checkmark"></span>Otro</label>
+                            </div>
+
+                            <div class="upload-documents">
+                              <h3>Cargue su documento de identidad:</h3>
+                              <!-- uploader -->
+                            </div>
+
+                            <div class="upload-documents">
+                              <h3>Cargue su fotografía personal:</h3>
+                              <!-- uploader -->
+                            </div>
+
                           </div>
-
-                          <div class="upload-documents">
-                            <h3>Cargue su documento de identidad:</h3>
-                            <!-- Conecta tu uploader y emite (fileUploaded)→ onIdUploaded(url) -->
-                            <!-- <ngx-awesome-uploader (fileUploaded)="onIdUploaded($event.url)" ...></ngx-awesome-uploader> -->
-                          </div>
-
-                          <div class="upload-documents">
-                            <h3>Cargue su fotografía personal:</h3>
-                            <!-- <ngx-awesome-uploader (fileUploaded)="onAvatarUploaded($event.url)" ...></ngx-awesome-uploader> -->
-                          </div>
-
                         </div>
                       </div>
-                    </div>
-                    <div class="actions">
-                      <ul>
-                        <li>
-                          <button type="button" class="btn btn-accent"
-                                  [disabled]="proStep()===1 ? !pwPersonal.valid : proStep()===2 ? !pwProf.valid : false"
-                                  (click)="nextStep()">
-                            Siguiente <i class="fa fa-arrow-right"></i>
-                          </button>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
 
-                <!-- Paso 2: Información profesional -->
-                <div *ngIf="proStep()===2" data-animation="slideHorz" [formGroup]="pwProf">
-                  <div class="wizard-forms">
-                    <div class="inner pb-100 clearfix">
-                      <div class="form-content pera-content">
-                        <div class="step-inner-content">
-                          <span class="step-no bottom-line">Paso 2</span>
-                          <div class="step-progress float-right">
-                            <span>2 de 3 completado</span>
-                            <div class="step-progress-bar">
-                              <div class="progress">
-                                <div class="progress-bar" [style.width.%]="progressPct()"></div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <h2>Información profesional</h2>
-                          <div class="form-inner-area">
-                            <input type="text" class="form-control" placeholder="Profesión *" formControlName="profession">
-                            <input type="text" class="form-control" placeholder="Área de estudio *" formControlName="studyArea">
-                            <input type="text" class="form-control" placeholder="Universidad de egreso *" formControlName="university">
-                            <input type="text" class="form-control" placeholder="Año de egreso * (YYYY)" formControlName="graduationYear">
-                          </div>
-
-                          <!-- Paso 2: Información profesional -->
-                          <div class="language-select" [formGroup]="pwProf">
-                            <p>Seleccione la profesión a la que pertenece:</p>
-
-                            <ng-multiselect-dropdown
-                            formControlName="category"
-                            [data]="categoriesOptions"
-                            [settings]="dropdownSettingsCategory">
-                          </ng-multiselect-dropdown>
-                          </div>
-                          <div class="language-select" *ngIf="(pwProf.get('category')?.value || []).length">
-                            <ng-multiselect-dropdown
-                              formControlName="specialties"
-                              [data]="especialidadOptionsFiltered"
-                              [settings]="dropdownSettingsSpecialties">
-                            </ng-multiselect-dropdown>
-                          </div>
-
-                          <div class="upload-documents">
-                            <h3>Cargue sus certificados:</h3>
-                            <!-- <ngx-awesome-uploader (fileUploaded)="onCertUploaded($event.url)" ...></ngx-awesome-uploader> -->
-                          </div>
-
-                        </div>
+                      <div class="actions">
+                        <button type="button" class="btn btn-accent"
+                                [disabled]="!pwPersonal.valid"
+                                (click)="nextStep()">
+                          Siguiente <i class="fa fa-arrow-right"></i>
+                        </button>
                       </div>
                     </div>
-                    <div class="actions">
-                      
-                      <ul>
-                        <button class="btn btn-outline">
-                       <span class="js-btn-prev " title="BACK" (click)="prevStep()"><i class="fa fa-arrow-left"></i> Ant.</span>
-                      </button>
-                      <button class="btn btn-accent">
-                        <span class="" title="NEXT" (click)="nextStep()">Sig. <i class="fa fa-arrow-right"></i></span>
-                      </button>
-                      </ul>
-                    </div>
                   </div>
-                </div>
 
-                <!-- Paso 3: Información laboral -->
-                <div *ngIf="proStep()===3" data-animation="slideHorz" [formGroup]="pwLaboral">
-                  <div class="wizard-forms">
-                    <div class="inner pb-100 clearfix">
-                      <div class="form-content pera-content">
-                        <div class="step-inner-content">
-                          <span class="step-no bottom-line">Paso 3</span>
-                          <div class="step-progress float-right">
-                            <span>3 de 3 completado</span>
-                            <div class="step-progress-bar">
-                              <div class="progress">
-                                <div class="progress-bar" [style.width.%]="progressPct()"></div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <h2>Información laboral</h2>
-                          <p>Ingrese la información necesaria para la atención de sus clientes.</p>
-
-                          <div class="step-content-area">
-                            <div class="budget-area">
-                              <div class="opti-list">
-                                <div>
-                                  <p>¿Qué días atenderá?</p>
-                                  <ul class="d-flex" formArrayName="days">
-                                    <li *ngFor="let c of daysFA.controls; let i = index">
-                                      <label style="cursor:pointer;">
-                                        <input type="checkbox" [formControlName]="i">
-                                        {{ ['LU','MA','MI','JU','VI','SA','DO'][i] }}
-                                      </label>
-                                    </li>
-                                  </ul>
-                                  <small class="text-danger" *ngIf="!anyDaySelected && pwLaboral.touched">
-                                    Selecciona al menos un día.
-                                  </small>
+                  <!-- Paso 2 -->
+                  <div *ngIf="proStep()===2" data-animation="slideHorz" [formGroup]="pwProf">
+                    <div class="wizard-forms">
+                      <div class="inner pb-100 clearfix">
+                        <div class="form-content pera-content">
+                          <div class="step-inner-content">
+                            <span class="step-no bottom-line">Paso 2</span>
+                            <div class="step-progress float-right">
+                              <span>2 de 3 completado</span>
+                              <div class="step-progress-bar">
+                                <div class="progress">
+                                  <div class="progress-bar" [style.width.%]="progressPct()"></div>
                                 </div>
                               </div>
                             </div>
-                          </div>
 
+                            <h2>Información profesional</h2>
+                            <div class="form-inner-area">
+                              <input type="text" class="form-control" placeholder="Profesión *" formControlName="profession">
+                              <input type="text" class="form-control" placeholder="Área de estudio *" formControlName="studyArea">
+                              <input type="text" class="form-control" placeholder="Universidad de egreso *" formControlName="university">
+                              <input type="text" class="form-control" placeholder="Año de egreso * (YYYY)" formControlName="graduationYear">
+                            </div>
+
+                            <div class="language-select">
+                              <p>Seleccione la profesión a la que pertenece:</p>
+                              <ng-multiselect-dropdown
+                                formControlName="category"
+                                [data]="categoriesOptions"
+                                [settings]="dropdownSettingsCategory">
+                              </ng-multiselect-dropdown>
+                            </div>
+
+                            <div class="language-select" *ngIf="(pwProf.get('category')?.value || []).length">
+                              <ng-multiselect-dropdown
+                                formControlName="specialties"
+                                [data]="especialidadOptionsFiltered"
+                                [settings]="dropdownSettingsSpecialties">
+                              </ng-multiselect-dropdown>
+                            </div>
+
+                            <div class="upload-documents">
+                              <h3>Cargue sus certificados:</h3>
+                              <!-- uploader -->
+                            </div>
+
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <!-- <div class="actions">
-                      <ul>
-                        <li><span class="js-btn-prev" title="BACK" (click)="prevStep()"><i class="fa fa-arrow-left"></i> Ant.</span></li>
-                        <li><button type="submit" title="NEXT">Finalizar <i class="fa fa-arrow-right"></i></button></li>
-                      </ul>
-                    </div> -->
-                    <button class="cs-btn cs-style1 cs-btn_lg w-100 btn btn-accent" title="NEXT" (click)="finishOnboarding()">
-                     <span> Finalizar </span><i class="fa fa-arrow-right"></i>
-                    </button>
-                  </div>
-                </div>
 
+                      <div class="actions d-flex gap-2">
+                        <button type="button" class="btn btn-outline" (click)="prevStep()">
+                          <i class="fa fa-arrow-left"></i> Ant.
+                        </button>
+                        <button type="button" class="btn btn-accent" (click)="nextStep()">
+                          Sig. <i class="fa fa-arrow-right"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Paso 3 -->
+                  <div *ngIf="proStep()===3" data-animation="slideHorz" [formGroup]="pwLaboral">
+                    <div class="wizard-forms">
+                      <div class="inner pb-100 clearfix">
+                        <div class="form-content pera-content">
+                          <div class="step-inner-content">
+                            <span class="step-no bottom-line">Paso 3</span>
+                            <div class="step-progress float-right">
+                              <span>3 de 3 completado</span>
+                              <div class="step-progress-bar">
+                                <div class="progress">
+                                  <div class="progress-bar" [style.width.%]="progressPct()"></div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <h2>Información laboral</h2>
+                            <p>Ingrese la información necesaria para la atención de sus clientes.</p>
+
+                            <div class="step-content-area">
+                              <div class="budget-area">
+                                <div class="opti-list">
+                                  <div>
+                                    <p>¿Qué días atenderá?</p>
+                                    <ul class="d-flex" formArrayName="days">
+                                      <li *ngFor="let c of daysFA.controls; let i = index">
+                                        <label style="cursor:pointer;">
+                                          <input type="checkbox" [formControlName]="i">
+                                          {{ ['LU','MA','MI','JU','VI','SA','DO'][i] }}
+                                        </label>
+                                      </li>
+                                    </ul>
+                                    <small class="text-danger" *ngIf="!anyDaySelected && pwLaboral.touched">
+                                      Selecciona al menos un día.
+                                    </small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <button type="button"
+                              class="cs-btn cs-style1 cs-btn_lg w-100 btn btn-accent"
+                              (click)="finishOnboarding()">
+                        <span>Finalizar</span> <i class="fa fa-arrow-right"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
               </div>
-            </form>
+              <!-- /Contenido de pasos -->
+
             </div>
           </div>
-          </div>
-
+          <!-- /Wizard profesional -->
 
           <div class="cs-height_20 cs-height_lg_20"></div>
+
+          <!-- Términos (paciente) -->
           <div class="form-check" *ngIf="isPatient() && !showProWizard()">
             <input class="form-check-input" type="checkbox" id="terms" formControlName="terms">
             <label class="form-check-label" for="terms">Acepto términos y condiciones</label>
@@ -273,42 +271,71 @@
           </div>
 
           <div class="cs-height_20 cs-height_lg_20"></div>
-          <!-- Botón para Paciente -->
-          <button 
-          *ngIf="isPatient() && !loading() && !showProWizard()" 
-          class="cs-btn cs-style1 cs-btn_lg w-100" 
-          type="submit">
-          Crear cuenta
+
+          <!-- Botones finales -->
+          <button *ngIf="isPatient() && !loading() && !showProWizard()" class="cs-btn btn btn-accent cs-btn_lg w-100" type="submit">
+            Crear cuenta
+          </button>
+          <button *ngIf="isProfessional() && !loading() && !showProWizard()" class="cs-btn btn btn-accent cs-btn_lg w-100" type="submit">
+            Continuar con el registro
           </button>
 
-          <!-- Botón para Profesional -->
-          <button 
-          *ngIf="isProfessional() && !loading() && !showProWizard()" 
-          class="cs-btn cs-style1 cs-btn_lg w-100" 
-          type="submit">
-          Continuar con el registro
-          </button>
-
-          <!-- Loader global (se muestra si loading === true para cualquiera de los dos) -->
+          <!-- Loader global -->
           <div *ngIf="loading()" class="text-center mt-3">
-          <i class="fa fa-spinner fa-spin fa-2x"></i>
-          <p>Creando tu cuenta...</p>
+            <i class="fa fa-spinner fa-spin fa-2x"></i>
+            <p>Creando tu cuenta...</p>
           </div>
-
 
           <div class="cs-height_30 cs-height_lg_30"></div>
           <div class="cs-form_footer text-center">
-            ¿Ya tienes cuenta? <a (click)=" global.setRouterActive('login')">Ingresa</a>
+            ¿Ya tienes cuenta? <a (click)=" global.setRouterActive('login')" style="cursor:pointer;">Ingresa</a>
           </div>
+
         </div>
       </form>
     </div>
+
+    <!-- Columna: Imagen -->
+   <!-- Columna: Imagen / Hero visual -->
+<div class="col-lg-6 order-1 order-lg-2">
+  <figure class="login-hero-v2">
+    <!-- Usa WEBP si lo tienes; fallback a PNG/JPG -->
+    <picture>
+      <source [srcset]="registerHeroImage()" type="image/webp">
+      <img 
+        [src]="registerHeroImage()" 
+        alt="Pacientes y profesionales conectados" 
+        loading="lazy" decoding="async" 
+        width="840" height="680" />
+    </picture>
+
+    <!-- Overlay degradado para contraste de textos -->
+    <div class="login-hero-v2__shade"></div>
+
+    <!-- Borde interior luminoso sutil -->
+    <div class="login-hero-v2__inner-border"></div>
+
+    <!-- Badge/etiqueta opcional -->
+    <div class="login-hero-v2__badge d-none d-md-flex">
+      <i class="fa fa-shield-alt"></i> Cuidado seguro
+    </div>
+
+    <!-- Texto superpuesto -->
+    <figcaption class="login-hero-v2__caption d-none d-md-block">
+      
+    </figcaption>
+
+    <!-- Decoraciones suaves -->
+    <span class="blob blob--1"></span>
+    <span class="blob blob--2"></span>
+  </figure>
+</div>
+
+
   </div>
 </div>
 
-<div class="cs-height_90 cs-height_lg_80"></div>
-
-<!-- Toast simple local -->
+<!-- Toast -->
 <div *ngIf="toastVisible()" class="toast-wrap">
   <div class="toast" [ngClass]="{
       'success': toast()?.level==='success',
@@ -321,3 +348,4 @@
   </div>
 </div>
 
+<div class="cs-height_90 cs-height_lg_80"></div>

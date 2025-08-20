@@ -624,6 +624,13 @@ hideToast() {
   this.toastVisible.set(false);
   clearTimeout(this.toastTimer);
 }
+// En tu componente:
+registerHeroImage(): string {
+  if (this.isProfessional()) {
+    return 'assets/img/profesionales.png';
+  }
+  return 'assets/img/pacientes.png';
+}
 
 
 

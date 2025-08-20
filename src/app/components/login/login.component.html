@@ -1,43 +1,103 @@
 <div class="cs-height_100 cs-height_lg_70"></div>
-  <div class="container">
-    <div class="row">
-      <div class="col-xl-6 col-md-8 offset-xl-3 offset-md-2">
-        <form class="cs-form_card cs-style1 cs-box_shadow cs-white_bg">
-          <div class="cs-form_card_in">
-            <h2 class="cs-form_title text-center">Iniciar sesión</h2>
-            <div class="cs-form_btns">
-              <a href="login.html#" class="cs-btn cs-style2 cs-btn_lg">
-                <span><i class="fab fa-google"></i>Google</span>
-              </a>
-              <a href="login.html#" class="cs-btn cs-style2 cs-btn_lg">
-                <span><i class="fab fa-facebook-f"></i>Facebook</span>
-              </a>
-              <a href="login.html#" class="cs-btn cs-style2 cs-btn_lg">
-                <span><i class="fab fa-linkedin-in"></i>Linkedin</span>
-              </a>
-            </div>
-            <div class="cs-height_30 cs-height_lg_30"></div>
-            <div class="cs-form_field_wrap">
-              <input type="email" class="cs-form_field" placeholder="Your Email">
-            </div>
-            <div class="cs-height_20 cs-height_lg_20"></div>
-            <div class="cs-form_field_wrap">
-              <input type="password" class="cs-form_field" placeholder="Your password">
-            </div>
-            <div class="cs-height_20 cs-height_lg_20"></div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="notify">
-              <label class="form-check-label" for="notify">Remember Me</label>
-            </div>
-            <div class="cs-height_15 cs-height_lg_15"></div>
-            <button class="cs-btn cs-style1 cs-btn_lg w-100">
-              <span>Sign In</span>
-            </button>
-            <div class="cs-height_30 cs-height_lg_30"></div>
-            <div class="cs-form_footer text-center">No tienes cuenta?  <a (click)="global.setRouterActive('register')" >Registrate ahora</a></div>
+<div class="container">
+  <div class="row align-items-center">
+    <!-- Columna de formulario -->
+    <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
+      <form
+        class="cs-form_card cs-style1 cs-box_shadow cs-white_bg"
+        [formGroup]="ngFormLogin"
+        (ngSubmit)="onLogin()"
+        novalidate>
+
+        <div class="cs-form_card_in">
+          <h2 class="cs-form_title text-center">Iniciar sesión</h2>
+
+          <!-- Mensaje de error servidor -->
+          <div *ngIf="isError" class="alert alert-danger mt-3 mb-0">
+            {{ serverMsg }}
           </div>
-        </form>
-      </div>
+
+          <div class="cs-height_30 cs-height_lg_30"></div>
+
+          <!-- Email -->
+          <div class="cs-form_field_wrap">
+            <input
+              type="email"
+              class="cs-form_field"
+              placeholder="Ingresa tu correo"
+              formControlName="email"
+              [class.is-invalid]="submitted && f['email'].invalid" />
+            <div class="invalid-feedback d-block" *ngIf="submitted && f['email'].errors">
+              <div *ngIf="f['email'].errors['required']">El email es requerido.</div>
+              <div *ngIf="f['email'].errors['email']">Formato de email inválido.</div>
+            </div>
+          </div>
+
+          <div class="cs-height_20 cs-height_lg_20"></div>
+
+          <!-- Password -->
+          <div class="cs-form_field_wrap">
+            <input
+              type="password"
+              class="cs-form_field"
+              placeholder="Contraseña"
+              formControlName="password"
+              [class.is-invalid]="submitted && f['password'].invalid" />
+            <div class="invalid-feedback d-block" *ngIf="submitted && f['password'].errors">
+              <div *ngIf="f['password'].errors['required']">La contraseña es requerida.</div>
+              <div *ngIf="f['password'].errors['minlength']">Mínimo 6 caracteres.</div>
+            </div>
+          </div>
+
+          <div class="cs-height_20 cs-height_lg_20"></div>
+
+          <!-- Remember -->
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="remember" formControlName="remember">
+            <label class="form-check-label" for="remember">Recuérdame</label>
+          </div>
+
+          <div class="cs-height_15 cs-height_lg_15"></div>
+
+          <!-- Botón -->
+          <button
+            class="cs-btn cs-style1 btn btn-accent w-100"
+            type="submit"
+            [disabled]="loading">
+            <span *ngIf="!loading">Ingresar</span>
+            <span *ngIf="loading"><i class="fa fa-spinner fa-spin me-2"></i>Validando…</span>
+          </button>
+
+          <!-- Divider social -->
+          <div class="align-items-center d-flex my-4">
+            <hr class="flex-grow-1 m-0">
+            <span class="px-3 text-muted">o</span>
+            <hr class="flex-grow-1 m-0">
+          </div>
+
+          <!-- Google -->
+         <!--  <a class="btn btn-light w-100 d-flex align-items-center justify-content-center"
+             href="https://www.camiwa.com/auth/google">
+            <i class="bi bi-google me-2"></i> Entrar con Google
+          </a> -->
+
+          <div class="cs-height_30 cs-height_lg_30"></div>
+
+          <!-- Footer -->
+          <div class="cs-form_footer text-center">
+            ¿No tienes cuenta?
+            <a (click)="global.setRouterActive('register')"style="cursor:pointer">Regístrate ahora</a>
+            &nbsp; | &nbsp;
+            <a (click)="global.setRouterActive('recover-password')" style="cursor:pointer">Olvidé mi contraseña</a>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Columna de imagen -->
+    <div class="col-lg-6 col-md-12 text-center">
+      <img src="assets/img/about.png" alt="Inicia sesión" class="img-fluid rounded shadow-sm">
     </div>
   </div>
-  <div class="cs-height_100 cs-height_lg_70"></div>
+</div>
+<div class="cs-height_100 cs-height_lg_70"></div>
