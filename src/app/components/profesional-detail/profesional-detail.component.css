@@ -1,0 +1,16 @@
+
+.text-muted {
+    color: #fff !important;
+  }
+full-calendar {
+  display: block;
+  width: 100%;
+  min-height: 650px; /* ajusta a tu layout */
+}
+
+/* Hace que la grilla interna ocupe el alto */
+.fc, .fc-media-screen, .fc-view-harness, .fc-scrollgrid {
+  height: 100%;
+}
+
+.calendar-wrap { min-height: 700px; }

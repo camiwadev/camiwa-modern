@@ -20,6 +20,9 @@ import { ScriptService } from './services/script.services';
 import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { FaqsComponent } from './components/faqs/faqs.component';
+import { BookingCalendarComponent } from './components/booking-calendar/booking-calendar.component';
+import { ProfileComponent } from './components/dashboardProfesional/profile/profile.component';
+
 
 @Component({
   selector: 'app-root',
@@ -42,8 +45,9 @@ import { FaqsComponent } from './components/faqs/faqs.component';
     PrivacyComponent,
     PatientProfileComponent,
     ChatbotComponent,
-    FaqsComponent
-    
+    FaqsComponent,
+    BookingCalendarComponent,
+    ProfileComponent    
     ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

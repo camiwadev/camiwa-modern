@@ -9,7 +9,7 @@ import { firstValueFrom } from 'rxjs';
 import { EmailService } from '../../services/email.service';
 import Swal from 'sweetalert2';
 
-type Rol = 'patient' | 'professional';
+type Rol = 'patient' | 'profesional';
 
 @Component({
   selector: 'app-register',
@@ -25,14 +25,13 @@ private toastTimer: any = null;
   // --- Estado base registro ---
   rol = signal<Rol>('patient');
   form!: FormGroup; // <-- declara, no inicialices aquí
-  isProfessional = computed(() => this.rol() === 'professional');
+  isProfessional = computed(() => this.rol() === 'profesional');
   isPatient = computed(() => this.rol() === 'patient');
 
   // --- Wizard profesional ---
   showProWizard = signal(false);
   proStep = signal<1 | 2 | 3>(1);
-  progressPct = computed(() => ((this.proStep() - 1) / 2) * 100);
-
+  progressPct = computed(() => ((this.proStep() - 1) / 1) * 100);
   // catálogos demo
   categories = [
     { item_id: 1, item_text: 'Medicina General' },
@@ -101,43 +100,44 @@ errorMsg = signal<string | null>(null);
 
     // Form del wizard profesional
         
-    this.proWizard = this.fb.group({
-      personal: this.fb.group({
-        full_name: ['', [Validators.required, Validators.minLength(2)]],
-        phone: [''],
-        address: [''],
-        consultationAddress: [''],
-        city: [''],
-        country: ['', Validators.required],
-        gender: ['Male', Validators.required],
-        idDocumentUrl: [''],
-        avatarUrl: [''],
-      }),
+    // === REEMPLAZA la definición del proWizard por esta (solo el grupo professional cambia) ===
+this.proWizard = this.fb.group({
+  personal: this.fb.group({
+    full_name: ['', [Validators.required, Validators.minLength(2)]],
+    phone: [''],
+    address: [''],
+    consultationAddress: [''],
+    city: [''],
+    country: ['', Validators.required],
+    gender: ['Male', Validators.required],
+    idDocumentUrl: [''],   // opcional
+    avatarUrl: [''],       // opcional
+  }),
 
-      professional: this.fb.group({
-        profession: ['', [Validators.required, Validators.minLength(3)]],
-        studyArea: ['', [Validators.required, Validators.minLength(3)]],
-        university: ['', [Validators.required, Validators.minLength(3)]],
-        graduationYear: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
-        // ⬇️ singleSelection => el valor es un array con 1 objeto {id,name}
-        category: [[], Validators.required],
-        // ⬇️ multi => array de objetos {id,name}
-        specialties: [[], Validators.required],
-        certificatesUrls: [[] as string[]],
-      }),
-  
-      laboral: this.fb.group({
-        // 7 días no–nulos
-        days: this.fb.array<FormControl<boolean>>(
-          Array.from({ length: 7 }, () => this.fb.control(false, { nonNullable: true }))
-        ),
-      }),
-    });
+  professional: this.fb.group({
+    profession: ['', [Validators.required, Validators.minLength(3)]],
+    studyArea: ['', [Validators.required, Validators.minLength(3)]],
+    university: ['', [Validators.required, Validators.minLength(3)]],
+    graduationYear: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
+    // 🔻 ahora sin required (porque el UI está omitido)
+    category: [null],            // <- sin Validators.required
+    specialties: [[]],           // <- sin Validators.required
+    certificatesUrls: [[] as string[]],
+  }),
+
+  // si también quieres omitir el paso laboral por ahora, puedes dejarlo así
+  laboral: this.fb.group({
+    days: this.fb.array<FormControl<boolean>>(
+      Array.from({ length: 7 }, () => this.fb.control(false, { nonNullable: true }))
+    ),
+  }),
+});
+
 
     // Reacciona al cambio de categoría para filtrar especialidades
-    this.pwProf.get('category')!.valueChanges.subscribe((catId: number | null) => {
+   /*  this.pwProf.get('category')!.valueChanges.subscribe((catId: number | null) => {
       this.onCategoryChange(catId);
-    });
+    }); */
   }
 
   // --- Getters cómodos ---
@@ -228,7 +228,7 @@ errorMsg = signal<string | null>(null);
     
       const role = this.rol();
     
-      if (role === 'professional') {
+      if (role === 'profesional') {
         this.showProWizard.set(true);
         this.proStep.set(1);
         return;
@@ -375,7 +375,7 @@ errorMsg = signal<string | null>(null);
     const prof = this.form.get('professional') as FormGroup;
     const pat  = this.form.get('patient') as FormGroup;
   
-    if (r === 'professional') {
+    if (r === 'profesional') {
       // limpiar y desactivar validadores de paciente y términos
       pat.reset({ fullName: '', phone: '' }, { emitEvent: false });
       pat.get('fullName')?.clearValidators();
@@ -436,12 +436,20 @@ errorMsg = signal<string | null>(null);
       this.proStep.set(n);
     }
 
-  nextStep() {
+  /* nextStep() {
     const s = this.proStep();
     if (s === 1 && this.pwPersonal.valid) this.proStep.set(2);
     else if (s === 2 && this.pwProf.valid) this.proStep.set(3);
     else (s === 1 ? this.pwPersonal : this.pwProf).markAllAsTouched();
-  }
+  } */
+    nextStep() {
+      const s = this.proStep();
+      if (s === 1 && this.pwPersonal.valid) this.proStep.set(2);
+      else if (s === 2 && this.pwProf.valid) {
+        // puedes llamar finishOnboardingSimple() directamente aquí si gustas
+        this.finishOnboardingSimple();
+      } else (s === 1 ? this.pwPersonal : this.pwProf).markAllAsTouched();
+    }
 
   prevStep() {
     const s = this.proStep();
@@ -457,146 +465,82 @@ errorMsg = signal<string | null>(null);
   }
 
 
-async finishOnboarding() {
-  this.errorMsg.set(null);
-
-  // 1) Validación de pasos del wizard
-  if (!this.pwPersonal.valid) { this.pwPersonal.markAllAsTouched(); this.proStep.set(1); return; }
-  if (!this.pwProf.valid)     { this.pwProf.markAllAsTouched();   this.proStep.set(2); return; }
-  if (!this.anyDaySelected)   { this.pwLaboral.markAllAsTouched(); this.proStep.set(3); return; }
-
-  // 2) Datos base del form
-  const username = (this.form.get('username')?.value ?? '').toString().trim();
-  const email    = (this.form.get('email')?.value ?? '').toString().trim();
-  const password = (this.form.get('password')?.value ?? '').toString().trim();
-
-  if (!username || username.length < 3) {
-    this.form.get('username')?.markAsTouched();
-    this.errorMsg.set('Usuario requerido (mínimo 3 caracteres).');
-    this.proStep.set(1);
-    return;
-  }
-  if (!email) {
-    this.form.get('email')?.markAsTouched();
-    this.errorMsg.set('Correo requerido.');
-    this.proStep.set(1);
-    return;
-  }
-  if (!password || password.length < 6) {
-    this.form.get('password')?.markAsTouched();
-    this.errorMsg.set('La contraseña es requerida (mínimo 6 caracteres).');
-    this.proStep.set(1);
-    return;
-  }
-
-  // 3) Datos del wizard
-  const personal = this.pwPersonal.value as any;
-  const prof     = this.pwProf.value as any;
-  const daysArr  = (this.daysFA.value as boolean[]) || [];
-
-  // 4) Normalización de category/specialties desde ng-multiselect-dropdown
-  //    - category: singleSelection => array con 1 objeto {id,name} o un id suelto (por si lo seteaste manual)
-  //    - specialties: multi => array de objetos {id,name} o ids
-  const categoryId =
-    Array.isArray(prof.category) ? (prof.category[0]?.id ?? prof.category[0] ?? null)
-    : (typeof prof.category === 'object' ? prof.category?.id : prof.category ?? null);
-
-  const specialtiesIds = Array.isArray(prof.specialties)
-    ? prof.specialties.map((s: any) => (typeof s === 'object' ? s.id : s)).filter(Boolean)
-    : [];
-
-  if (!categoryId) {
-    this.errorMsg.set('Selecciona una categoría.');
-    this.proStep.set(2);
-    return;
-  }
-
-  // 5) Desempaqueta días para flags
-  const [lu=false, ma=false, mi=false, ju=false, vi=false, sa=false, do_=false] = daysArr;
-
-  // 6) Construye el payload definitivo
-  const specialistPayload = {
-    userId: '', // <-- lo seteará el callback usando el userId real
-    // Personales
-    full_name: personal.full_name,
-    email: email, // usa el del form de registro
-    phone: personal.phone || '',
-    address: personal.address || '',
-    consultationAddress: personal.consultationAddress || '',
-    city: personal.city || '',
-    country: personal.country,
-    gender: personal.gender,
-    // Profesionales
-    profession: prof.profession,
-    studyArea: prof.studyArea,
-    university: prof.university,
-    graduationYear: prof.graduationYear,
-    category: categoryId,                 // <-- id normalizado
-    specialties: specialtiesIds,          // <-- ids normalizados
-    // Media
-    documents: [],
-    certificates: Array.isArray(prof.certificatesUrls) ? prof.certificatesUrls : [],
-    images: personal.avatarUrl ? [personal.avatarUrl] : [],
-    // Laboral
-    days: daysArr,
-    monday: lu, tuesday: ma, wednesday: mi, thursday: ju,
-    friday: vi, saturday: sa, sunday: do_,
-    schedule: '',
-    // Flags iniciales
-    status: 'pending_review',
-    membership: 'Unlimited Plan',
-    advertiseProfile: true,
-    advertisePlatform: false,
-  };
-
-  this.loading.set(true);
-
-  try {
-    // 7) Llama al servicio de registro
-    // A) Si `createProfessionalAndSpecialist` devuelve Observable:
-    // const res = await firstValueFrom(
-    //   this.pocketAuthService.createProfessionalAndSpecialist(
-    //     email, password, username,
-    //     (userId: string) => ({ ...specialistPayload, userId })
-    //   )
-    // );
-
-    // B) Si devuelve Promise (usa await directo):
-    const res = await this.pocketAuthService.createProfessionalAndSpecialist(
-      email, password, username,
-      (userId: string) => ({ ...specialistPayload, userId })
-    );
-
-    // Normaliza respuesta
-    const user = (res as any)?.user ?? (res as any)?.data?.user ?? (res as any);
-    const specialist = (res as any)?.specialist ?? (res as any)?.data?.specialist ?? null;
-
-    if (!user?.id) {
-      throw new Error('No se recibió el usuario creado desde el backend.');
+  async finishOnboarding() {
+    this.errorMsg.set(null);
+  
+    if (!this.pwPersonal.valid) { this.pwPersonal.markAllAsTouched(); this.proStep.set(1); return; }
+    if (!this.pwProf.valid)     { this.pwProf.markAllAsTouched();   this.proStep.set(2); return; }
+  
+    const username = (this.form.get('username')?.value ?? '').toString().trim();
+    const email    = (this.form.get('email')?.value ?? '').toString().trim();
+    const password = (this.form.get('password')?.value ?? '').toString().trim();
+  
+    if (!username || username.length < 3) { this.form.get('username')?.markAsTouched(); this.proStep.set(1); Swal.fire('Usuario inválido','Mínimo 3','warning'); return; }
+    if (!email)                           { this.form.get('email')?.markAsTouched();    this.proStep.set(1); Swal.fire('Correo requerido','','warning'); return; }
+    if (!password || password.length < 6) { this.form.get('password')?.markAsTouched(); this.proStep.set(1); Swal.fire('Contraseña inválida','Mínimo 6','warning'); return; }
+  
+    const personal = this.pwPersonal.value as any;
+    const prof     = this.pwProf.value as any;
+  
+    const specialistPayload = {
+      userId: '',
+      full_name: personal.full_name,
+      email,
+      phone: personal.phone || '',
+      address: personal.address || '',
+      consultationAddress: personal.consultationAddress || '',
+      city: personal.city || '',
+      country: personal.country,
+      gender: personal.gender,
+      profession: prof.profession,
+      studyArea: prof.studyArea,
+      university: prof.university,
+      graduationYear: Number(prof.graduationYear) || null,
+      // 🔻 omitidos temporalmente
+      category: null,
+      specialties: [],
+      documents: [],
+      certificates: [],
+      images: [],
+      status: 'pending_review',
+      membership: 'Unlimited Plan',
+      advertiseProfile: true,
+      advertisePlatform: false,
+    };
+  
+    this.loading.set(true);
+    try {
+      const res = await this.auth.createProfessionalAndSpecialist(
+        email, password, username,
+        (userId: string) => ({ ...specialistPayload, userId })
+      );
+  
+      const user = res.user;
+      const specialist = res.specialist;
+  
+      localStorage.setItem('isLoggedin', 'true');
+      localStorage.setItem('userId', user.id);
+      localStorage.setItem('type', JSON.stringify('profesional'));
+      localStorage.setItem('user', JSON.stringify({
+        id: user.id, email, username, type: 'profesional', full_name: personal.full_name
+      }));
+      localStorage.setItem('profile', JSON.stringify(specialist || {}));
+  
+      this.global.previewRequest = { ...(specialist || {}), type: 'profesional', usertype: 'profesional' };
+  
+      Swal.fire('¡Registro exitoso!', 'Tu cuenta de profesional ha sido creada.', 'success');
+      this.global.setRouterActive('dashboardProfesional/profile');
+    } catch (e: any) {
+      console.error('finishOnboarding ERROR', e);
+      const msg = e?.response?.message || e?.message || 'No se pudo registrar el profesional.';
+      const fields = e?.response?.data ? JSON.stringify(e.response.data) : '';
+      Swal.fire('Error', `${msg}${fields ? ' → ' + fields : ''}`, 'error');
+    } finally {
+      this.loading.set(false);
     }
-
-    // 8) Persistencia local mínima (sin password)
-    localStorage.setItem('isLoggedin', 'true');
-    localStorage.setItem('userId', user.id);
-    localStorage.setItem('type', 'professional');
-    localStorage.setItem('username', username);
-
-    if (specialist) {
-      this.global.previewRequest = { ...specialist, type: 'professional', usertype: 'professional' };
-    }
-
-    // 9) Navega
-    this.global.setRouterActive('dashboard');
-    alert('✅ Registro exitoso.');
-  } catch (e: any) {
-    console.error('finishOnboarding error:', e);
-    const msg = e?.message || e?.error?.message || 'Ocurrió un error al registrar el profesional.';
-    this.errorMsg.set(msg);
-    alert(`❌ ${msg}`);
-  } finally {
-    this.loading.set(false);
   }
-}
+  
+  
 
 showToast(opts: { level?: 'success'|'info'|'warn'|'error'; message: string; targetId?: string; autoHideMs?: number }) {
   const { level = 'info', message, targetId, autoHideMs = 3000 } = opts;
@@ -631,6 +575,112 @@ registerHeroImage(): string {
   }
   return 'assets/img/pacientes.png';
 }
+async finishOnboardingSimple() {
+  console.log('[finishOnboardingSimple] start');
+
+  if (!this.pwPersonal.valid) { 
+    this.pwPersonal.markAllAsTouched(); 
+    this.proStep.set(1); 
+    Swal.fire('Faltan datos', 'Completa la información personal (Paso 1).', 'warning');
+    console.warn('[finishOnboardingSimple] Paso 1 inválido', this.pwPersonal.value, this.pwPersonal.errors);
+    return; 
+  }
+  if (!this.pwProf.valid) {     
+    this.pwProf.markAllAsTouched();   
+    this.proStep.set(2); 
+    Swal.fire('Faltan datos', 'Completa la información profesional (Paso 2).', 'warning');
+    console.warn('[finishOnboardingSimple] Paso 2 inválido', this.pwProf.value, this.pwProf.errors);
+    return; 
+  }
+
+  const username = (this.form.get('username')?.value ?? '').toString().trim();
+  const email    = (this.form.get('email')?.value ?? '').toString().trim();
+  const password = (this.form.get('password')?.value ?? '').toString().trim();
+
+  if (!username || username.length < 3) { 
+    this.form.get('username')?.markAsTouched(); 
+    Swal.fire('Usuario inválido', 'Mínimo 3 caracteres.', 'warning');
+    return; 
+  }
+  if (!email) { 
+    this.form.get('email')?.markAsTouched(); 
+    Swal.fire('Correo requerido', 'Ingresa un correo válido.', 'warning');
+    return; 
+  }
+  if (!password || password.length < 6) { 
+    this.form.get('password')?.markAsTouched(); 
+    Swal.fire('Contraseña inválida', 'Mínimo 6 caracteres.', 'warning');
+    return; 
+  }
+
+  const personal = this.pwPersonal.value as any;
+  const prof     = this.pwProf.value as any;
+
+  const specialistPayload = {
+    userId: '',
+    full_name: personal.full_name,
+    email,
+    phone: personal.phone || '',
+    address: personal.address || '',
+    consultationAddress: personal.consultationAddress || '',
+    city: personal.city,
+    country: personal.country,
+    gender: personal.gender,
+    profession: prof.profession,
+    studyArea: prof.studyArea,
+    university: prof.university,
+    graduationYear: Number(prof.graduationYear) || null,
+    category: null,
+    specialties: [],
+    documents: [],
+    certificates: [],
+    images: [],
+    status: 'pending_review',
+    membership: 'Unlimited Plan',
+    advertiseProfile: true,
+    advertisePlatform: false,
+  };
+
+  this.loading.set(true);
+  console.log('[finishOnboardingSimple] payload listo', { email, username, specialistPayload });
+
+  try {
+    const res = await this.auth.createProfessionalAndSpecialist(
+      email, password, username,
+      (userId: string) => ({ ...specialistPayload, userId })
+    );
+
+    console.log('[finishOnboardingSimple] backend OK', res);
+
+    const user = (res as any)?.user;
+    const specialist = (res as any)?.specialist;
+
+    if (!user?.id) {
+      throw new Error('Backend no retornó user.id');
+    }
+
+    localStorage.setItem('isLoggedin', 'true');
+    localStorage.setItem('userId', user.id);
+    localStorage.setItem('type', 'profesional'); // usa ES en todo lado o cambia a EN en todo lado
+    localStorage.setItem('user', JSON.stringify({
+      id: user.id, email, username, type: 'profesional', full_name: personal.full_name
+    }));
+    localStorage.setItem('profile', JSON.stringify(specialist || {}));
+
+    this.global.previewRequest = { ...(specialist || {}), type: 'profesional', usertype: 'profesional' };
+
+    Swal.fire('¡Registro exitoso!', 'Tu cuenta de profesional ha sido creada.', 'success');
+    this.global.setRouterActive('profile'); // o 'dashboard'
+  } catch (e: any) {
+    console.error('[finishOnboardingSimple] ERROR', e);
+    const msg = e?.response?.message || e?.message || 'No se pudo registrar el profesional.';
+    const fields = e?.response?.data ? JSON.stringify(e.response.data) : '';
+    Swal.fire('Error', `${msg}${fields ? ' → ' + fields : ''}`, 'error');
+  } finally {
+    this.loading.set(false);
+  }
+}
+
 
 
 

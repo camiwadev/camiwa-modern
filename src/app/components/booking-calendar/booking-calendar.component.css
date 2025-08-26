@@ -1,0 +1,35 @@
+  .calendar-wrap { min-height: 700px; }
+full-calendar {
+    display: block;
+    width: 100%;
+    min-height: 680px;   /* ajusta a gusto */
+  }
+  
+  /* El grid ocupa todo el alto disponible */
+  .fc, .fc-media-screen, .fc-view-harness, .fc-scrollgrid {
+    height: 100%;
+  }
+  
+  /* Contenedor “limpio” para que el theme no lo tape */
+  .calendar-panel {
+    position: relative;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0;
+    margin-top: 16px;
+    isolation: isolate; /* evita que overlays externos lo cubran */
+  }
+  
+  /* Muchos themes dibujan un degradado con pseudo-elementos: lo apagamos aquí */
+  .calendar-panel::before,
+  .calendar-panel::after {
+    content: none !important;
+    display: none !important;
+  }
+  
+  /* Por si hay algún wrapper card alrededor con overlay absoluto */
+  .calendar-panel * {
+    position: relative;
+    z-index: 1;
+  }
+  

@@ -20,7 +20,7 @@
               Soy paciente <i class="fa fa-user"></i>
             </button>
             <button type="button"
-                    (click)="setRole('professional')"
+                    (click)="setRole('profesional')"
                     class="btn"
                     [ngClass]="{ 'btn-primary': isProfessional(), 'btn-outline-primary': !isProfessional() }">
               Soy profesional <i class="far fa-user"></i>
@@ -79,9 +79,9 @@
                         [class.js-complete]="proStep()>2"
                         (click)="goStep(2)"><span>2</span></li>
 
-                    <li class="multisteps-form__progress-btn last"
+                  <!--   <li class="multisteps-form__progress-btn last"
                         [class.js-active]="proStep()===3"
-                        (click)="goStep(3)"><span>3</span></li>
+                        (click)="goStep(3)"><span>3</span></li> -->
                   </ul>
                 </div>
               </div>
@@ -116,15 +116,13 @@
                               <label><input type="radio" value="Other"  formControlName="gender"><span class="checkmark"></span>Otro</label>
                             </div>
 
-                            <div class="upload-documents">
+                           <!--  <div class="upload-documents">
                               <h3>Cargue su documento de identidad:</h3>
-                              <!-- uploader -->
                             </div>
 
                             <div class="upload-documents">
                               <h3>Cargue su fotografía personal:</h3>
-                              <!-- uploader -->
-                            </div>
+                            </div> -->
 
                           </div>
                         </div>
@@ -164,7 +162,7 @@
                               <input type="text" class="form-control" placeholder="Año de egreso * (YYYY)" formControlName="graduationYear">
                             </div>
 
-                            <div class="language-select">
+                            <!-- <div class="language-select">
                               <p>Seleccione la profesión a la que pertenece:</p>
                               <ng-multiselect-dropdown
                                 formControlName="category"
@@ -172,37 +170,36 @@
                                 [settings]="dropdownSettingsCategory">
                               </ng-multiselect-dropdown>
                             </div>
-
+                            
                             <div class="language-select" *ngIf="(pwProf.get('category')?.value || []).length">
                               <ng-multiselect-dropdown
                                 formControlName="specialties"
                                 [data]="especialidadOptionsFiltered"
                                 [settings]="dropdownSettingsSpecialties">
                               </ng-multiselect-dropdown>
-                            </div>
-
-                            <div class="upload-documents">
-                              <h3>Cargue sus certificados:</h3>
-                              <!-- uploader -->
-                            </div>
+                            </div> -->
+                            
 
                           </div>
                         </div>
                       </div>
 
                       <div class="actions d-flex gap-2">
-                        <button type="button" class="btn btn-outline" (click)="prevStep()">
+                        <!-- <button type="button" class="btn btn-outline" (click)="prevStep()">
                           <i class="fa fa-arrow-left"></i> Ant.
                         </button>
                         <button type="button" class="btn btn-accent" (click)="nextStep()">
                           Sig. <i class="fa fa-arrow-right"></i>
+                        </button> -->
+                        <button type="button" class="btn btn-accent" (click)="finishOnboardingSimple()">
+                          Finalizar (simple) <i class="fa fa-check"></i>
                         </button>
                       </div>
                     </div>
                   </div>
 
                   <!-- Paso 3 -->
-                  <div *ngIf="proStep()===3" data-animation="slideHorz" [formGroup]="pwLaboral">
+                 <!--  <div *ngIf="proStep()===3" data-animation="slideHorz" [formGroup]="pwLaboral">
                     <div class="wizard-forms">
                       <div class="inner pb-100 clearfix">
                         <div class="form-content pera-content">
@@ -251,7 +248,7 @@
                         <span>Finalizar</span> <i class="fa fa-arrow-right"></i>
                       </button>
                     </div>
-                  </div>
+                  </div> -->
 
                 </div>
               </div>

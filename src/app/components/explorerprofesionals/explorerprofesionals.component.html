@@ -165,7 +165,6 @@
           <div class="cs-height_30 cs-height_lg_30"></div>
 
            <div class="col-xl-3 col-lg-4 col-sm-6" *ngFor="let profesional of globalServices.profesionales$ | async"> 
-            <!-- <div class="col-xl-3 col-lg-4 col-sm-6" *ngFor="let profesional of (profesionalesFiltrados$ | async) ?? []"> -->
             <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
               <span class="cs-card_like cs-primary_color">
                 <i class="fas fa-award fa-fw"></i>
@@ -191,8 +190,7 @@
                     <i class="far fa-calendar fa-fw"></i> Agendar 
                   </span>
                   <span class="cs-card_btn_2 btn btn-accent" data-modal="#bid_1">
-                    <span (click)="globalServices.viewDetail(profesional)">Ver perfil</span>
-                  </span>
+                    <span (click)="onVerPerfil(profesional)">Ver perfil</span>                  </span>
                 </div>
               </div>
             </div>

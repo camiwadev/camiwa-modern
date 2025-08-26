@@ -19,13 +19,14 @@
         <div class="">
           <h3 class="cs-hero_category_title text-center cs-white_color">Top Servicios</h3>
           <div class="cs-hero_categories">
-            <a  class="cs-card cs-style1 cs-box_shadow text-center cs-white_bg"    *ngFor="let categoria of (globalService.categorias$ | async) | slice:0:6">
+            <a class="cs-card cs-style1 cs-box_shadow text-center cs-white_bg"
+               *ngFor="let categoria of categoriasRandom">
               <div class="cs-card_thumb">
                 <img [src]="categoria.image[0]" alt="{{categoria.name}}" class="cs-zoom_item">
               </div>
               <p class="cs-card_title">{{categoria.name}}</p>
             </a>
-          </div>
+          </div>          
         </div>
       </div>
     </div>
@@ -109,10 +110,8 @@
       <div class="col-lg-4 col-sm-12">
         <div class="cs-iconbox cs-style1 cs-white_bg">
           <div class="cs-iconbox_icon">
-            <ng-lottie
-              [options]="searchAnimation"
-              style="width:80px;height:80px">
-            </ng-lottie>
+            <div #searchAnim style="width:150px;height:150px"></div>
+
 
           </div>
           
@@ -127,11 +126,10 @@
       <!-- 2. Reserva online -->
       <div class="col-lg-4 col-sm-12">
         <div class="cs-iconbox cs-style1 cs-white_bg">
-          <div class="cs-iconbox_icon">
-            <ng-lottie
-            [options]="calendarAnimation"
-            style="width:80px;height:80px">
-          </ng-lottie>          </div>
+          <div class="cs-iconbox_icon"> 
+          <div #calendarAnim style="width:150px;height:150px"></div>
+
+          </div>
           <h2 class="cs-iconbox_title">Reserva online</h2>
           <div class="cs-iconbox_subtitle">
             Agenda fácilmente tu cita en el horario que más te convenga.
@@ -143,11 +141,9 @@
       <!-- 3. Conéctate -->
       <div class="col-lg-4 col-sm-12">
         <div class="cs-iconbox cs-style1 cs-white_bg">
-          <div class="cs-iconbox_icon">
-            <ng-lottie
-            [options]="ChatAnimation"
-            style="width:80px;height:80px">
-          </ng-lottie>          </div>
+          <div class="cs-iconbox_icon " >
+            <div #chatAnim style="width:150px;height:150px"></div>
+        </div>
           <h2 class="cs-iconbox_title">Conéctate por video o presencial</h2>
           <div class="cs-iconbox_subtitle">
             Consulta desde cualquier lugar o asiste en persona, según prefieras.
@@ -249,7 +245,8 @@
                 <i class="far fa-calendar fa-fw"></i> Agendar 
               </span>
               <span class="cs-card_btn_2 btn btn-accent" data-modal="#bid_1">
-                <span style="color: #000;  font-weight: 500;">Ver perfil</span>
+                <span style="color: #000;  font-weight: 500;" (click)="onVerPerfil(profesional)">Ver perfil</span>
+
               </span>
             </div>
           </div>

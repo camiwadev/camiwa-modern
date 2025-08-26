@@ -1,4 +1,4 @@
-import { Component,  } from '@angular/core';
+import { ChangeDetectorRef, Component,  } from '@angular/core';
 import { CommonModule, NgFor, AsyncPipe } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, combineLatest, debounceTime, map, startWith } from 'rxjs';
@@ -58,8 +58,9 @@ export class ExplorerprofesionalsComponent {
   mostrarEspecialidades= false;
   especialidadesCtrl = new FormControl<string | null>(null);
 
-  constructor(public globalServices: GlobalService) {
-    // Normaliza texto (quita acentos y pasa a minúsculas)
+  constructor(public globalServices: GlobalService,
+    private cdr: ChangeDetectorRef
+  ) {
     const norm = (v: string | null | undefined) =>
       (v ?? '')
         .toString()
@@ -92,5 +93,9 @@ export class ExplorerprofesionalsComponent {
   }
   toggleEspecialidades(){
     this.mostrarEspecialidades = !this.mostrarEspecialidades;
+  }
+  onVerPerfil(p: any) {
+    this.globalServices.viewDetail(p);
+    this.cdr.markForCheck();  // o detectChanges() en casos puntuales
   }
 }

@@ -36,7 +36,7 @@
       }
     }
 
-    async loadProfileFromBackend() {
+    /* async loadProfileFromBackend() {
       if (!this.currentUser?.id) return;
       try {
         const profile = await this.pb.collection('camiwaTravelers').getFirstListItem(`userId="${this.currentUser.id}"`);
@@ -45,8 +45,21 @@
       } catch (e) {
         console.warn('No se pudo cargar el perfil del backend:', e);
       }
-    }
-    async updateUserField(userId: string, updateData: any): Promise<void> {
+    } */
+      async loadProfileFromBackend() {
+        if (!this.currentUser?.id) return;
+        try {
+          const t = this.currentUser?.type;
+          const coll = t === 'profesional' ? 'camiwaSpecialists' : 'camiwaTravelers';
+          const profile = await this.pb.collection(coll).getFirstListItem(`userId="${this.currentUser.id}"`);
+          this.profile = profile;
+          localStorage.setItem('profile', JSON.stringify(profile));
+        } catch (e) {
+          console.warn('No se pudo cargar el perfil del backend:', e);
+        }
+      }
+      
+      async updateUserField(userId: string, updateData: any): Promise<void> {
       await this.pb.collection('users').update(userId, updateData);
     }
     
@@ -410,6 +423,64 @@
           }
         })());
       }
-    
+      async createProfessionalAndSpecialist(
+        email: string,
+        password: string,
+        username: string,
+        buildSpecialist: (userId: string) => any,
+      ): Promise<{ user: any; specialist: any; token: string }> {
+        let user: any | null = null;
+        try {
+          // 1) Crear user
+          user = await this.pb.collection('users').create({
+            email,
+            password,
+            passwordConfirm: password,
+            username,
+            type: 'profesional',        // 🔁 usa siempre el MISMO literal que el resto de tu app
+            emailVisibility: true,
+            name: username,
+          });
+      
+          // 2) Autologin (si rules lo exigen)
+          await this.pb.collection('users').authWithPassword(email, password);
+          const token = this.pb.authStore.token;
+          const record = this.pb.authStore.model;
+      
+          // 3) Specialist
+          const specialistPayload = buildSpecialist(user.id);
+      
+          // Normaliza campos numéricos / relaciones
+          if (typeof specialistPayload.graduationYear === 'string') {
+            const n = Number(specialistPayload.graduationYear);
+            specialistPayload.graduationYear = Number.isFinite(n) ? n : null;
+          }
+          // Asegura que category sea ID string y specialties sea string[]
+          if (specialistPayload.category && typeof specialistPayload.category === 'object') {
+            specialistPayload.category = specialistPayload.category.id;
+          }
+          if (Array.isArray(specialistPayload.specialties)) {
+            specialistPayload.specialties = specialistPayload.specialties.map((s: any) => typeof s === 'object' ? s.id : s);
+          }
+      
+          const specialist = await this.pb.collection('camiwaSpecialists').create(specialistPayload);
+      
+          // 4) Persistencia mínima opcional
+          localStorage.setItem('accessToken', token);
+          localStorage.setItem('record', JSON.stringify(record));
+      
+          return { user, specialist, token };
+        } catch (e: any) {
+          // 🔁 ROLLBACK si el specialist falló después de crear user
+          if (user?.id) {
+            try { await this.pb.collection('users').delete(user.id); } catch {}
+          }
+          const detail = e?.response?.message || e?.message || 'No se pudo registrar el profesional.';
+          const fields = e?.response?.data ? JSON.stringify(e.response.data) : '';
+          throw new Error(`${detail}${fields ? ' → ' + fields : ''}`);
+        }
+      }
+      
+      
     
   }

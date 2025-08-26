@@ -28,7 +28,7 @@ interface profesional {
   city: string;
   consultationAddress: string;
   country: string;
-  days: string[];
+  days: boolean[];
   email: string;
   friday: boolean;
   full_name: string;
@@ -61,6 +61,8 @@ interface profesional {
 
 export class GlobalService {
   routerActive:string= "home";
+  private _routerActive$ = new BehaviorSubject<string>('home');
+  routerActive$ = this._routerActive$.asObservable();
   currentUser: any;
   pb = new PocketBase('https://db.camiwa.com:250');
   profesionales=[];
@@ -196,8 +198,12 @@ export class GlobalService {
     public realtimeProfesionalesService: RealtimeProfesionalesService
   ) { }
   
-setRouterActive(routerActive:string){
+/* setRouterActive(routerActive:string){
   this.routerActive=routerActive;
+} */
+setRouterActive(route: string) {
+  this.routerActive = route;            // compatibilidad con código existente
+  this._routerActive$.next(route);      // dispara CD en vistas con async
 }
 
 public async initCategoriasRealtime() {
@@ -299,28 +305,18 @@ type(): string | null {
   return null;
 }
 viewDetail(profesional: any) {
-  const daysMap = [
-    'sunday',
-    'monday',
-    'tuesday',
-    'wednesday',
-    'thursday',
-    'friday',
-    'saturday',
-  ];
-  const workingDays = profesional.days
-    .map((isWorking: boolean, index: number) =>
-      isWorking ? daysMap[index] : null
-    ) // Mapea a los días si es true
-    .filter((day: string | null): day is string => day !== null); // Filtra los nulls y asegura que day es string
+  const daysMap = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
 
-  // Asigna el resultado a this.global.workingDays
-  this.workingDays = workingDays;
-  console.log(JSON.stringify(this.workingDays));
+  // defensivo: si no hay days, evita romper
+  const rawDays = Array.isArray(profesional?.days) ? profesional.days : [];
+  this.workingDays = rawDays
+    .map((isWorking: boolean, i: number) => (isWorking ? daysMap[i] : null))
+    .filter((d: string | null): d is string => !!d);
 
-  // Actualiza la vista de detalle y la ruta
-  this.previewRequest = profesional;
+  // opcional: clonar para evitar side-effects si luego mutas el profesional
+  this.previewRequest = { ...profesional };
 
   this.setRouterActive('profesional-detail');
 }
+
 }
