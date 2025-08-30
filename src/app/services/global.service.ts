@@ -57,6 +57,7 @@ interface profesional {
 }
 export interface PatientFicha {
   id: string;
+  username?:string;
   name?: string;
   email?: string;
   phone?: string;
@@ -65,6 +66,17 @@ export interface PatientFicha {
   fullName?: string;
   lastname?: string;
   images?:string;
+  birthdate?:string;
+  drugAllergyDetail?:string;
+  weightKg?:string;
+  heightCm?:string;
+  bodyType?:string;
+  isHypertensive?:string;
+  isDiabetic?:string;
+  otherConditions?:string;
+  hasDrugAllergy?:string;
+  city?:string;
+  country?:string;
 }
 @Injectable({
   providedIn: 'root'

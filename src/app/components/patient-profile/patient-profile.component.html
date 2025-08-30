@@ -78,73 +78,182 @@
       </div>
       <div class="cs-profile_right">
         <div class="cs-height_30 cs-height_lg_30"></div>
-        <h2 class="cs-section_heading cs-style1">Mi cuenta</h2>
-        <div class="cs-height_25 cs-height_lg_25"></div>
-        <form class="row">
-          <div class="col-lg-6">
-            <div class="cs-form_field_wrap">
-              <input type="text" class="cs-form_field cs-white_bg" placeholder="e. g. ‘Edward Figaro’">
-            </div>
-            <div class="cs-height_25 cs-height_lg_25"></div>
-            <div class="cs-form_field_wrap">
-              <input type="text" class="cs-form_field cs-white_bg" placeholder="e. g. ‘Edward Figaro’">
-            </div>
-            <div class="cs-height_25 cs-height_lg_25"></div>
-            <div class="cs-form_field_wrap">
-              <textarea cols="30" rows="5" placeholder="Mi biografia..." class="cs-form_field cs-white_bg"></textarea>
-            </div>
-            <div class="cs-height_20 cs-height_lg_20"></div>
-            <div class="cs-edit_profile">
-              <div class="cs-edit_profile_img"><img src="assets/img/avatar/avatar_29.png" alt=""></div>
-              <div class="cs-edit_profile_right">
-                <div class="cs-edit_profile_btns">
-                  <a href="" class="cs-upload_btn">Subir foto</a>
-                  <span class="cs-delete_btn"><i class="far fa-trash-alt"></i> eliminar</span>
-                </div>
-                <p>Images must be .png or .jpg format. Min size 200x200px (avatar)</p>
-              </div>
-            </div>
+        <!-- Título -->
+<h2 class="cs-section_heading cs-style1">Información de perfil (Paciente)</h2>
+<div class="cs-height_25 cs-height_lg_25"></div>
+
+<!-- Acciones -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div class="d-flex gap-2">
+    <button *ngIf="!editMode" type="button" class="cs-btn cs-style1" (click)="toggleEdit()">
+      <span>Editar</span>
+    </button>
+    <button *ngIf="editMode" type="button" class="cs-btn cs-style2" (click)="toggleEdit()">
+      <span>Cancelar</span>
+    </button>
+    <button *ngIf="editMode" [disabled]="saving" type="button" class="cs-btn cs-style1" (click)="onSaveProfile()">
+      <span>{{ saving ? 'Actualizando…' : 'Actualizar' }}</span>
+    </button>
+  </div>
+</div>
+
+<!-- LECTURA -->
+<div *ngIf="!editMode" class="row">
+  <div class="col-lg-6">
+    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+      <h5 class="mb-1">Nombre</h5>
+      <p class="mb-0 text-muted">{{ global.clientFicha?.username || '—' }}</p>
+    </div>
+    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+      <h5 class="mb-1">Apellido</h5>
+      <p class="mb-0 text-muted">{{ global.clientFicha?.lastname || '—' }}</p>
+    </div>
+    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+      <h5 class="mb-1">Ciudad / País</h5>
+      <p class="mb-0 text-muted">{{ global.clientFicha?.city || '—' }} / {{ global.clientFicha?.country || '—' }}</p>
+    </div>
+    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+      <h5 class="mb-1">Teléfono</h5>
+      <p class="mb-0 text-muted">{{ global.clientFicha?.phone || '—' }}</p>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+      <h5 class="mb-1">Fecha de nacimiento / Edad</h5>
+      <p class="mb-0 text-muted">
+        {{ global.clientFicha?.birthdate || '—' }}
+        <ng-container *ngIf="global.clientFicha?.birthdate"> ({{ age }} años)</ng-container>
+      </p>
+    </div>
+    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+      <h5 class="mb-1">Peso / Altura</h5>
+      <p class="mb-0 text-muted">
+        {{ global.clientFicha?.weightKg || '—' }} kg · {{ global.clientFicha?.heightCm || '—' }} cm
+        <ng-container *ngIf="bmi"> | IMC: {{ bmi }}</ng-container>
+      </p>
+    </div>
+    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+      <h5 class="mb-1">Contextura</h5>
+      <p class="mb-0 text-muted">{{ global.clientFicha?.bodyType || '—' }}</p>
+    </div>
+    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+      <h5 class="mb-1">Afecciones médicas</h5>
+      <p class="mb-0 text-muted">
+        Hipertenso: {{ global.clientFicha?.isHypertensive ? 'Sí' : 'No' }} ·
+        Diabético: {{ global.clientFicha?.isDiabetic ? 'Sí' : 'No' }}<br>
+        Otras: {{ global.clientFicha?.otherConditions || '—' }}
+      </p>
+    </div>
+    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+      <h5 class="mb-1">Alergia a medicación</h5>
+      <p class="mb-0 text-muted">
+        {{ global.clientFicha?.hasDrugAllergy ? ('Sí: ' + (global.clientFicha?.drugAllergyDetail || '—')) : 'No' }}
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- EDICIÓN -->
+<form *ngIf="editMode" [formGroup]="profileForm" (ngSubmit)="onSaveProfile()">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+        <h5 class="mb-1">Nombre</h5>
+        <input type="text" class="form-control" formControlName="firstName">
+      </div>
+      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+        <h5 class="mb-1">Apellido</h5>
+        <input type="text" class="form-control" formControlName="lastName">
+      </div>
+      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+        <h5 class="mb-1">Ciudad</h5>
+        <input type="text" class="form-control" formControlName="city">
+      </div>
+      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+        <h5 class="mb-1">País</h5>
+        <input type="text" class="form-control" formControlName="country">
+      </div>
+      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+        <h5 class="mb-1">Teléfono</h5>
+        <input type="text" class="form-control" formControlName="phone">
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+        <h5 class="mb-1">Fecha de nacimiento</h5>
+        <input type="date" class="form-control" formControlName="birthdate">
+        <small class="text-muted" *ngIf="age">Edad: {{ age }} años</small>
+      </div>
+
+      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+        <div class="row g-2">
+          <div class="col-6">
+            <h5 class="mb-1">Peso (kg)</h5>
+            <input type="number" class="form-control" formControlName="weightKg" min="0" step="0.1">
           </div>
-          <div class="col-lg-6">
-            <div class="cs-height_0 cs-height_lg_25"></div>
-            <div class="cs-form_field_wrap">
-              <input type="text" class="cs-form_field cs-white_bg" placeholder="Username">
-            </div>
-            <div class="cs-height_25 cs-height_lg_25"></div>
-            <div class="cs-form_field_wrap">
-              <input type="text" class="cs-form_field cs-white_bg" placeholder="Custom Url">
-            </div>
-            <div class="cs-height_25 cs-height_lg_25"></div>
-            <span class="cs-btn cs-style2 cs-btn_lg w-100">
-              <span class="text-left">
-                <i class="fab fa-facebook-f"></i>
-                <span>Facebook</span> 
-                <input type="text" value="www.facebook.com/username">
-              </span>
-            </span>
-            <div class="cs-height_25 cs-height_lg_25"></div>
-            <span class="cs-btn cs-style2 cs-btn_lg w-100">
-              <span class="text-left">
-                <i class="fab fa-twitter"></i>
-                <span>Twitter</span> 
-                <input type="text" value="www.facebook.com/username">
-              </span>
-            </span>
-            <div class="cs-height_25 cs-height_lg_25"></div>
-            <span class="cs-btn cs-style2 cs-btn_lg w-100">
-              <span class="text-left">
-                <i class="fab fa-linkedin-in"></i>
-                <span>Linkedin</span> 
-                <input type="text" value="www.facebook.com/username">
-              </span>
-            </span>
-            <div class="cs-height_25 cs-height_lg_25"></div>
+          <div class="col-6">
+            <h5 class="mb-1">Altura (cm)</h5>
+            <input type="number" class="form-control" formControlName="heightCm" min="0" step="1">
           </div>
-          <div class="col-lg-12">
-            <div class="cs-height_40 cs-height_lg_5"></div>
-            <button class="cs-btn cs-style1 cs-btn_lg"><span>Actualizar</span></button>
+          <div class="col-12">
+            <small class="text-muted" *ngIf="bmi">IMC estimado: {{ bmi }}</small>
           </div>
-        </form>
+        </div>
+      </div>
+
+      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+        <h5 class="mb-1">Contextura</h5>
+        <select class="form-select" formControlName="bodyType">
+          <option value="">Selecciona…</option>
+          <option value="delgado">Delgado</option>
+          <option value="normal">Normal</option>
+          <option value="atlético">Atlético</option>
+          <option value="robusto">Robusto</option>
+        </select>
+      </div>
+
+      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+        <h5 class="mb-2">Afecciones médicas</h5>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" formControlName="isHypertensive" id="hypertensive">
+          <label class="form-check-label" for="hypertensive">Hipertenso</label>
+        </div>
+        <div class="form-check mt-1">
+          <input class="form-check-input" type="checkbox" formControlName="isDiabetic" id="diabetic">
+          <label class="form-check-label" for="diabetic">Diabético</label>
+        </div>
+        <div class="mt-2">
+          <label class="form-label">Otras</label>
+          <textarea class="form-control" rows="2" formControlName="otherConditions"></textarea>
+        </div>
+      </div>
+
+      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+        <h5 class="mb-2">Alergia a medicación</h5>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" formControlName="hasDrugAllergy" id="hasDrugAllergy">
+          <label class="form-check-label" for="hasDrugAllergy">Sí, tengo alergias</label>
+        </div>
+        <div class="mt-2" *ngIf="profileForm.get('hasDrugAllergy')?.value">
+          <label class="form-label">Detalle</label>
+          <input type="text" class="form-control" formControlName="drugAllergyDetail" placeholder="Ej: penicilina, ibuprofeno…">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center gap-2 mt-3">
+    <button type="button" class="cs-btn cs-style2" (click)="toggleEdit()">
+      <span>Cancelar</span>
+    </button>
+    <button type="submit" class="cs-btn cs-style1" [disabled]="saving">
+      <span>{{ saving ? 'Actualizando…' : 'Actualizar' }}</span>
+    </button>
+  </div>
+</form>
+
       </div>
     </div>
   </div>

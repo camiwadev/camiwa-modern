@@ -388,4 +388,7 @@ async createProfessionalAndSpecialist(
     throw new Error(`${detail}${fields ? ' → ' + fields : ''}`);
   }
 }
+async updateTravelerField(travelerId: string, updateData: any): Promise<void> {
+  await this.pb.collection('camiwaTravelers').update(travelerId, updateData);
+}
 }
