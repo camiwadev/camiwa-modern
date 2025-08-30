@@ -22,6 +22,7 @@ import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { FaqsComponent } from './components/faqs/faqs.component';
 import { BookingCalendarComponent } from './components/booking-calendar/booking-calendar.component';
 import { ProfileComponent } from './components/dashboardProfesional/profile/profile.component';
+import { AuthPocketbaseService } from './services/AuthPocketbase.service';
 
 
 @Component({
@@ -57,6 +58,7 @@ export class AppComponent {
   mostrarChatbot = false;
   
   constructor( public globalService: GlobalService,
+    public auth: AuthPocketbaseService,
     public script: ScriptService
   ) {
     this.script.load(
@@ -73,6 +75,7 @@ export class AppComponent {
       .catch(error => console.log(error));
   }
   async ngOnInit(): Promise<void> {
+    await this.auth.restoreSession();
     try {
       await Promise.all([
         this.globalService.initCategoriasRealtime(),

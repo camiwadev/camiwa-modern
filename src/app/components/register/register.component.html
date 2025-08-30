@@ -30,11 +30,7 @@
           <div class="cs-height_30 cs-height_lg_30"></div>
 
           <!-- Campos comunes -->
-          <div class="cs-form_field_wrap">
-            <input type="text" formControlName="username" class="cs-form_field" placeholder="Usuario">
-            <small class="text-danger" *ngIf="f['username'].touched && f['username'].invalid">Mínimo 3 caracteres.</small>
-          </div>
-
+          <div *ngIf="!showProWizard()">
           <div class="cs-height_20 cs-height_lg_20"></div>
           <div class="cs-form_field_wrap">
             <input type="email" formControlName="email" class="cs-form_field" placeholder="Correo">
@@ -42,17 +38,90 @@
           </div>
 
           <div class="cs-height_20 cs-height_lg_20"></div>
-          <div class="cs-form_field_wrap">
-            <input type="password" formControlName="password" class="cs-form_field" placeholder="Contraseña">
-            <small class="text-danger" *ngIf="f['password'].touched && f['password'].invalid">Mínimo 6 caracteres.</small>
+          <!-- Contraseña -->
+          <div class="cs-form_field_wrap cs-relative">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              class="cs-form_field cs-pr-44"
+              placeholder="Contraseña"
+              autocomplete="new-password" />
+
+            <button
+              type="button"
+              class="cs-eye_btn"
+              (click)="showPassword = !showPassword"
+              [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+
+              <!-- OJO: invertimos las condiciones -->
+              <!-- Estado oculto (showPassword = false) -> mostrar OJO TACHADO -->
+              <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="2"/>
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                <line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2"/>
+              </svg>
+
+              <!-- Estado visible (showPassword = true) -> mostrar OJO ABIERTO -->
+              <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="2" />
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </button>
+
+            <small class="text-danger" *ngIf="f['password'].touched && f['password'].invalid">
+              Mínimo 6 caracteres.
+            </small>
           </div>
+          <div class="cs-height_20 cs-height_lg_20"></div>
+
+          <div class="cs-form_field_wrap cs-relative">
+            <input
+            [type]="showConfirm ? 'text' : 'password'"
+            formControlName="passwordConfirm"
+            class="cs-form_field cs-pr-44"
+            placeholder="Confirmar contraseña"
+            autocomplete="new-password"/>
+
+            <button
+              type="button"
+              class="cs-eye_btn"
+              (click)="showPassword = !showPassword"
+              [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+
+             
+              <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="2"/>
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                <line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2"/>
+              </svg>
+
+              <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="2" />
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </button>
+
+            <small class="text-danger" *ngIf="f['passwordConfirm'].touched && f['passwordConfirm'].invalid">
+              Mínimo 6 caracteres.
+            </small>
+          </div>
+          </div>
+
 
           <!-- Paciente -->
           <div *ngIf="isPatient() && !showProWizard()" class="mt-3" formGroupName="patient">
             <h5 class="mb-2">Datos de paciente</h5>
             <div class="cs-form_field_wrap">
-              <input type="text" formControlName="fullName" class="cs-form_field" placeholder="Nombre completo">
+              <input type="text" formControlName="fullName" class="cs-form_field" placeholder="Nombres">
               <small class="text-danger" *ngIf="form.get('patient.fullName')?.touched && form.get('patient.fullName')?.invalid">
+                Requerido (mín. 3)
+              </small>
+            </div>
+          </div>
+          <div *ngIf="isPatient() && !showProWizard()" class="mt-3" formGroupName="patient">
+            <div class="cs-form_field_wrap">
+              <input type="text" formControlName="lastname" class="cs-form_field" placeholder="Apellido">
+              <small class="text-danger" *ngIf="form.get('patient.lastname')?.touched && form.get('patient.lastname')?.invalid">
                 Requerido (mín. 3)
               </small>
             </div>
@@ -102,13 +171,70 @@
 
                             <div class="form-inner-area">
                               <input type="text" class="form-control" placeholder="Nombre completo *" formControlName="full_name">
-                              <input type="text" class="form-control" placeholder="Telefono *" formControlName="phone">
-                              <input type="text" class="form-control" placeholder="Dirección de habitación *" formControlName="address">
-                              <input type="text" class="form-control" placeholder="Dirección de consultorio *" formControlName="consultationAddress">
-                              <input type="text" class="form-control" placeholder="Ciudad *" formControlName="city">
-                              <input type="text" class="form-control" placeholder="País *" formControlName="country">
-                            </div>
+                              <div class="cs-form_field_wrap cs-select_arrow">
+                                <input type="text"
+                                      class="form-control"
+                                      placeholder="Apellido *"
+                                      formControlName="lastname">
+                                <small class="text-danger"
+                                      *ngIf="pwPersonal.get('lastname')?.touched && pwPersonal.get('lastname')?.invalid">
+                                  Requerido (mín. 2)
+                                </small>
 
+                                <div class="input-group">
+                                  <select
+                                    class="form-select"
+                                    formControlName="phoneCode"
+                                    aria-label="Código país"
+                                    style="flex:0 0 9rem; max-width:9rem"> <!-- ~144px -->
+                                    <option value="" disabled>+Código</option>
+                                    <option *ngFor="let c of americasCountries" [value]="c.dial">
+                                      {{ c.flag }} {{ c.name }} ({{ c.dial }})
+                                    </option>
+                                  </select>
+                                
+                                  <input
+                                    type="tel"
+                                    class="form-control"
+                                    placeholder="Número sin código *"
+                                    formControlName="phoneLocal"
+                                    inputmode="numeric" />
+                                </div>
+                                
+                              </div>
+                              <small class="text-danger" *ngIf="pwPersonal.get('phoneLocal')?.touched && pwPersonal.get('phoneLocal')?.invalid">
+                                Ingresa un número válido (mín. 6 dígitos).
+                              </small>
+                              <div class="cs-form_field_wrap cs-select_arrow">
+                                <select class="cs-form_field form-select" formControlName="country" aria-label="País *">
+                                <option value="" disabled selected>Selecciona país *</option>
+                                <option *ngFor="let c of americasCountries" [value]="c.code">
+                                  {{ c.flag }} {{ c.name }}
+                                </option>
+                              </select>
+                              </div>
+                              <div class="cs-form_field_wrap cs-select_arrow">
+
+                              <select class="cs-form_field form-select" formControlName="city" [disabled]="!citiesOptions.length" aria-label="Ciudad *">
+                                <option value="" disabled selected>Selecciona ciudad *</option>
+                                <option *ngFor="let city of citiesOptions" [value]="city">{{ city }}</option>
+                              </select>
+                              </div>
+                              <input type="text" class="form-control" placeholder="Dirección completa *" formControlName="address">
+
+                            
+                            </div>
+                            <div class="upload-documents mt-3">
+                              <h3>Cargue su documento de identidad:</h3>
+                              <ngx-awesome-uploader
+                                [adapter]="adapterIdentity"
+                                [captions]="captions"
+                                [showPreviewContainer]="true">
+                              </ngx-awesome-uploader>
+                              <small class="text-muted d-block mt-1">
+                                La URL se guardará en <code>personal.idDocumentUrl</code>.
+                              </small>
+                            </div>
                             <div class="gender-selection">
                               <h3>Género:</h3>
                               <label><input type="radio" value="Male"   formControlName="gender"><span class="checkmark"></span>Masculino</label>
@@ -116,25 +242,36 @@
                               <label><input type="radio" value="Other"  formControlName="gender"><span class="checkmark"></span>Otro</label>
                             </div>
 
-                           <!--  <div class="upload-documents">
-                              <h3>Cargue su documento de identidad:</h3>
-                            </div>
-
-                            <div class="upload-documents">
-                              <h3>Cargue su fotografía personal:</h3>
-                            </div> -->
+                            
+                            
 
                           </div>
                         </div>
                       </div>
 
-                      <div class="actions">
+                      <!-- <div class="actions">
                         <button type="button" class="btn btn-accent"
                                 [disabled]="!pwPersonal.valid"
                                 (click)="nextStep()">
                           Siguiente <i class="fa fa-arrow-right"></i>
                         </button>
+                      </div> -->
+                      <!-- Acciones Paso 1 -->
+                      <div class="actions d-flex gap-2">
+                        <button type="button" class="btn btn-outline" (click)="prevStep()" [disabled]="proStep()===1">
+                          <i class="fa fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="button" class="btn btn-accent" (click)="nextStep()">
+                          Siguiente <i class="fa fa-arrow-right"></i>
+                        </button>
+                        
+                       <!--  <button type="button" class="btn btn-accent"
+                                [disabled]="!pwPersonal.valid"
+                                (click)="nextStep()">
+                          Siguiente <i class="fa fa-arrow-right"></i>
+                        </button> -->
                       </div>
+
                     </div>
                   </div>
 
@@ -155,12 +292,30 @@
                             </div>
 
                             <h2>Información profesional</h2>
-                            <div class="form-inner-area">
-                              <input type="text" class="form-control" placeholder="Profesión *" formControlName="profession">
-                              <input type="text" class="form-control" placeholder="Área de estudio *" formControlName="studyArea">
-                              <input type="text" class="form-control" placeholder="Universidad de egreso *" formControlName="university">
-                              <input type="text" class="form-control" placeholder="Año de egreso * (YYYY)" formControlName="graduationYear">
+                            <div class="language-select">
+                              <p>Seleccione la profesión a la que pertenece: </p>
+                              <ng-multiselect-dropdown
+                                name="category"
+                                [(ngModel)]="formDataModel.category"
+                                [data]="(categoriesOptions$ | async) ?? []"
+                                [settings]="dropdownSettingsCategory"     
+                                [placeholder]="'Seleccione Profesión'"
+                                [disabled]="false"
+                                (ngModelChange)="onCategoryChanged()">
+                              </ng-multiselect-dropdown>
                             </div>
+                            
+                            <div class="language-select" [hidden]="!global.categorySelected">
+                              <p>Seleccione la especialidad: </p>
+                              <ng-multiselect-dropdown
+                                name="specialty"
+                                [(ngModel)]="formDataModel.especialidades"
+                                [data]="(especialidadOptionsFiltered$ | async) ?? []"
+                                [settings]="dropdownSettingsSpecialties"
+                                [placeholder]="'Seleccione especialidad'">
+                              </ng-multiselect-dropdown>
+                            </div>
+                            
 
                             <!-- <div class="language-select">
                               <p>Seleccione la profesión a la que pertenece:</p>
@@ -191,9 +346,19 @@
                         <button type="button" class="btn btn-accent" (click)="nextStep()">
                           Sig. <i class="fa fa-arrow-right"></i>
                         </button> -->
-                        <button type="button" class="btn btn-accent" (click)="finishOnboardingSimple()">
+                       <!--  <button type="button" class="btn btn-accent" (click)="finishOnboardingSimple()">
                           Finalizar (simple) <i class="fa fa-check"></i>
-                        </button>
+                        </button> -->
+                        <!-- Acciones Paso 2 -->
+                        <div class="actions d-flex gap-2">
+                          <button type="button" class="btn btn-outline" (click)="prevStep()">
+                            <i class="fa fa-arrow-left"></i> Anterior
+                          </button>
+                          <button type="button" class="btn btn-accent" (click)="finishOnboardingSimple()">
+                            Finalizar (simple) <i class="fa fa-check"></i>
+                          </button>
+                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -260,10 +425,13 @@
 
           <div class="cs-height_20 cs-height_lg_20"></div>
 
-          <!-- Términos (paciente) -->
-          <div class="form-check" *ngIf="isPatient() && !showProWizard()">
+        
+          <!-- Términos (paciente y profesional) -->
+          <div class="form-check" *ngIf="!showProWizard()">
             <input class="form-check-input" type="checkbox" id="terms" formControlName="terms">
-            <label class="form-check-label" for="terms">Acepto términos y condiciones</label>
+            <label class="form-check-label" for="terms" (click)="global.setRouterActive('terms')" style="cursor: pointer;">
+              Acepto términos y condiciones
+            </label>
             <div class="text-danger" *ngIf="form.get('terms')?.touched && form.get('terms')?.invalid">Requerido.</div>
           </div>
 
@@ -276,6 +444,7 @@
           <button *ngIf="isProfessional() && !loading() && !showProWizard()" class="cs-btn btn btn-accent cs-btn_lg w-100" type="submit">
             Continuar con el registro
           </button>
+          
 
           <!-- Loader global -->
           <div *ngIf="loading()" class="text-center mt-3">

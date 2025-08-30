@@ -20,4 +20,20 @@
     backdrop-filter: blur(6px);
   }
   .btn-outline:hover{ background: rgba(255,255,255,.08); transform: translateY(-2px); }
+  .cs-relative { position: relative; }
+  .cs-pr-44 { padding-right: 44px; }
+  
+  .cs-eye_btn{
+    position:absolute; right:12px; top:50%; transform:translateY(-50%);
+    width:34px; height:34px; display:grid; place-items:center;
+    background:transparent; border:none; cursor:pointer;
+    color:#E6EEFC;            /* Asegura contraste en fondo oscuro */
+    z-index: 3;               /* Por encima del input */
+    padding:0;
+  }
+  .cs-eye_btn:hover { color:#FFFFFF; }
+  .cs-eye_btn svg { display:block; }
+  
+  .cs-form_field_wrap{ overflow:visible; } /* evita que recorte el botón */
+  .cs-form_field{ position:relative; z-index:1; }
   

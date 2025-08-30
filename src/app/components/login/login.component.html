@@ -11,7 +11,7 @@
 
         <div class="cs-form_card_in">
           <h2 class="cs-form_title text-center">Iniciar sesión</h2>
-
+          <p style="text-align: center;">Bienvenidos de nuevo a Camiwa</p>
           <!-- Mensaje de error servidor -->
           <div *ngIf="isError" class="alert alert-danger mt-3 mb-0">
             {{ serverMsg }}
@@ -36,17 +36,38 @@
           <div class="cs-height_20 cs-height_lg_20"></div>
 
           <!-- Password -->
-          <div class="cs-form_field_wrap">
+          <div class="cs-form_field_wrap cs-relative">
             <input
-              type="password"
-              class="cs-form_field"
-              placeholder="Contraseña"
+              [type]="showPassword ? 'text' : 'password'"
               formControlName="password"
-              [class.is-invalid]="submitted && f['password'].invalid" />
-            <div class="invalid-feedback d-block" *ngIf="submitted && f['password'].errors">
-              <div *ngIf="f['password'].errors['required']">La contraseña es requerida.</div>
-              <div *ngIf="f['password'].errors['minlength']">Mínimo 6 caracteres.</div>
-            </div>
+              class="cs-form_field cs-pr-44"
+              placeholder="Contraseña"
+              autocomplete="new-password" />
+
+            <button
+              type="button"
+              class="cs-eye_btn"
+              (click)="showPassword = !showPassword"
+              [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+
+              <!-- OJO: invertimos las condiciones -->
+              <!-- Estado oculto (showPassword = false) -> mostrar OJO TACHADO -->
+              <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="2"/>
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                <line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2"/>
+              </svg>
+
+              <!-- Estado visible (showPassword = true) -> mostrar OJO ABIERTO -->
+              <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="2" />
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </button>
+
+            <small class="text-danger" *ngIf="f['password'].touched && f['password'].invalid">
+              Mínimo 6 caracteres.
+            </small>
           </div>
 
           <div class="cs-height_20 cs-height_lg_20"></div>

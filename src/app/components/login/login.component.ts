@@ -3,8 +3,8 @@ import { Component, Renderer2 } from '@angular/core';
 import { GlobalService } from '../../services/global.service';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import PocketBase from 'pocketbase';
-import { PocketAuthService } from '../../services/pocket-auth.service';
 import { ScriptService } from '../../services/script.services';
+import { AuthPocketbaseService } from '../../services/AuthPocketbase.service';
 @Component({
   selector: 'app-login',
   standalone:true,
@@ -18,10 +18,12 @@ export class LoginComponent {
   loading = false;
   isError = false;
   serverMsg = 'Error en datos de acceso';
+  showPassword = false;
+
   constructor (
     public global: GlobalService,
     private renderer: Renderer2,
-    public pocketAuthService: PocketAuthService,
+    public auth: AuthPocketbaseService,
     public script: ScriptService,
     public fb: FormBuilder
   ){}
@@ -51,10 +53,10 @@ export class LoginComponent {
 
     const { email, password } = this.ngFormLogin.value;
 
-    this.pocketAuthService.loginUser(email, password).subscribe({
+    this.auth.loginUser(email, password).subscribe({
       next: (resp) => {
         // Persistimos usuario base
-        this.pocketAuthService.setUser(resp.record);
+        this.auth.setUser(resp.record);
         const { username, email, id, type } = resp.record;
         this.global.currentUser = { username, email, id, type };
 
@@ -62,8 +64,10 @@ export class LoginComponent {
         localStorage.setItem('isLoggedin', 'true');
 
         // Preparar layout app interna
-        this.renderer.setAttribute(document.body, 'class', 'fixed sidebar-mini sidebar-collapse');
-
+        ['fixed', 'sidebar-mini', 'sidebar-collapse'].forEach(c =>
+          this.renderer.addClass(document.body, c)
+        );
+        
         switch (type) {
           case 'admin':
             this.global.routerActive = 'dashboard/admin';
@@ -94,37 +98,41 @@ export class LoginComponent {
   }
 
   /** Carga datos de especialista y enruta a dashboard */
-  private fetchSpecialistData(userId: string): void {
-    const pb = new PocketBase('https://db.camiwa.com:250');
-    pb.collection('camiwaSpecialists')
-      .getList(1, 1, { filter: `userId="${userId}"` })
-      .then((res: any) => {
-        const record = res.items?.[0];
-        if (record) {
-          localStorage.setItem('status', record.status);
-          this.global.previewRequest = record;
-          this.global.previewCard = record;
-
-          // Mapeo de días laborables
-          const daysMap = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
-          this.global.workingDays = (record.days || [])
-            .map((isOn: boolean, i: number) => (isOn ? daysMap[i] : null))
-            .filter(Boolean) as string[];
-
-          localStorage.setItem('currentUser', JSON.stringify(record));
-          this.global.routerActive = 'dashboard/profile';
-        } else {
-          console.warn('Especialista sin perfil creado, redirigiendo a dashboard.');
-          this.global.routerActive = 'dashboard/profile';
-        }
-      })
-      .catch((e) => {
-        console.error('Error especialistas', e);
-        this.global.routerActive = 'home';
-      })
-      .finally(() => (this.loading = false));
-  }
-
+private fetchSpecialistData(userId: string): void {
+        const pb = new PocketBase('https://db.camiwa.com:250');
+      
+        pb.collection('camiwaSpecialists')
+          .getList(1, 1, { filter: `userId="${userId}"` })
+          .then((res: any) => {
+            const record = res.items?.[0];
+      
+            if (record) {
+              localStorage.setItem('status', record.status ?? '');
+              this.global.previewRequest = record;
+              this.global.previewCard = record;
+            
+              const daysMap = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+              this.global.workingDays = (record.days || [])
+                .map((isOn: boolean, i: number) => (isOn ? daysMap[i] : null))
+                .filter(Boolean) as string[];
+            
+              localStorage.setItem('currentUser', JSON.stringify(record));
+            
+              // ✅ usa Router en lugar de GlobalService
+              this.global.setRouterActive('dashboardProfesional/profile');
+            } else {
+              console.warn('Especialista sin perfil creado, redirigiendo a home.');
+              this.global.setRouterActive('/home');
+            }
+            
+          })
+          .catch((e) => {
+            console.error('Error especialistas', e);
+            this.global.setRouterActive('home');
+          })
+          .finally(() => (this.loading = false));
+      }
+      
   /** Carga datos de viajero y enruta a mapwrapper / user-home */
   private fetchTravelerData(userId: string): void {
     const pb = new PocketBase('https://db.camiwa.com:250');
@@ -137,21 +145,26 @@ export class LoginComponent {
   
         if (record) {
           localStorage.setItem('status', record.status ?? '');
+          localStorage.setItem('clientFicha', JSON.stringify(record)); // ✅ persistir
+  
+          // ✅ Asignar a la propiedad que usa el template
+          this.global.clientFicha = record;
+  
           this.global.previewRequest = record;
           this.global.previewCard = record;
-  
-          // ✅ nombre de ruta correcto y usando el setter
           this.global.setRouterActive('patient-profile');
         } else {
           this.global.setRouterActive('home');
         }
       })
       .catch((e) => {
-        console.error('Error travelers', e);
+        console.error('Error paciente', e);
         this.global.setRouterActive('home');
       })
       .finally(() => (this.loading = false));
+      
   }
   
+      
 
 }

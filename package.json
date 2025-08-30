@@ -28,6 +28,7 @@
     "@stripe/stripe-js": "^7.8.0",
     "lottie-web": "^5.13.0",
     "ng-multiselect-dropdown": "^1.0.0",
+    "ngx-awesome-uploader": "^19.0.1",
     "pocketbase": "^0.26.2",
     "rxjs": "~7.8.0",
     "stripe": "^18.4.0",

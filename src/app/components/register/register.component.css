@@ -501,3 +501,50 @@ input[type="radio"],input[type="checkbox"]{
   .login-hero-v2__caption{ position: static; padding: 14px 16px 16px; }
   .login-hero-v2__badge{ top: 12px; left: 12px; }
 }
+.cs-relative { position: relative; }
+
+/* Da espacio al icono a la derecha */
+.cs-pr-44 { padding-right: 44px; }
+
+/* Botón del ojo */
+.cs-eye_btn {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #A8B3C7;            /* tono gris azulado para dark */
+  z-index: 2;                /* sobre el input */
+  padding: 0;
+}
+
+/* Accesibilidad / hover */
+.cs-eye_btn:hover { color: #D7E3FF; }
+.cs-eye_btn:focus { outline: 2px solid #5B8CFF44; border-radius: 999px; }
+
+/* Evita que el contenedor recorte el botón si tuviera overflow */
+.cs-form_field_wrap { overflow: visible; }
+
+/* Asegura que el input no tape el botón en UIs con sombras */
+.cs-form_field { position: relative; z-index: 1; }
+
+/* register.component.css */
+.phone-group .phone-code {
+  flex: 0 0 9rem;     /* ancho fijo del selector */
+  max-width: 9rem;
+  width: 9rem;        /* por si algún reset mete width:100% */
+}
+
+.phone-group .phone-local {
+  flex: 1 1 auto;     /* el input ocupa el resto */
+  min-width: 0;       /* previene overflow en flexbox */
+}
+
+/* Si por tema global cs-form_field fuerza width:100%, neutralízalo dentro del input-group */
+.input-group .cs-form_field { width: auto; }  /* solo si insistes en usar cs-form_field */

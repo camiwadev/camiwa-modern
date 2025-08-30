@@ -55,11 +55,49 @@ interface profesional {
   avatar: string[];
   userId: string;
 }
+export interface PatientFicha {
+  id: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  avatar?: string;
+  fullName?: string;
+  lastname?: string;
+  images?:string;
+}
 @Injectable({
   providedIn: 'root'
 })
 
 export class GlobalService {
+  newImage: boolean = false;
+  dayNames = [
+    'Domingo',
+    'Lunes',
+    'Martes',
+    'Miércoles',
+    'Jueves',
+    'Viernes',
+    'Sábado',
+  ];
+  daysMap = [
+    'sunday',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+  ];
+  newUploaderImage: boolean = false;
+  newUploaderAvatar: boolean = false;
+  uploaderImages: string[] = [];
+  certificates: string[] = [];
+  avatar: string[] = [];
+
+
+  public userId: string = '';
   routerActive:string= "home";
   private _routerActive$ = new BehaviorSubject<string>('home');
   routerActive$ = this._routerActive$.asObservable();
@@ -76,7 +114,6 @@ export class GlobalService {
   public profesionalesSubject = new BehaviorSubject<any[]>([]);
   profesionales$ = this.profesionalesSubject.asObservable();
   workingDays: any[] = [];
-
   previewRequest: {
     userId: string;
     id: string;
@@ -121,6 +158,7 @@ export class GlobalService {
     password: string;
     type: string;
     usertype: string;
+    biography:string;
   } = {
     userId: '',
     id: '',
@@ -165,6 +203,7 @@ export class GlobalService {
     password: '',
     type: '',
     usertype: '',
+    biography:''
   };
   previewCard: {
     ticketNumber: string;
@@ -191,7 +230,7 @@ export class GlobalService {
   categorySelected: any = false;
   specialtiesFilteredSelected = false;
   specialtiesFiltered: any[] = [];
-
+  clientFicha: PatientFicha | null = null;
   constructor(
     public realtimeCategoriasService: RealtimeCategoriasService,
     public realtimeEspecialidadesService: RealtimeEspecialidadesService,
@@ -283,15 +322,11 @@ public subscribeRealtime(collection: string, subject: BehaviorSubject<any[]>) {
     subject.next(current);
   });
 }
-ClientFicha(): any {
-  let client_string = localStorage.getItem('clientFicha');
-  if (client_string) {
-    let client: any = JSON.parse(client_string!);
-    return client;
-  } else {
-    return { cldisponible: 0 };
-  }
+ClientFicha(): void { // mantiene el nombre, pero ahora es 'loader'
+  const raw = localStorage.getItem('clientFicha');
+  this.clientFicha = raw ? (JSON.parse(raw) as PatientFicha) : null;
 }
+
 type(): string | null {
   const typeString = localStorage.getItem('type');
   if (typeString) {

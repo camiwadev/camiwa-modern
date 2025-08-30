@@ -170,3 +170,29 @@
 .fab__item:hover{ box-shadow: 0 12px 26px rgba(0,0,0,.4), inset 0 0 20px rgba(39,229,255,.18); }
 .fab__icon{ font-size:16px; }
 @media (max-width: 560px){ .fab__text{ display:none; } .fab__item{ padding:10px; border-radius:50%; } }
+/* Asegura stacking y posición */
+.cs-profile_box { position: relative; }
+.cs-profile_box .cs-toggle_body {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 1000;
+}
+
+/* Si el theme oculta por defecto con opacity/visibility, fuerza al abrir */
+.cs-profile_box.is-open .cs-toggle_body {
+  display: block !important;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* (Opcional) estado cerrado si el theme no lo define bien */
+.cs-profile_box:not(.is-open) .cs-toggle_body {
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+}
+.cs-toggle_box .cs-toggle_body { display: none; }
+.cs-toggle_box.is-open .cs-toggle_body { display: block; }
