@@ -237,6 +237,7 @@ async restoreSession() {
 
 /** Logout */
 async logoutUser(): Promise<void> {
+  this.pb.authStore.clear(); 
   await this.pb.realtime.unsubscribe();
   this.pb.authStore.clear();
   localStorage.clear();

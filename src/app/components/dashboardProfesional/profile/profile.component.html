@@ -3,9 +3,20 @@
   <div class="cs-height_100 cs-height_lg_70"></div>
   <div class="container">
     <div class="cs-collection_card">
-      <div class="cs-collection_img"><img src="assets/img/general/collection_details.jpeg" alt="Collection Details"></div>
+      <div class="cs-collection_img">
+        <img src="assets/img/general/collection_details.jpeg" alt="Collection Details">
+      </div>
       <div class="cs-collection_bottom">
-        <div class="cs-collection_avatar"><img [src]="global.previewRequest.images[0]" alt="Avatar"></div>
+        <div class="cs-collection_avatar">
+          <img
+          [src]="avatarPreviewUrl || getAvatarUrl()"
+          alt="Avatar"
+          style="width:100%; height:100%; object-fit:cover;"
+        />
+        
+        </div>
+        
+        
         <div class="cs-collection_info">
           <div class="cs-collection_info_in cs-white_bg">
             <div class="cs-collection_info_left">
@@ -46,10 +57,24 @@
     <div class="cs-profile_left">
       <div class="cs-profile_sidebar cs-white_bg cs-box_shadow">
         <div class="cs-profile_info" style="padding-top: 10px;">
+          <div class=" mb-3" style="text-align: center;">
+
+            <input type="file"
+                   id="proAvatarInput"
+                   hidden
+                   accept="image/*"
+                   (change)="onAvatarChange($event)">
+            
+            <button class="cs-btn cs-style1 mt-2"
+                    type="button"
+                    (click)="triggerAvatarInput()">
+              <span><i class="bi bi-camera-fill me-1"></i> Cambiar foto</span>
+            </button> 
+            </div>
           <h3 class="cs-profile_title">{{global.previewRequest.full_name}}</h3>
           <ul class="cs-profile_meta cs-mp0">
-            <li>Followers (560)</li>
-            <li>Following (56)</li>
+            <li>{{global.previewRequest.profession}}</li>
+            <li>{{global.previewRequest.profession}}</li>
           </ul>
         </div>
 
@@ -213,18 +238,7 @@
           <h5 class="mb-1">Username</h5>
           <input type="text" class="form-control" formControlName="username">
         </div>
-        <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-          <h5 class="mb-1">Facebook</h5>
-          <input type="url" class="form-control" formControlName="facebook">
-        </div>
-        <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-          <h5 class="mb-1">Twitter</h5>
-          <input type="url" class="form-control" formControlName="twitter">
-        </div>
-        <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-          <h5 class="mb-1">LinkedIn</h5>
-          <input type="url" class="form-control" formControlName="linkedin">
-        </div>
+        
       </div>
     </div>
 

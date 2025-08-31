@@ -47,21 +47,24 @@ export class PbService {
   private pb = new PocketBase('https://db.camiwa.com:250');
 
   constructor() {
-    // si ya manejas auth, restaura el token si lo guardas en localStorage
-    // const auth = JSON.parse(localStorage.getItem('pb_auth') || 'null');
-    // if (auth) this.pb.authStore.save(auth.token, auth.model);
+   
   }
+  async rawUpdate(collection: string, id: string, formData: FormData, opts?: { fields?: string }) {
+    return await this.pb.collection(collection).update(id, formData, {
+      requestKey: null,
+      ...(opts?.fields ? { fields: opts.fields } : {})
+    });
+  }
+getFileUrl(record: any, filename: string): string {
+  return this.pb.files.getUrl(record, filename);
+}
 
-  /** Normaliza campos JSON: acepta objeto/array o string; retorna string JSON para enviar en form-data. */
   private toJSONString(value: any): string | undefined {
     if (value === undefined || value === null) return undefined;
     if (typeof value === 'string') {
-      // si ya parece JSON, lo dejamos así
       try { JSON.parse(value); return value; } catch { /* no-op */ }
-      // si es string simple, lo enviamos tal cual como string (campo plano)
       return value;
     }
-    // objeto/array -> stringify
     return JSON.stringify(value);
   }
 

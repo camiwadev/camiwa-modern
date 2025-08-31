@@ -14,7 +14,13 @@ export class PocketDataService {
   constructor(public global:GlobalService) {
     this.pb = new PocketBase('https://db.camiwa.com:250');
   }
-
+  async rawUpdate(collection: string, id: string, formData: FormData, opts?: { fields?: string }) {
+    // pb es la instancia de PocketBase
+    return await this.pb.collection(collection).update(id, formData, {
+      requestKey: null,
+      ...(opts?.fields ? { fields: opts.fields } : {})
+    });
+  }
   async saveCategor(categoryData:any): Promise<any> {
     try {
       const record = await this.pb.collection('camiwaCategories').create(categoryData);

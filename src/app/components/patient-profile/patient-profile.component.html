@@ -4,7 +4,28 @@
       <div class="cs-profile_left">
         <div class="cs-profile_sidebar cs-white_bg cs-box_shadow">
           <div class="cs-profile_info">
-            <div class="cs-profile_pic"><img src="assets/img/avatar/avatar_29.png" alt=""></div>
+             <!-- Imagen actual -->
+              <div class="cs-profile_pic mb-3">
+                <img 
+                  [src]="avatarUrl" 
+                  alt="avatar" 
+                  class="profile-photo rounded-circle" 
+                  style=" object-fit: cover;">
+                  <!-- style="max-height: 150px; object-fit: cover;"> -->
+
+              </div>
+              <div class=" mb-3" style="text-align: center;">
+
+              <!-- Botón para subir -->
+              <input type="file" id="avatarInput" hidden (change)="onAvatarChange($event)">
+              <button 
+                class="btn cs-btn cs-style1 text-center"
+                type="button"
+                (click)="triggerAvatarInput()">
+                <i class="bi bi-camera-fill me-1"></i>
+                <span> Cambiar foto </span>
+              </button>
+              </div>
             <h3 class="cs-profile_title">
               {{ global.clientFicha?.fullName || global.clientFicha?.lastname }}
             </h3>
@@ -13,7 +34,6 @@
             <ul class="list-unstyled mt-3">
               <li><strong>Email:</strong> {{ global.clientFicha?.email  }}</li>
               <li><strong>Teléfono:</strong> {{ global.clientFicha?.phone  }}</li>
-              <li><strong>Dirección:</strong> {{ global.clientFicha?.address  }}</li>
             </ul>
           </div>
           <div class="cs-height_30 cs-height_lg_30"></div>
@@ -29,26 +49,9 @@
                 <span>Cuenta de usuario</span>
               </a>
             </li>
+            
             <li>
-              <a href="user-account-settings.html">
-                <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g clip-path="url(#clip0_1353_5407)">
-                  <path d="M13.8984 14.625C14.5198 14.625 15.0234 14.1213 15.0234 13.5C15.0234 12.8787 14.5198 12.375 13.8984 12.375C13.2771 12.375 12.7734 12.8787 12.7734 13.5C12.7734 14.1213 13.2771 14.625 13.8984 14.625Z" fill="currentColor"/>
-                  <path d="M18.273 13.2064C17.9254 12.321 17.3256 11.5572 16.548 11.0094C15.7704 10.4617 14.8491 10.1542 13.8984 10.125C12.9477 10.1542 12.0265 10.4617 11.2489 11.0094C10.4713 11.5572 9.87152 12.321 9.52387 13.2064L9.39844 13.5L9.52387 13.7931C9.87143 14.6785 10.4712 15.4425 11.2488 15.9903C12.0264 16.5382 12.9477 16.8458 13.8984 16.875C14.8492 16.8458 15.7705 16.5382 16.5481 15.9903C17.3257 15.4425 17.9254 14.6785 18.273 13.7931L18.3984 13.5L18.273 13.2064ZM13.8984 15.75C13.4534 15.75 13.0184 15.618 12.6484 15.3708C12.2784 15.1236 11.99 14.7722 11.8197 14.361C11.6494 13.9499 11.6049 13.4975 11.6917 13.061C11.7785 12.6246 11.9928 12.2237 12.3074 11.909C12.6221 11.5943 13.023 11.38 13.4595 11.2932C13.8959 11.2064 14.3483 11.251 14.7595 11.4213C15.1706 11.5916 15.522 11.88 15.7692 12.25C16.0165 12.62 16.1484 13.055 16.1484 13.5C16.1477 14.0965 15.9104 14.6684 15.4886 15.0902C15.0668 15.512 14.4949 15.7493 13.8984 15.75V15.75Z" fill="currentColor"/>
-                  <path d="M7.93538 11.6996C7.47525 11.3543 7.11101 10.8972 6.87723 10.3716C6.64344 9.84603 6.54788 9.2694 6.59961 8.69649C6.65135 8.12357 6.84865 7.57339 7.17281 7.09817C7.49696 6.62296 7.93719 6.23848 8.45172 5.98125C8.96624 5.72401 9.53798 5.60256 10.1126 5.62841C10.6873 5.65427 11.2458 5.82658 11.7352 6.12898C12.2245 6.43138 12.6284 6.85384 12.9086 7.35625C13.1888 7.85866 13.3359 8.42433 13.3359 8.99958H12.2109C12.2109 8.61605 12.1129 8.23889 11.9261 7.90391C11.7394 7.56893 11.4701 7.28725 11.1438 7.08561C10.8176 6.88398 10.4452 6.76909 10.0621 6.75185C9.67893 6.73461 9.29774 6.8156 8.95471 6.98712C8.61167 7.15864 8.31817 7.41499 8.10208 7.73185C7.88598 8.0487 7.75447 8.41554 7.72003 8.79752C7.68559 9.17949 7.74936 9.56393 7.90528 9.91433C8.06121 10.2647 8.30412 10.5695 8.61094 10.7996L7.93538 11.6996Z" fill="currentColor"/>
-                  <path d="M17.4467 6.21225L16.1192 3.91275C15.9893 3.68719 15.7852 3.51369 15.5417 3.42188C15.2981 3.33006 15.0303 3.32562 14.7838 3.40931L13.4147 3.87281C13.1788 3.71376 12.9322 3.57112 12.6767 3.44587L12.3932 2.0295C12.3422 1.77447 12.2044 1.54498 12.0033 1.38007C11.8022 1.21516 11.5502 1.12503 11.2901 1.125H8.63512C8.37504 1.12503 8.12301 1.21516 7.9219 1.38007C7.72079 1.54498 7.58303 1.77447 7.53206 2.0295L7.24856 3.44587C6.9902 3.56974 6.74078 3.71146 6.50212 3.87L5.14087 3.40931C4.89456 3.32591 4.62696 3.33051 4.38367 3.42231C4.14037 3.51411 3.93644 3.68743 3.80662 3.91275L2.47912 6.21225C2.34907 6.43741 2.30104 6.70067 2.34319 6.95725C2.38534 7.21384 2.51506 7.44789 2.7103 7.61962L3.79649 8.57419C3.78693 8.71594 3.77512 8.85656 3.77512 9C3.77512 9.14512 3.78074 9.28856 3.79087 9.43088L2.71087 10.3804C2.51544 10.552 2.3855 10.7859 2.34315 11.0425C2.30079 11.2991 2.34864 11.5625 2.47855 11.7877L3.80605 14.0873C3.936 14.3127 4.14016 14.4861 4.3837 14.5778C4.62723 14.6695 4.89504 14.6739 5.14143 14.5901L6.51056 14.1272C6.74644 14.2861 6.99303 14.4286 7.24856 14.5536L7.53149 15.9705C7.58249 16.2256 7.72033 16.4552 7.92156 16.6201C8.12278 16.785 8.37495 16.8751 8.63512 16.875H9.40012V15.75H8.63512L8.23574 13.7531C7.68327 13.5479 7.17041 13.2487 6.71981 12.8689L4.78087 13.5248L3.45337 11.2252L4.98618 9.87806C4.88131 9.29637 4.87998 8.70072 4.98224 8.11856L3.45337 6.77419L4.78087 4.47525L6.70856 5.12775C7.16238 4.74735 7.67923 4.44923 8.23574 4.24688L8.63512 2.25H11.2901L11.6895 4.24688C12.242 4.45214 12.7548 4.75128 13.2054 5.13112L15.1444 4.47525L16.4719 6.77475L14.898 8.154L15.6394 9L17.2144 7.61962C17.4098 7.44804 17.5397 7.21405 17.5821 6.95746C17.6244 6.70087 17.5766 6.43754 17.4467 6.21225V6.21225Z" fill="currentColor"/>
-                  </g>
-                  <defs>
-                  <clipPath id="clip0_1353_5407">
-                  <rect width="18" height="18" fill="white" transform="translate(0.960938)"/>
-                  </clipPath>
-                  </defs>
-                </svg>
-                <span>Configuracion de cuenta</span>              
-              </a>
-            </li>
-            <li>
-              <a href="user-items.html">
+              <a href="">
                 <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M2.38131 0.70537L2.38131 0.70537C2.04217 0.755423 1.70925 0.924566 1.46165 1.17434M2.38131 0.70537L3.00218 0.76427C3.80487 1.00589 4.29426 1.8583 4.0934 2.62948C3.94828 3.18661 3.54444 3.61082 3.01305 3.77244C2.90023 3.80675 2.74286 3.82714 2.57777 3.82849C2.41256 3.82984 2.25598 3.81199 2.14463 3.77971L2.14462 3.77971C1.33629 3.54545 0.840391 2.69029 1.04295 1.91219L1.04295 1.91218C1.12107 1.61203 1.24656 1.39132 1.46165 1.17434M2.38131 0.70537C2.436 0.697298 2.54785 0.697908 2.67873 0.709974M2.38131 0.70537L2.67873 0.709974M1.46165 1.17434L1.31962 1.03354L1.46165 1.17434ZM2.67873 0.709974C2.80741 0.721837 2.92959 0.742442 3.00214 0.76426L2.67873 0.709974ZM6.31849 3.1635L6.31848 3.16349C6.22718 3.12069 6.08772 3.02333 6.02209 2.9577C5.51737 2.45299 5.71788 1.57987 6.38776 1.34838C6.40599 1.34208 6.43869 1.33193 6.57421 1.32347C6.71028 1.31498 6.93533 1.30884 7.33101 1.30454C8.12067 1.29595 9.57331 1.29476 12.3134 1.29422C12.6721 1.29415 13.0094 1.29404 13.3266 1.29393C15.8468 1.2931 17.1011 1.29268 17.7552 1.3159C18.1288 1.32917 18.2835 1.34995 18.3621 1.37373C18.4054 1.38683 18.4141 1.39396 18.451 1.4242C18.4668 1.43712 18.4877 1.45426 18.5187 1.47789C18.6689 1.5925 18.7645 1.70482 18.8245 1.82764C18.8847 1.95079 18.9161 2.09856 18.9166 2.2944C18.9169 2.39632 18.9123 2.44941 18.9011 2.49661C18.8897 2.54459 18.8687 2.59735 18.8206 2.69504L18.8206 2.69505C18.7072 2.92558 18.5792 3.05086 18.3354 3.16519L18.1771 3.23944H12.3288H6.48048L6.31849 3.1635ZM5.7421 7.00616V7.00612C5.7434 6.55642 5.99594 6.21194 6.43987 6.06842C6.44463 6.06794 6.45131 6.06736 6.46023 6.0667C6.48515 6.06487 6.52098 6.06297 6.56804 6.06106C6.66177 6.05727 6.79407 6.05369 6.96023 6.05036C7.29222 6.0437 7.75523 6.03808 8.30619 6.03354C9.40788 6.02446 10.8588 6.01969 12.3112 6.01931C13.7636 6.01894 15.2169 6.02296 16.3235 6.03147C16.8768 6.03572 17.3429 6.04109 17.6785 6.04758C17.8465 6.05083 17.9808 6.05434 18.0767 6.05808C18.1249 6.05996 18.1619 6.06185 18.1882 6.0637C18.2042 6.06482 18.2125 6.06572 18.2155 6.06601C19.0424 6.29322 19.1907 7.41168 18.425 7.86083C18.3889 7.88196 18.3722 7.89171 18.3508 7.90052C18.3309 7.9087 18.3015 7.91812 18.2478 7.92724C18.1346 7.94647 17.9378 7.96077 17.5452 7.96985C16.7733 7.98768 15.2921 7.98487 12.3193 7.97922L12.2217 7.97903L6.48067 7.96815L6.32217 7.89382C6.32217 7.89382 6.32217 7.89382 6.32217 7.89382C6.07853 7.77954 5.95039 7.6541 5.83743 7.42462L5.83742 7.42459C5.78809 7.3244 5.76788 7.27349 5.75693 7.22552C5.74589 7.17719 5.74175 7.12097 5.7421 7.00616ZM6.43149 6.06944C6.4315 6.06943 6.43211 6.06933 6.43343 6.06915L6.43149 6.06944ZM1.0408 6.64919L0.873099 6.60551L1.0408 6.64919C1.21137 5.99432 1.72001 5.53902 2.37557 5.44796C2.843 5.38307 3.32012 5.54759 3.67243 5.90297C4.29248 6.52846 4.29248 7.47919 3.67243 8.10468C3.14034 8.64144 2.32654 8.72361 1.69849 8.30423C1.15475 7.94114 0.88475 7.24826 1.0408 6.64919ZM1.04295 12.0955L1.04295 12.0955C0.84375 11.3303 1.31278 10.4956 2.10922 10.2377C2.21774 10.2026 2.38073 10.1813 2.55598 10.1807C2.73083 10.1801 2.89766 10.2001 3.01305 10.2352C3.81186 10.4782 4.29166 11.318 4.09169 12.0961C4.01621 12.3898 3.88922 12.6154 3.67785 12.8315L3.67784 12.8315C3.37213 13.1442 3.0061 13.2986 2.56643 13.3C2.13978 13.3013 1.77351 13.1479 1.46165 12.8333C1.24656 12.6163 1.12107 12.3956 1.04295 12.0955ZM5.81755 12.1185L5.63603 12.2024L5.81755 12.1185C5.71064 11.8874 5.71069 11.5774 5.81799 11.3454C5.94647 11.0677 6.19981 10.8567 6.47919 10.7864C6.48339 10.7861 6.4891 10.7858 6.49653 10.7855C6.5182 10.7845 6.54961 10.7835 6.591 10.7824C6.67352 10.7804 6.79172 10.7785 6.94271 10.7767C7.24447 10.7731 7.67461 10.7701 8.20655 10.7677C9.2703 10.763 10.7397 10.761 12.4002 10.7626L18.177 10.7682L18.3354 10.8425C18.5792 10.9568 18.7072 11.0821 18.8206 11.3126L18.8206 11.3126C18.8687 11.4103 18.8897 11.4631 18.9011 11.511C18.9123 11.5582 18.9169 11.6113 18.9166 11.7132C18.9161 11.9093 18.8847 12.057 18.8245 12.1801C18.7644 12.3029 18.6687 12.4154 18.5179 12.5304C18.4869 12.554 18.466 12.5711 18.4502 12.5841C18.4132 12.6144 18.4044 12.6216 18.3608 12.6347C18.2814 12.6585 18.1251 12.6792 17.748 12.692C17.0877 12.7144 15.821 12.7122 13.2759 12.7078C12.9564 12.7072 12.6168 12.7067 12.2558 12.7061L6.44671 12.6968L6.28547 12.6176C6.08697 12.5201 5.92618 12.3533 5.81755 12.1185Z" fill="currentColor" stroke="currentColor" stroke-width="0.4"/>
                 </svg>                                 
@@ -57,7 +60,7 @@
             </li>
       
             <li>
-              <a href="user-activity.html">
+              <a href="">
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M10.7475 15.0002H10.59C10.2726 14.9687 9.97344 14.8368 9.73606 14.6237C9.49869 14.4106 9.33543 14.1274 9.27 13.8152L7.26 4.50017L5.19 9.30017C5.13145 9.43433 5.03492 9.54842 4.91231 9.62838C4.7897 9.70834 4.64638 9.75068 4.5 9.75017H2.25C2.05109 9.75017 1.86032 9.67115 1.71967 9.5305C1.57902 9.38985 1.5 9.19908 1.5 9.00017C1.5 8.80126 1.57902 8.61049 1.71967 8.46984C1.86032 8.32919 2.05109 8.25017 2.25 8.25017H4.005L5.8875 3.90767C6.01422 3.61627 6.23021 3.37263 6.50433 3.2119C6.77845 3.05117 7.09653 2.98164 7.41271 3.01334C7.72889 3.04505 8.02683 3.17634 8.26358 3.38829C8.50033 3.60025 8.66365 3.88191 8.73 4.19267L10.74 13.5002L12.81 8.71517C12.8663 8.57821 12.9618 8.46096 13.0846 8.37821C13.2074 8.29546 13.3519 8.25091 13.5 8.25017H15.75C15.9489 8.25017 16.1397 8.32919 16.2803 8.46984C16.421 8.61049 16.5 8.80126 16.5 9.00017C16.5 9.19908 16.421 9.38985 16.2803 9.5305C16.1397 9.67115 15.9489 9.75017 15.75 9.75017H13.995L12.1125 14.0927C11.9975 14.3601 11.8073 14.5882 11.5649 14.7494C11.3225 14.9105 11.0385 14.9976 10.7475 15.0002Z" fill="currentColor"/>
                 </svg>              
@@ -66,11 +69,11 @@
             </li>
            
             <li>
-              <a href="login.html">
+              <a >
                 <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M13.7109 6L12.6534 7.0575L13.8384 8.25H7.71094V9.75H13.8384L12.6534 10.935L13.7109 12L16.7109 9L13.7109 6ZM4.71094 3.75H9.96094V2.25H4.71094C3.88594 2.25 3.21094 2.925 3.21094 3.75V14.25C3.21094 15.075 3.88594 15.75 4.71094 15.75H9.96094V14.25H4.71094V3.75Z" fill="currentColor"/>
                 </svg>              
-                <span>Cerrar seción</span>
+                <span (click)="auth.logoutUser()">Cerrar seción</span>
               </a>
             </li>
           </ul>
@@ -79,180 +82,213 @@
       <div class="cs-profile_right">
         <div class="cs-height_30 cs-height_lg_30"></div>
         <!-- Título -->
-<h2 class="cs-section_heading cs-style1">Información de perfil (Paciente)</h2>
-<div class="cs-height_25 cs-height_lg_25"></div>
+          <h2 class="cs-section_heading cs-style1">Información de perfil (Paciente)</h2>
+          <div class="cs-height_25 cs-height_lg_25"></div>
 
-<!-- Acciones -->
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <div class="d-flex gap-2">
-    <button *ngIf="!editMode" type="button" class="cs-btn cs-style1" (click)="toggleEdit()">
-      <span>Editar</span>
-    </button>
-    <button *ngIf="editMode" type="button" class="cs-btn cs-style2" (click)="toggleEdit()">
-      <span>Cancelar</span>
-    </button>
-    <button *ngIf="editMode" [disabled]="saving" type="button" class="cs-btn cs-style1" (click)="onSaveProfile()">
-      <span>{{ saving ? 'Actualizando…' : 'Actualizar' }}</span>
-    </button>
-  </div>
-</div>
-
-<!-- LECTURA -->
-<div *ngIf="!editMode" class="row">
-  <div class="col-lg-6">
-    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-      <h5 class="mb-1">Nombre</h5>
-      <p class="mb-0 text-muted">{{ global.clientFicha?.username || '—' }}</p>
-    </div>
-    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-      <h5 class="mb-1">Apellido</h5>
-      <p class="mb-0 text-muted">{{ global.clientFicha?.lastname || '—' }}</p>
-    </div>
-    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-      <h5 class="mb-1">Ciudad / País</h5>
-      <p class="mb-0 text-muted">{{ global.clientFicha?.city || '—' }} / {{ global.clientFicha?.country || '—' }}</p>
-    </div>
-    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-      <h5 class="mb-1">Teléfono</h5>
-      <p class="mb-0 text-muted">{{ global.clientFicha?.phone || '—' }}</p>
-    </div>
-  </div>
-
-  <div class="col-lg-6">
-    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-      <h5 class="mb-1">Fecha de nacimiento / Edad</h5>
-      <p class="mb-0 text-muted">
-        {{ global.clientFicha?.birthdate || '—' }}
-        <ng-container *ngIf="global.clientFicha?.birthdate"> ({{ age }} años)</ng-container>
-      </p>
-    </div>
-    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-      <h5 class="mb-1">Peso / Altura</h5>
-      <p class="mb-0 text-muted">
-        {{ global.clientFicha?.weightKg || '—' }} kg · {{ global.clientFicha?.heightCm || '—' }} cm
-        <ng-container *ngIf="bmi"> | IMC: {{ bmi }}</ng-container>
-      </p>
-    </div>
-    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-      <h5 class="mb-1">Contextura</h5>
-      <p class="mb-0 text-muted">{{ global.clientFicha?.bodyType || '—' }}</p>
-    </div>
-    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-      <h5 class="mb-1">Afecciones médicas</h5>
-      <p class="mb-0 text-muted">
-        Hipertenso: {{ global.clientFicha?.isHypertensive ? 'Sí' : 'No' }} ·
-        Diabético: {{ global.clientFicha?.isDiabetic ? 'Sí' : 'No' }}<br>
-        Otras: {{ global.clientFicha?.otherConditions || '—' }}
-      </p>
-    </div>
-    <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-      <h5 class="mb-1">Alergia a medicación</h5>
-      <p class="mb-0 text-muted">
-        {{ global.clientFicha?.hasDrugAllergy ? ('Sí: ' + (global.clientFicha?.drugAllergyDetail || '—')) : 'No' }}
-      </p>
-    </div>
-  </div>
-</div>
-
-<!-- EDICIÓN -->
-<form *ngIf="editMode" [formGroup]="profileForm" (ngSubmit)="onSaveProfile()">
-  <div class="row">
-    <div class="col-lg-6">
-      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-        <h5 class="mb-1">Nombre</h5>
-        <input type="text" class="form-control" formControlName="firstName">
-      </div>
-      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-        <h5 class="mb-1">Apellido</h5>
-        <input type="text" class="form-control" formControlName="lastName">
-      </div>
-      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-        <h5 class="mb-1">Ciudad</h5>
-        <input type="text" class="form-control" formControlName="city">
-      </div>
-      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-        <h5 class="mb-1">País</h5>
-        <input type="text" class="form-control" formControlName="country">
-      </div>
-      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-        <h5 class="mb-1">Teléfono</h5>
-        <input type="text" class="form-control" formControlName="phone">
-      </div>
-    </div>
-
-    <div class="col-lg-6">
-      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-        <h5 class="mb-1">Fecha de nacimiento</h5>
-        <input type="date" class="form-control" formControlName="birthdate">
-        <small class="text-muted" *ngIf="age">Edad: {{ age }} años</small>
-      </div>
-
-      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-        <div class="row g-2">
-          <div class="col-6">
-            <h5 class="mb-1">Peso (kg)</h5>
-            <input type="number" class="form-control" formControlName="weightKg" min="0" step="0.1">
+          <!-- Acciones -->
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex gap-2">
+              <button *ngIf="!editMode" type="button" class="cs-btn cs-style1" (click)="toggleEdit()">
+                <span>Editar</span>
+              </button>
+              <button *ngIf="editMode" type="button" class="cs-btn cs-style2" (click)="toggleEdit()">
+                <span>Cancelar</span>
+              </button>
+              <button *ngIf="editMode" [disabled]="saving" type="button" class="cs-btn cs-style1" (click)="onSaveProfile()">
+                <span>{{ saving ? 'Actualizando…' : 'Actualizar' }}</span>
+              </button>
+            </div>
           </div>
-          <div class="col-6">
-            <h5 class="mb-1">Altura (cm)</h5>
-            <input type="number" class="form-control" formControlName="heightCm" min="0" step="1">
+
+          <!-- LECTURA -->
+          <div *ngIf="!editMode" class="row">
+            <div class="col-lg-6">
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Nombre</h5>
+                <p class="mb-0 text-muted">{{ global.clientFicha?.username || '—' }}</p>
+              </div>
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Apellido</h5>
+                <p class="mb-0 text-muted">{{ global.clientFicha?.lastname || '—' }}</p>
+              </div>
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Ciudad / País</h5>
+                <p class="mb-0 text-muted">{{ global.clientFicha?.city || '—' }} / {{ global.clientFicha?.country || '—' }}</p>
+              </div>
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Teléfono</h5>
+                <p class="mb-0 text-muted">{{ global.clientFicha?.phone || '—' }}</p>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Fecha de nacimiento / Edad</h5>
+                <p class="mb-0 text-muted">
+                  {{ global.clientFicha?.birthdate || '—' }}
+                  <ng-container *ngIf="global.clientFicha?.birthdate"> ({{ age }} años)</ng-container>
+                </p>
+              </div>
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Peso / Altura</h5>
+                <p class="mb-0 text-muted">
+                  {{ global.clientFicha?.weightKg || '—' }} kg · {{ global.clientFicha?.heightCm || '—' }} cm
+                  <ng-container *ngIf="bmi"> | IMC: {{ bmi }}</ng-container>
+                </p>
+              </div>
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Contextura</h5>
+                <p class="mb-0 text-muted">{{ global.clientFicha?.bodyType || '—' }}</p>
+              </div>
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Afecciones médicas</h5>
+                <p class="mb-0 text-muted">
+                  Hipertenso: {{ global.clientFicha?.isHypertensive ? 'Sí' : 'No' }} ·
+                  Diabético: {{ global.clientFicha?.isDiabetic ? 'Sí' : 'No' }}<br>
+                  Otras: {{ global.clientFicha?.otherConditions || '—' }}
+                </p>
+              </div>
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Alergia a medicación</h5>
+                <p class="mb-0 text-muted">
+                  {{ global.clientFicha?.hasDrugAllergy ? ('Sí: ' + (global.clientFicha?.drugAllergyDetail || '—')) : 'No' }}
+                </p>
+              </div>
+            </div>
           </div>
-          <div class="col-12">
-            <small class="text-muted" *ngIf="bmi">IMC estimado: {{ bmi }}</small>
+
+          <!-- EDICIÓN -->
+        <form *ngIf="editMode" [formGroup]="profileForm" (ngSubmit)="onSaveProfile()">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Nombre</h5>
+                <input type="text" class="form-control" formControlName="fullName">              </div>
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Apellido</h5>
+                <input type="text" class="form-control" formControlName="lastname">
+              </div>
+              <!-- Teléfono -->
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Teléfono</h5>
+                <input type="text" class="form-control" formControlName="phone" placeholder="Ej: +57 3001234567" />
+                <small class="text-danger"
+                      *ngIf="profileForm.get('phone')?.touched && profileForm.get('phone')?.invalid">
+                  Ingresa un número válido (mín. 6 dígitos).
+                </small>
+              </div>
+
+              <!-- País (select) -->
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">País</h5>
+                <div class="cs-form_field_wrap cs-select_arrow">
+                  <select class="cs-form_field form-select"
+                          formControlName="country" aria-label="País *">
+                    <option value="" disabled selected>Selecciona país *</option>
+                    <option *ngFor="let c of americasCountries" [value]="c.code">
+                      {{ c.flag }} {{ c.name }} ({{ c.dial }})
+                    </option>
+                  </select>
+                </div>
+                <small class="text-danger"
+                      *ngIf="profileForm.get('country')?.touched && profileForm.get('country')?.invalid">
+                  Selecciona un país.
+                </small>
+              </div>
+
+              <!-- Ciudad (select dependiente del país) -->
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Ciudad</h5>
+                <div class="cs-form_field_wrap cs-select_arrow">
+                  <select class="cs-form_field form-select"
+                          formControlName="city"
+                          [disabled]="!citiesOptions.length"
+                          aria-label="Ciudad *">
+                    <option value="" disabled selected>Selecciona ciudad *</option>
+                    <option *ngFor="let city of citiesOptions" [value]="city">{{ city }}</option>
+                  </select>
+                </div>
+                <small class="text-danger"
+                      *ngIf="profileForm.get('city')?.touched && (profileForm.get('city')?.invalid || profileForm.errors?.['cityNotInCountry'])">
+                  Selecciona una ciudad válida para el país elegido.
+                </small>
+              </div>
+
+            </div>
+
+            <div class="col-lg-6">
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Fecha de nacimiento</h5>
+                <input type="date" class="form-control" formControlName="birthdate">
+                <small class="text-muted" *ngIf="age">Edad: {{ age }} años</small>
+              </div>
+
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <div class="row g-2">
+                  <div class="col-6">
+                    <h5 class="mb-1">Peso (kg)</h5>
+                    <input type="number" class="form-control" formControlName="weightKg" min="0" step="0.1">
+                  </div>
+                  <div class="col-6">
+                    <h5 class="mb-1">Altura (cm)</h5>
+                    <input type="number" class="form-control" formControlName="heightCm" min="0" step="1">
+                  </div>
+                  <div class="col-12">
+                    <small class="text-muted" *ngIf="bmi">IMC estimado: {{ bmi }}</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-1">Contextura</h5>
+                <select class="form-select" formControlName="bodyType">
+                  <option value="">Selecciona…</option>
+                  <option value="delgado">Delgado</option>
+                  <option value="normal">Normal</option>
+                  <option value="atlético">Atlético</option>
+                  <option value="robusto">Robusto</option>
+                </select>
+              </div>
+
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-2">Afecciones médicas</h5>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" formControlName="isHypertensive" id="hypertensive">
+                  <label class="form-check-label" for="hypertensive">Hipertenso</label>
+                </div>
+                <div class="form-check mt-1">
+                  <input class="form-check-input" type="checkbox" formControlName="isDiabetic" id="diabetic">
+                  <label class="form-check-label" for="diabetic">Diabético</label>
+                </div>
+                <div class="mt-2">
+                  <label class="form-label">Otras</label>
+                  <textarea class="form-control" rows="2" formControlName="otherConditions"></textarea>
+                </div>
+              </div>
+
+              <div class="cs-card cs-white_bg p-3 mb-3 rounded">
+                <h5 class="mb-2">Alergia a medicación</h5>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" formControlName="hasDrugAllergy" id="hasDrugAllergy">
+                  <label class="form-check-label" for="hasDrugAllergy">Sí, tengo alergias</label>
+                </div>
+                <div class="mt-2" *ngIf="profileForm.get('hasDrugAllergy')?.value">
+                  <label class="form-label">Detalle</label>
+                  <input type="text" class="form-control" formControlName="drugAllergyDetail" placeholder="Ej: penicilina, ibuprofeno…">
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-        <h5 class="mb-1">Contextura</h5>
-        <select class="form-select" formControlName="bodyType">
-          <option value="">Selecciona…</option>
-          <option value="delgado">Delgado</option>
-          <option value="normal">Normal</option>
-          <option value="atlético">Atlético</option>
-          <option value="robusto">Robusto</option>
-        </select>
-      </div>
-
-      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-        <h5 class="mb-2">Afecciones médicas</h5>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" formControlName="isHypertensive" id="hypertensive">
-          <label class="form-check-label" for="hypertensive">Hipertenso</label>
-        </div>
-        <div class="form-check mt-1">
-          <input class="form-check-input" type="checkbox" formControlName="isDiabetic" id="diabetic">
-          <label class="form-check-label" for="diabetic">Diabético</label>
-        </div>
-        <div class="mt-2">
-          <label class="form-label">Otras</label>
-          <textarea class="form-control" rows="2" formControlName="otherConditions"></textarea>
-        </div>
-      </div>
-
-      <div class="cs-card cs-white_bg p-3 mb-3 rounded">
-        <h5 class="mb-2">Alergia a medicación</h5>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" formControlName="hasDrugAllergy" id="hasDrugAllergy">
-          <label class="form-check-label" for="hasDrugAllergy">Sí, tengo alergias</label>
-        </div>
-        <div class="mt-2" *ngIf="profileForm.get('hasDrugAllergy')?.value">
-          <label class="form-label">Detalle</label>
-          <input type="text" class="form-control" formControlName="drugAllergyDetail" placeholder="Ej: penicilina, ibuprofeno…">
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="d-flex justify-content-center gap-2 mt-3">
-    <button type="button" class="cs-btn cs-style2" (click)="toggleEdit()">
-      <span>Cancelar</span>
-    </button>
-    <button type="submit" class="cs-btn cs-style1" [disabled]="saving">
-      <span>{{ saving ? 'Actualizando…' : 'Actualizar' }}</span>
-    </button>
-  </div>
-</form>
+          <div class="d-flex justify-content-center gap-2 mt-3">
+            <button type="button" class="cs-btn cs-style2" (click)="toggleEdit()">
+              <span>Cancelar</span>
+            </button>
+            <button type="submit" class="cs-btn cs-style1" [disabled]="saving">
+              <span>{{ saving ? 'Actualizando…' : 'Actualizar' }}</span>
+            </button>
+          </div>
+        </form>
 
       </div>
     </div>
