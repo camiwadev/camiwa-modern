@@ -29,6 +29,11 @@
 1. Typography
 ----------------------------------------------------------------*/
 /* FullCalendar v6 */
+@import '@fullcalendar/core/index.css';
+@import '@fullcalendar/daygrid/index.css';
+@import '@fullcalendar/timegrid/index.css';
+@import '@fullcalendar/resource/index.css';         /* opcional si usas resources */
+@import '@fullcalendar/resource-timegrid/index.css';/* opcional si usas resource-timegrid */
 
 body,
 html {
@@ -530,7 +535,8 @@ kbd {
 .container {
   padding-left: 15px;
   padding-right: 15px;
-  max-width: 1350px;
+ /*  max-width: 1350px; */
+ max-width: 1600px;
 }
 
 .row {

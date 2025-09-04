@@ -257,70 +257,173 @@
       
 
       <!-- SERVICIOS -->
-      <section *ngIf="activeTab === 'servicios'">
-<!--         <div class="cs-card cs-white_bg p-3 rounded">Contenido de servicios…</div>
- -->        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="cs-activity_wrap cs-box_shadow cs-white_bg">
-                <h2 class="cs-section_heading cs-style1">Mis servicios</h2>
-                <div class="cs-height_45 cs-height_lg_45"></div>
-                <ul class="cs-activity_list cs-mp0">
-                  <li>
-                    <div class="cs-activity cs-gray_bg">
-                      <div class="cs-activity_avatar"><img src="assets/img/avatar/avatar_21.png" alt=""></div>
-                      <div class="cs-activity_right">
-                        <p class="cs-activity_text"> <span>9 ETH</span> by <a href="activity.html#">raymond</a></p>
-                        <p class="cs-activity_posted_by">16 Mar 2022, 11:22 PM</p>
-                      </div>
-                      <div class="cs-activity_icon cs-center cs-white_bg cs-accent_color">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd" clip-rule="evenodd" d="M7.58321 0.709957C6.80344 0.874407 6.18914 1.21704 5.59168 1.82076C5.18675 2.22991 5.00479 2.50229 4.76907 3.05207C4.50504 3.66793 4.48083 3.89286 4.48083 5.73042V7.37635H3.41299C2.54968 7.37635 2.3136 7.3895 2.18057 7.44513C1.96981 7.53316 1.82838 7.66619 1.71925 7.87903C1.6398 8.03397 1.60008 8.62486 1.2546 14.7885C1.04683 18.4956 0.887802 21.6486 0.901176 21.7952C0.933924 22.154 1.17236 22.635 1.43954 22.8813C1.5516 22.9846 1.77688 23.1324 1.94009 23.2097L2.23691 23.3504L6.05108 23.3627L9.86525 23.375L9.73124 23.1405C9.51169 22.7562 9.36302 22.248 9.33844 21.7974C9.30778 21.2353 9.83037 13.8479 9.92639 13.4862C9.96527 13.3396 10.0588 13.1041 10.1341 12.9627C10.2958 12.6594 10.745 12.2223 11.058 12.0637C11.495 11.8422 11.7038 11.8211 13.4676 11.8204L15.1006 11.8198L15.1013 11.6976C15.1016 11.6304 15.0606 10.8055 15.01 9.86466C14.9095 7.99483 14.8896 7.87774 14.6301 7.62567C14.4029 7.40505 14.2408 7.37635 13.2221 7.37635H12.3092L12.2904 5.65453C12.2732 4.07388 12.2639 3.90467 12.1777 3.59066C11.6104 1.52377 9.62549 0.279258 7.58321 0.709957ZM8.86051 2.0029C9.75083 2.16326 10.5632 2.9018 10.8612 3.82163C10.9298 4.03349 10.9426 4.28614 10.9576 5.72118L10.9749 7.37635H11.6417H12.3085L12.2938 8.15083C12.2804 8.85049 12.2702 8.93709 12.1874 9.04787C11.8758 9.46484 11.3401 9.47515 11.0691 9.06938C10.9739 8.92692 10.9682 8.87498 10.9682 8.14737V7.37635H8.39471H5.82118L5.80643 8.15083C5.79305 8.85049 5.78279 8.93709 5.70001 9.04787C5.38839 9.46484 4.85274 9.47515 4.58169 9.06938C4.48651 8.92692 4.48083 8.87498 4.48083 8.14737V7.37635H5.14734H5.81385V5.80112C5.81385 4.10672 5.8302 3.93978 6.04233 3.46904C6.27632 2.94988 6.72745 2.48132 7.25 2.21472C7.68696 1.99179 8.3297 1.90728 8.86051 2.0029ZM11.7014 13.2364C11.4861 13.3362 11.3508 13.4769 11.2592 13.6961C11.1769 13.893 10.6373 21.2578 10.6707 21.7285C10.7251 22.4959 11.2453 23.1174 11.9949 23.3103C12.2061 23.3647 13.0058 23.3726 17.2603 23.3624L22.2767 23.3504L22.5735 23.2097C22.7367 23.1324 22.9614 22.9851 23.0729 22.8824C23.3192 22.6553 23.57 22.1737 23.6098 21.8513C23.6271 21.7113 23.5294 20.0574 23.3663 17.7295C23.0598 13.3569 23.0937 13.5829 22.7036 13.3087L22.5134 13.175L17.1962 13.1645C12.0992 13.1544 11.8717 13.1574 11.7014 13.2364ZM15.4736 15.253C15.7574 15.4157 15.8115 15.5711 15.8115 16.2241C15.8115 16.9539 15.8786 17.177 16.1929 17.4933C16.5907 17.8934 17.1539 17.9713 17.6468 17.6946C18.1309 17.4227 18.2998 17.0384 18.2998 16.2092C18.2998 15.6054 18.3481 15.4412 18.5725 15.2811C18.7704 15.14 19.126 15.1327 19.3047 15.2661C19.5817 15.4729 19.6094 15.5528 19.6248 16.1885C19.65 17.2283 19.439 17.8413 18.8537 18.4286C18.0668 19.2184 16.9536 19.4099 15.9495 18.9283C15.6546 18.7868 15.5055 18.6776 15.2373 18.4061C14.6651 17.8268 14.4806 17.3113 14.4792 16.2883C14.4786 15.8042 14.4924 15.6848 14.567 15.5307C14.7354 15.183 15.1369 15.06 15.4736 15.253Z" fill="currentColor"/>
-                        </svg>                  
-                      </div>
-                    </div>
-                  </li>
-                  
-                </ul>
+   
+<section *ngIf="activeTab === 'servicios'">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="cs-section_heading cs-style1 m-0">Mis servicios</h2>
+
+          <button type="button"
+                  class="cs-btn cs-style1"
+                  (click)="toggleNewService()">
+            <span>
+              <i class="bi" [ngClass]="showNewService ? 'bi-dash-circle' : 'bi-plus-circle'"></i>
+              {{ showNewService ? 'Cerrar' : 'Crear nuevo' }}
+            </span>
+          </button>
+        </div>
+
+        <!-- FORM CREAR SERVICIO -->
+        <div *ngIf="showNewService" class="cs-card cs-white_bg p-3 mb-4 rounded">
+          <form [formGroup]="serviceForm" (ngSubmit)="createService()">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Título del servicio</label>
+                <input class="form-control" formControlName="title" placeholder="Ej: Consulta general" />
+                <div class="text-danger small" *ngIf="serviceForm.get('title')?.touched && serviceForm.get('title')?.invalid">
+                  El título es obligatorio (máx. 120 caracteres).
+                </div>
               </div>
-              <div class="cs-height_50 cs-height_lg_40"></div>
-              <div class="text-center">
-                <a href="activity.html#" class="cs-btn cs-style1 cs-btn_lg"><span>Load More</span></a>
+
+              <div class="col-12">
+                <label class="form-label">Descripción</label>
+                <textarea class="form-control" rows="3" formControlName="description" placeholder="Describe el servicio, qué incluye, tiempos, etc."></textarea>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Imágenes (opcional)</label>
+                <input type="file" multiple accept="image/*" (change)="onServiceImagesSelect($event)" class="form-control" />
+                <div class="form-text">Puedes seleccionar varias imágenes.</div>
+              </div>
+
+              <div class="col-12 d-flex gap-2">
+                <button type="button" class="cs-btn cs-style2" (click)="toggleNewService()">Cancelar</button>
+                <button type="submit" class="cs-btn cs-style1" [disabled]="creatingService">
+                  <span>
+                    <i class="bi" [ngClass]="creatingService ? 'bi-arrow-repeat' : 'bi-check2-circle'"></i>
+                    {{ creatingService ? 'Guardando…' : 'Crear servicio' }}
+                  </span>
+                </button>
               </div>
             </div>
-            <!-- <div class="col-lg-4">
-              <div class="cs-height_0 cs-height_lg_70"></div>
-              <div class="cs-blog_sidebar">
-                <div class="cs-sidebar_widget cs-box_shadow cs-white_bg">
-                  <form action="activity.html#" class="cs-search">
-                    <input type="text" class="cs-search_input" placeholder="Search">
-                    <button class="cs-btn cs-style1">
-                      <span>Search</span>                
-                    </button>
-                  </form>
+          </form>
+        </div>
+
+        <!-- LISTA DE SERVICIOS -->
+        <div class="cs-activity_wrap cs-box_shadow cs-white_bg">
+          <div class="d-flex align-items-center justify-content-between px-3 pt-3">
+            <h6 class="m-0">Listado</h6>
+            <div *ngIf="loadingServices" class="small text-muted">Cargando…</div>
+          </div>
+
+          <div class="cs-height_15"></div>
+
+          <ul class="cs-activity_list cs-mp0">
+            <li *ngFor="let s of services">
+              <div class="cs-activity cs-gray_bg">
+                <div class="cs-activity_avatar">
+                  <img
+                    [src]="pb.getFileUrl(s, (pb.normalizeFileNames(s.images)[0] || '')) || 'assets/img/avatar/avatar_21.png'"
+                    alt="img">
                 </div>
-                <div class="cs-sidebar_widget cs-box_shadow cs-white_bg">
-                  <h2 class="cs-widget_title"><span>Catagory</span></h2>
-                  <div class="cs-tag_widget">
-                    <a href="activity.html#">NFTs Art</a>
-                    <a href="activity.html#">Music</a>
-                    <a href="activity.html#">Video</a>
-                    <a href="activity.html#">ETH</a>
-                    <a href="activity.html#">Btc</a>
-                    <a href="activity.html#">Utility</a>
-                    <a href="activity.html#">Fashion</a>
-                    <a href="activity.html#">Bitcoin</a>
-                    <a href="activity.html#">Mint</a>
-                    <a href="activity.html#">Design</a>
-                    <a href="activity.html#">NFT</a>
-                    <a href="activity.html#">Crypto</a>
+          
+                <div class="cs-activity_right">
+                  <p class="cs-activity_text mb-1">
+                    <strong>{{ s.tittle || s.title }}</strong>
+                  </p>
+                  <p class="cs-activity_posted_by mb-0">
+                    {{ s.description || '—' }}
+                  </p>
+                  <div class="small text-muted mt-1">
+                    Creado: {{ s.created | date:'medium' }}
+                  </div>
+          
+                  <!-- Botones acción -->
+                  <div class="mt-2 d-flex gap-2">
+                    <button type="button" class="cs-btn cs-style1" (click)="startEditService(s)" *ngIf="editingServiceId !== s.id">
+                      <span><i class="bi bi-pencil-square me-1"></i>Editar</span>
+                    </button>
+                    <button type="button" class="cs-btn cs-style2" (click)="deleteService(s)">
+                      <span><i class="bi bi-trash me-1"></i>Eliminar</span>
+                    </button>
                   </div>
                 </div>
+          
+                <div class="cs-activity_icon cs-center cs-white_bg cs-accent_color">
+                  <!-- placeholder -->
+                  <svg width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                </div>
               </div>
-            </div> -->
-          </div>
+          
+              <!-- FORM EDICIÓN INLINE -->
+              <div *ngIf="editingServiceId === s.id" class="cs-card cs-white_bg p-3 mt-2 rounded">
+                <form [formGroup]="serviceEditForm" (ngSubmit)="saveEditService(s)">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label">Título</label>
+                      <input class="form-control" formControlName="title" />
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label">Descripción</label>
+                      <textarea class="form-control" rows="3" formControlName="description"></textarea>
+                    </div>
+          
+                    <!-- imágenes existentes: marcar para quitar -->
+                    <div class="col-12" *ngIf="pb.normalizeFileNames(s.images).length">
+                      <label class="form-label d-block">Imágenes existentes</label>
+                      <div class="d-flex flex-wrap gap-3">
+                        <label class="d-flex flex-column align-items-center" *ngFor="let name of pb.normalizeFileNames(s.images)">
+                          <img [src]="pb.getFileUrl(s, name)" style="height:70px;border-radius:8px;object-fit:cover">
+                          <div class="form-check mt-1">
+                            <input class="form-check-input" type="checkbox"
+                                   [checked]="serviceEditKeep.includes(name)"
+                                   (change)="toggleRemoveExistingImage(name)">
+                            <small class="form-check-label">Conservar</small>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+          
+                    <div class="col-md-6">
+                      <label class="form-label">Nuevas imágenes (opcional)</label>
+                      <input type="file" multiple accept="image/*" class="form-control" (change)="onServiceEditImagesSelect($event)">
+                      <div class="form-text">Las nuevas se añadirán a las seleccionadas para conservar.</div>
+                    </div>
+          
+                    <div class="col-md-6 d-flex align-items-end">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" [(ngModel)]="serviceEditClearAll" name="clearAll">
+                        <label class="form-check-label">Eliminar todas las imágenes</label>
+                      </div>
+                    </div>
+          
+                    <div class="col-12 d-flex gap-2">
+                      <button type="button" class="cs-btn cs-style2" (click)="cancelEditService()">Cancelar</button>
+                      <button type="submit" class="cs-btn cs-style1">
+                        <span><i class="bi bi-check2-circle me-1"></i>Guardar cambios</span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+          
+            </li>
+          
+            <li *ngIf="!loadingServices && !services.length" class="p-3">
+              <div class="text-center text-muted">Aún no tienes servicios. Usa “Crear nuevo”.</div>
+            </li>
+          </ul>
+          
         </div>
-      </section>
+
+      </div>
+    </div>
+  </div>
+</section>
+
 
       <!-- RESEÑAS -->
       <section *ngIf="activeTab === 'resenas'">

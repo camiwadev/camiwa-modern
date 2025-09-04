@@ -1,9 +1,13 @@
+// src/app/services/global.service.ts
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import PocketBase from 'pocketbase';
 import { RealtimeCategoriasService } from './realtime-categorias.service';
 import { Especialidad, RealtimeEspecialidadesService } from './realtime-especialidades.service';
 import { Profesional, RealtimeProfesionalesService } from './realtime-profesionales.service';
+
+const LS_USER = 'cw.user';
+const LS_SPEC = 'cw.specialist';
 
 interface especialidades {
   name: string;
@@ -49,15 +53,16 @@ interface profesional {
   university: string;
   wednesday: boolean;
   documents: string[];
-  status: 'pending' | 'active' | 'approved'| 'new';
+  status: 'pending' | 'active' | 'approved' | 'new';
   images: string[];
   especialidades: Especialidad[];
   avatar: string[];
   userId: string;
 }
+
 export interface PatientFicha {
   id: string;
-  username?:string;
+  username?: string;
   name?: string;
   email?: string;
   phone?: string;
@@ -65,67 +70,65 @@ export interface PatientFicha {
   avatar?: string;
   fullName?: string;
   lastname?: string;
-  images?:string;
-  birthdate?:string;
-  drugAllergyDetail?:string;
-  weightKg?:string;
-  heightCm?:string;
-  bodyType?:string;
-  isHypertensive?:string;
-  isDiabetic?:string;
-  otherConditions?:string;
-  hasDrugAllergy?:string;
-  city?:string;
-  country?:string;
+  images?: string;
+  birthdate?: string;
+  drugAllergyDetail?: string;
+  weightKg?: string;
+  heightCm?: string;
+  bodyType?: string;
+  isHypertensive?: string;
+  isDiabetic?: string;
+  otherConditions?: string;
+  hasDrugAllergy?: string;
+  city?: string;
+  country?: string;
 }
-@Injectable({
-  providedIn: 'root'
-})
 
+@Injectable({ providedIn: 'root' })
 export class GlobalService {
-  newImage: boolean = false;
-  dayNames = [
-    'Domingo',
-    'Lunes',
-    'Martes',
-    'Miércoles',
-    'Jueves',
-    'Viernes',
-    'Sábado',
-  ];
-  daysMap = [
-    'sunday',
-    'monday',
-    'tuesday',
-    'wednesday',
-    'thursday',
-    'friday',
-    'saturday',
-  ];
-  newUploaderImage: boolean = false;
-  newUploaderAvatar: boolean = false;
+  // ===== Estado UI / utilidades =====
+  newImage = false;
+  dayNames = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  daysMap  = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+
+  newUploaderImage = false;
+  newUploaderAvatar = false;
   uploaderImages: string[] = [];
   certificates: string[] = [];
   avatar: string[] = [];
 
-
   public userId: string = '';
-  routerActive:string= "home";
+  routerActive: string = 'home';
   private _routerActive$ = new BehaviorSubject<string>('home');
   routerActive$ = this._routerActive$.asObservable();
+
   currentUser: any;
   pb = new PocketBase('https://db.camiwa.com:250');
-  profesionales=[];
-  // Observables de datos
+  profesionales: any[] = [];
+
+  // ===== Estado compartido (listas) =====
   public clientesSubject = new BehaviorSubject<any[]>([]);
   clientes$ = this.clientesSubject.asObservable();
+
   public categoriasSubject = new BehaviorSubject<any[]>([]);
   categorias$ = this.categoriasSubject.asObservable();
+
   public especialidadesSubject = new BehaviorSubject<any[]>([]);
   especialidades$ = this.especialidadesSubject.asObservable();
+
   public profesionalesSubject = new BehaviorSubject<any[]>([]);
   profesionales$ = this.profesionalesSubject.asObservable();
+
   workingDays: any[] = [];
+
+  // ===== Auth & Perfil centralizados (¡nuevo!) =====
+  private _user$ = new BehaviorSubject<any | null>(readLS(LS_USER));
+  user$ = this._user$.asObservable();
+
+  private _specialist$ = new BehaviorSubject<any | null>(readLS(LS_SPEC));
+  specialist$ = this._specialist$.asObservable();
+
+  // Tu “previewRequest” se alimenta del specialist
   previewRequest: {
     userId: string;
     id: string;
@@ -170,7 +173,7 @@ export class GlobalService {
     password: string;
     type: string;
     usertype: string;
-    biography:string;
+    biography: string;
   } = {
     userId: '',
     id: '',
@@ -215,8 +218,9 @@ export class GlobalService {
     password: '',
     type: '',
     usertype: '',
-    biography:''
+    biography: ''
   };
+
   previewCard: {
     ticketNumber: string;
     image: string;
@@ -231,139 +235,167 @@ export class GlobalService {
     ticketsQuantity: 100,
     ticketPrice: 2,
     description: '',
-    selected: {
-      8: true,
-      4: true,
-      9: true,
-      48: true,
-    },
+    selected: { 8: true, 4: true, 9: true, 48: true },
     ticketNumbers: {},
   };
+
   categorySelected: any = false;
   specialtiesFilteredSelected = false;
   specialtiesFiltered: any[] = [];
+
   clientFicha: PatientFicha | null = null;
+
   constructor(
     public realtimeCategoriasService: RealtimeCategoriasService,
     public realtimeEspecialidadesService: RealtimeEspecialidadesService,
     public realtimeProfesionalesService: RealtimeProfesionalesService
-  ) { }
-  
-/* setRouterActive(routerActive:string){
-  this.routerActive=routerActive;
-} */
-setRouterActive(route: string) {
-  this.routerActive = route;            // compatibilidad con código existente
-  this._routerActive$.next(route);      // dispara CD en vistas con async
-}
-
-public async initCategoriasRealtime() {
-  try {
-    console.log('Loading categorias...');
-    const result = await this.pb.collection('camiwaCategories').getFullList();
-
-    const categoriasProcesadas = result.map((cat: any) => {
-      let imagesArray: string[] = [];
-
-      if (Array.isArray(cat.image)) {
-        imagesArray = cat.image;
-      } else {
-        try {
-          imagesArray = JSON.parse(cat.image); // si viene como string JSON
-        } catch {
-          imagesArray = [cat.image]; // si es una sola URL
-        }
-      }
-
-      return {
-        ...cat,
-        image: imagesArray
-      };
-    });
-
-    this.categoriasSubject.next(categoriasProcesadas);
-    this.subscribeRealtime('camiwaCategories', this.categoriasSubject);
-  } catch (error) {
-    console.error('Error loading categorias:', error);
-    throw error;
+  ) {
+    // Sincroniza previewRequest si había specialist en LS
+    const spec = this._specialist$.value;
+    if (spec) this.previewRequest = { ...this.previewRequest, ...spec };
   }
-}
 
-
-public async initEspecialidadesRealtime() {
-  try {
-    console.log('Loading especialidades...');
-    const result = await this.pb.collection('camiwaSpecialties').getFullList<Especialidad>(200, {
-      sort: '-created', // Sort by creation date
-    });
-    console.log('Especialidades loaded:', result);
-    this.especialidadesSubject.next(result);
-    this.subscribeRealtime('camiwaSpecialties', this.especialidadesSubject);
-  } catch (error) {
-    console.error('Error loading especialidades:', error);
-    throw error;
+  // ===== Navegación centralizada =====
+  setRouterActive(route: string) {
+    this.routerActive = route;       // compat con código existente
+    this._routerActive$.next(route); // reactive para vistas
   }
-}
 
-public async initProfesionalesRealtime() {
-  try {
-    console.log('Loading profesionales...');
-    const result = await this.pb.collection('camiwaSpecialists').getFullList<Profesional>(200, {
-      sort: '-created', // Sort by creation date
-    });
-    console.log('Profesionales loaded:', result);
-    this.profesionalesSubject.next(result);
-    this.subscribeRealtime('camiwaSpecialists', this.profesionalesSubject);
-  } catch (error) {
-    console.error('Error loading profesionales:', error);
-    throw error;
-  }
-  this.subscribeRealtime('camiwaSpecialists', this.profesionalesSubject);
-}
-getSpecialties(){}
-public subscribeRealtime(collection: string, subject: BehaviorSubject<any[]>) {
-  this.pb.collection(collection).subscribe('*', (e: any) => {
-    let current = subject.getValue();
-    if (e.action === 'create') {
-      current = [...current, e.record];
-    } else if (e.action === 'update') {
-      current = current.map((c: any) => (c.id === e.record.id ? e.record : c));
-    } else if (e.action === 'delete') {
-      current = current.filter((c: any) => c.id !== e.record.id);
-    }
-    subject.next(current);
-  });
-}
-ClientFicha(): void { // mantiene el nombre, pero ahora es 'loader'
-  const raw = localStorage.getItem('clientFicha');
-  this.clientFicha = raw ? (JSON.parse(raw) as PatientFicha) : null;
-}
-
-type(): string | null {
-  const typeString = localStorage.getItem('type');
-  if (typeString) {
+  // ===== RT inicializaciones =====
+  public async initCategoriasRealtime() {
     try {
-      return typeString;
+      const result = await this.pb.collection('camiwaCategories').getFullList();
+      const categoriasProcesadas = result.map((cat: any) => {
+        let imagesArray: string[] = [];
+        if (Array.isArray(cat.image)) imagesArray = cat.image;
+        else {
+          try { imagesArray = JSON.parse(cat.image); }
+          catch { imagesArray = cat.image ? [cat.image] : []; }
+        }
+        return { ...cat, image: imagesArray };
+      });
+      this.categoriasSubject.next(categoriasProcesadas);
+      this.subscribeRealtime('camiwaCategories', this.categoriasSubject);
     } catch (error) {
-      console.error('Error parsing JSON from localStorage:', error);
-      return null;
+      console.error('Error loading categorias:', error);
+      throw error;
     }
   }
-  return null;
+
+  public async initEspecialidadesRealtime() {
+    try {
+      const result = await this.pb.collection('camiwaSpecialties').getFullList<Especialidad>(200, { sort: '-created' });
+      this.especialidadesSubject.next(result);
+      this.subscribeRealtime('camiwaSpecialties', this.especialidadesSubject);
+    } catch (error) {
+      console.error('Error loading especialidades:', error);
+      throw error;
+    }
+  }
+
+  public async initProfesionalesRealtime() {
+    try {
+      const result = await this.pb.collection('camiwaSpecialists').getFullList<Profesional>(200, { sort: '-created' });
+      this.profesionalesSubject.next(result);
+      this.subscribeRealtime('camiwaSpecialists', this.profesionalesSubject);
+    } catch (error) {
+      console.error('Error loading profesionales:', error);
+      throw error;
+    }
+    this.subscribeRealtime('camiwaSpecialists', this.profesionalesSubject);
+  }
+
+  getSpecialties() { /* opcional: completa si necesitas */ }
+
+  public subscribeRealtime(collection: string, subject: BehaviorSubject<any[]>) {
+    this.pb.collection(collection).subscribe('*', (e: any) => {
+      let current = subject.getValue();
+      if (e.action === 'create') {
+        current = [...current, e.record];
+      } else if (e.action === 'update') {
+        current = current.map((c: any) => (c.id === e.record.id ? e.record : c));
+      } else if (e.action === 'delete') {
+        current = current.filter((c: any) => c.id !== e.record.id);
+      }
+      subject.next(current);
+    });
+  }
+
+  // ===== Cliente ficha (manteniendo tu API) =====
+  ClientFicha(): void {
+    const raw = localStorage.getItem('clientFicha');
+    this.clientFicha = raw ? (JSON.parse(raw) as PatientFicha) : null;
+  }
+
+  // ===== Tipo de usuario (mantengo firma, devuelvo string crudo guardado) =====
+  type(): string | null {
+    const typeString = localStorage.getItem('type');
+    return typeString ?? null;
+  }
+
+  // ===== Vista detalle profesional (mantengo tu lógica) =====
+  viewDetail(profesional: any) {
+    const daysMap = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+    const rawDays = Array.isArray(profesional?.days) ? profesional.days : [];
+    this.workingDays = rawDays
+      .map((isWorking: boolean, i: number) => (isWorking ? daysMap[i] : null))
+      .filter((d: string | null): d is string => !!d);
+
+    this.previewRequest = { ...profesional }; // clonar para evitar efectos colaterales
+    this.setRouterActive('profesional-detail');
+  }
+
+  // ===== NUEVO: Estado de usuario y specialist centralizados =====
+
+  /** Lee snapshot actual del usuario (o desde LS) */
+  getUserSnapshot(): any | null {
+    return this._user$.value ?? readLS(LS_USER);
+  }
+
+  /** Setter de usuario: emite y persiste */
+  setUser(user: any | null) {
+    this._user$.next(user);
+    writeLS(LS_USER, user);
+  }
+
+  /** Lee snapshot del specialist (o desde LS) */
+  getSpecialistSnapshot(): any | null {
+    return this._specialist$.value ?? readLS(LS_SPEC);
+  }
+
+  /** Setter de specialist: emite, persiste y actualiza previewRequest */
+  setSpecialist(specialist: any | null) {
+    this._specialist$.next(specialist);
+    writeLS(LS_SPEC, specialist);
+
+    if (specialist) {
+      this.previewRequest = { ...this.previewRequest, ...specialist };
+    }
+  }
+
+  /** Limpia solo el specialist */
+  clearSpecialist() {
+    this._specialist$.next(null);
+    localStorage.removeItem(LS_SPEC);
+    // opcional: limpia previewRequest si quieres
+    // this.previewRequest = { ...estadoInicialPreviewRequest };
+  }
+
+  /** Limpia TODO el estado auth (usado por AuthPocketbaseService.logoutUser) */
+  clearAllAuthState() {
+    this._user$.next(null);
+    this._specialist$.next(null);
+    localStorage.removeItem(LS_USER);
+    localStorage.removeItem(LS_SPEC);
+  }
 }
-viewDetail(profesional: any) {
-  const daysMap = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
 
-  // defensivo: si no hay days, evita romper
-  const rawDays = Array.isArray(profesional?.days) ? profesional.days : [];
-  this.workingDays = rawDays
-    .map((isWorking: boolean, i: number) => (isWorking ? daysMap[i] : null))
-    .filter((d: string | null): d is string => !!d);
-
-  // opcional: clonar para evitar side-effects si luego mutas el profesional
-  this.previewRequest = { ...profesional };
-
-  this.setRouterActive('profesional-detail');
+// ===== Helpers locales =====
+function readLS(key: string): any | null {
+  try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch { return null; }
 }
-
+function writeLS(key: string, val: any) {
+  if (val === undefined) return;
+  if (val === null) { localStorage.removeItem(key); return; }
+  localStorage.setItem(key, JSON.stringify(val));
 }

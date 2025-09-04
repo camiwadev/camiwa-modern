@@ -1,208 +1,199 @@
 <div class="cs-height_100 cs-height_lg_70"></div>
-  <div class="container">
-    <div class="cs-sidebar_frame cs-style1">
-      <div class="cs-sidebar_frame_left">
-        <div class="cs-filter_sidebar">
-          <div class="cs-search_widget">
-            <form class="cs-search" (submit)="$event.preventDefault()">
-              <input
-                type="text"
-                class="cs-search_input"
-                placeholder="Búsca por servicios o especialidades"
-                [formControl]="searchCtrl"
-              />
-              <button type="button" class="cs-search_btn" (click)="searchCtrl.setValue(searchCtrl.value)">
-                <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9.16667 16.3333C12.8486 16.3333 15.8333 13.3486 15.8333 9.66667C15.8333 5.98477 12.8486 3 9.16667 3C5.48477 3 2.5 5.98477 2.5 9.66667C2.5 13.3486 5.48477 16.3333 9.16667 16.3333Z" stroke="currentColor" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M17.5 18L13.875 14.375" stroke="currentColor" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-            </form>
-          </div>
-          <div class="cs-filter_widget">
-            <h2 class="cs-filter_toggle_btn">
-              Servicios
-              <span class="cs-arrow_icon">
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0.679688 0.96582L4.67969 4.96582L8.67969 0.96582" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>                  
-              </span>
-            </h2>
-            <div class="cs-filter_toggle_body">
-               <ul>
-                <li *ngFor="let categoria of categoriasFiltradas$ | async">
-                  <div class="form-check d-flex align-items-center">
-            
-                    <img [src]="categoria.image[0]" 
-                         alt="{{categoria.name}}" 
-                         class="cs-zoom_item categoria-img me-2" style="background: white;
-                        border-radius: 50%; padding: 3%;">
-              
-                    <label class="form-check-label mb-0">
-                      {{ categoria.name }}
-                    </label>
-                  </div>
-                </li>
-              </ul> 
-<!--               <ul>
-                <li *ngFor="let categoria of (categoriasFiltradas$ | async) ?? []; trackBy: trackById">
-                  <button type="button"
-                          class="form-check d-flex align-items-center w-100 text-start"
-                          (click)="selectCategoria(categoria)">
-                    <img [src]="firstImage(categoria) || 'assets/img/placeholder-cat.png'"
-                         alt="{{categoria.name}}"
-                         class="cs-zoom_item categoria-img me-2"
-                         style="background:white;border-radius:50%;padding:3%;">
-                    <span class="form-check-label mb-0">{{ categoria.name }}</span>
-                  </button>
-                </li>
-              </ul> -->
-              
-            </div>
-          </div> 
-        <div class="cs-filter_widget">
-            <h2 class="cs-filter_toggle_btn">
-              Especialidades
-              <span class="cs-arrow_icon">
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0.679688 0.96582L4.67969 4.96582L8.67969 0.96582" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>                  
-              </span>
-            </h2>
-            <div class="cs-filter_toggle_body">
-              <ul>
-                <li *ngFor="let especialidad of (especialidadesFiltradas$ | async) | slice:0:(mostrarTodas ? undefined : 10)">
-                  <div class="form-check">
-                    
-                    <label class="form-check-label"><i class="fa fa-medkit"></i> {{ especialidad?.name }}</label>
-                  </div>
-                </li>
-              </ul>
-              
-              <button
-                class="btn btn-link p-0 mt-2"
-                *ngIf="((especialidadesFiltradas$ | async) ?? []).length > 10"
-                (click)="mostrarTodas = !mostrarTodas"
-              >
-                {{ mostrarTodas ? 'Ver menos' : 'Ver todas' }}
-              </button>
-            </div>
-          </div> 
-         
-        </div>
-      </div>
-      <div class="cs-sidebar_frame_right">
-        <div class="cs-filter_head">
-          <div class="cs-filter_head_left">
-            <span class="cs-search_result cs-medium cs-ternary_color"> Resultados</span>
-            <div class="cs-form_field_wrap">
-              <input type="text" class="cs-form_field cs-field_sm" placeholder="¿Qué tipo de atención o apoyo buscas hoy?">
-            </div>
-            <a  class="cs-clear_btn"><i class="fa fa-search"></i></a>
-          </div>
-          
-           <div class="cs-filter_head_right">
-             <button class="btn btn-outline" type="button" (click)="toggleCategorias()">Ver categorías</button>
-            <div class="cs-form_field_wrap cs-select_arrow" *ngIf="mostrarCategorias">
-              <select class="cs-form_field cs-field_sm" [formControl]="categoriaCtrl">
-                <option [value]="''" disabled selected>Selecciona una categoría</option>
-                <option *ngFor="let categoria of (categoriasFiltradas$ | async)" 
-                        [value]="categoria.id">
-                  {{ categoria.name }}
-                </option>
-              </select>
-            </div>
+<div class="container">
+  <div class="cs-sidebar_frame cs-style1">
+    <div class="cs-sidebar_frame_left">
+      <div class="cs-filter_sidebar">
 
-            <button class="btn btn-outline" type="button" (click)="toggleEspecialidades()">Ver especialidades</button>
-            <div class="cs-form_field_wrap cs-select_arrow" *ngIf="mostrarEspecialidades">
-              <select class="cs-form_field cs-field_sm" [formControl]="especialidadesCtrl">
-                <option [value]="''" disabled selected>Selecciona una categoría</option>
-                <option *ngFor="let especialidad of (especialidadesFiltradas$ | async)" 
-                        [value]="especialidad.id">
-                  {{ especialidad.name }}
-                </option>
-              </select>
-            </div> 
-           <!--  <div class="cs-form_field_wrap cs-select_arrow">
-              <select class="cs-form_field cs-field_sm" [formControl]="categoriaCtrl">
-                <option [value]="''" disabled selected>Selecciona una categoría</option>
-                <option *ngFor="let categoria of (categoriasFiltradas$ | async) ?? []; trackBy: trackById"
-                        [value]="categoria.id">
-                  {{ categoria.name }}
-                </option>
-              </select>
-            </div>
-            
-            <div class="cs-form_field_wrap cs-select_arrow">
-              <select class="cs-form_field cs-field_sm" [formControl]="especialidadesCtrl">
-                <option [value]="''" disabled selected>Selecciona una especialidad</option>
-                <option *ngFor="let esp of (especialidadesDeCategoria$ | async) ?? []; trackBy: trackById"
-                        [value]="esp.id">
-                  {{ esp.name }}
-                </option>
-              </select>
-            </div> -->
-            
-          </div> 
+        <!-- Buscador -->
+        <div class="cs-search_widget">
+          <form class="cs-search" (submit)="$event.preventDefault()">
+            <input
+              type="text"
+              class="cs-search_input"
+              placeholder="Búsca por servicios o especialidades"
+              [formControl]="searchCtrl"
+            />
+            <button type="button" class="cs-search_btn" (click)="searchCtrl.setValue(searchCtrl.value)">
+              <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.16667 16.3333C12.8486 16.3333 15.8333 13.3486 15.8333 9.66667C15.8333 5.98477 12.8486 3 9.16667 3C5.48477 3 2.5 5.98477 2.5 9.66667C2.5 13.3486 5.48477 16.3333 9.16667 16.3333Z" stroke="currentColor" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M17.5 18L13.875 14.375" stroke="currentColor" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </form>
+          <a class="cs-clear_btn" (click)="searchCtrl.setValue('')">
+            <i class="fa fa-times"></i>
+          </a>
         </div>
-        <div class="cs-height_30 cs-height_lg_30"></div>
-        <div class="row">
-         <!--  <div class="cs-isotop_filter cs-style1 cs-center">
-            <ul class="cs-mp0 cs-center">
-              <li [class.active]="!especialidadesCtrl.value">
-                <button type="button" (click)="selectEspecialidad(null)"><span>Todos</span></button>
-              </li>
-          
-              <li *ngFor="let esp of (especialidadesDeCategoria$ | async) ?? []; trackBy: trackById"
-                  [class.active]="especialidadesCtrl.value === esp.id">
-                <button type="button" (click)="selectEspecialidad(esp.id)">
-                  <span>{{ esp.name }}</span>
-                </button>
+
+        <!-- Servicios / Categorías -->
+        <div class="cs-filter_widget">
+          <h2 class="cs-filter_toggle_btn">
+            Servicios
+            <span class="cs-arrow_icon">
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.679688 0.96582L4.67969 4.96582L8.67969 0.96582" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </h2>
+          <div class="cs-filter_toggle_body">
+            <ul>
+              <li *ngFor="let categoria of categoriasFiltradas$ | async; trackBy: trackById">
+                <div type="button"
+                        class="form-check d-flex align-items-center w-100 text-start"
+                        (click)="categoriaCtrl.setValue(categoria.id)">
+                  <img [src]="firstImage(categoria)"
+                       [alt]="categoria.name"
+                       class="cs-zoom_item categoria-img me-2"
+                       style="background:white;border-radius:50%;padding:3%;">
+                  <span class="form-check-label mb-0">{{ categoria.name }}</span>
+                </div>
               </li>
             </ul>
-          </div> -->
-          
-          <div class="cs-height_30 cs-height_lg_30"></div>
-
-           <div class="col-xl-3 col-lg-4 col-sm-6" *ngFor="let profesional of globalServices.profesionales$ | async"> 
-            <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
-              <span class="cs-card_like cs-primary_color">
-                <i class="fas fa-award fa-fw"></i>
-              </span>
-              <a  class="cs-card_thumb cs-zoom_effect">
-                <img [src]="profesional.images[0]" alt="Image" class="cs-zoom_item">
-              </a>
-              <div class="cs-card_info">
-            
-                <span class="fw-bold">{{ profesional.full_name }}</span>
-                <div class="d-flex align-items-center">
-                  <i class="fa fa-star text-warning me-1"></i>
-                  <span>{{ profesional.rating }} / 5</span>
-                  <small class="text-muted ms-2">({{ profesional.comentarios }} comentarios)</small>
-                </div>
-                <h3 class="cs-card_title"><a >{{profesional.especialidad}}</a></h3>
-                <div class="cs-card_price">
-                  Consulta: <b class="cs-primary_color">{{profesional.price}}</b>
-                </div>
-                <hr>
-                <div class="cs-card_footer">
-                  <span class="cs-card_btn_1" data-modal="#history_1">
-                    <i class="far fa-calendar fa-fw"></i> Agendar 
-                  </span>
-                  <span class="cs-card_btn_2 btn btn-accent" data-modal="#bid_1">
-                    <span (click)="onVerPerfil(profesional)">Ver perfil</span>                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="cs-height_30 cs-height_lg_30"></div>
           </div>
         </div>
-        <div class="cs-height_10 cs-height_lg_10"></div>
-        <div class="text-center">
-          <a  class="cs-btn cs-style1 cs-btn_lg"><span>...</span></a>
+
+        <!-- Especialidades -->
+        <div class="cs-filter_widget">
+          <h2 class="cs-filter_toggle_btn">
+            Especialidades
+            <span class="cs-arrow_icon">
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.679688 0.96582L4.67969 4.96582L8.67969 0.96582" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </h2>
+          <div class="cs-filter_toggle_body">
+            <ul>
+              <li *ngFor="let especialidad of (especialidadesDeCategoria$ | async) | slice:0:(mostrarTodas ? undefined : 10); trackBy: trackById">
+                <div type="button"
+                        class="form-check d-flex align-items-center w-100 text-start"
+                        (click)="especialidadesCtrl.setValue(especialidad.id)">
+                  <span class="form-check-label mb-0">
+                    <i class="fa fa-medkit"></i> {{ especialidad?.name }}
+                  </span>
+                </div>
+                
+              </li>
+            </ul>
+
+            <button
+              class="btn btn-link p-0 mt-2"
+              *ngIf="((especialidadesDeCategoria$ | async) ?? []).length > 10"
+              (click)="mostrarTodas = !mostrarTodas"
+            >
+              {{ mostrarTodas ? 'Ver menos' : 'Ver todas' }}
+            </button>
+          </div>
         </div>
+
+      </div>
+    </div>
+
+    <div class="cs-sidebar_frame_right">
+      <div class="cs-filter_head">
+        <div class="cs-filter_head_left">
+          <span class="cs-search_result cs-medium cs-ternary_color">Resultados</span>
+          <div class="cs-form_field_wrap">
+            <input type="text"
+                   class="cs-form_field cs-field_sm"
+                   placeholder="¿Qué tipo de atención o apoyo buscas hoy?"
+                   [formControl]="searchCtrl">
+          </div>
+          <a class="cs-clear_btn" (click)="searchCtrl.setValue('')"><i class="fa fa-search"></i></a>
+        </div>
+
+        <div class="cs-filter_head_right">
+          <button class="btn btn-outline" type="button" (click)="toggleCategorias()">Ver categorías</button>
+          <div class="cs-form_field_wrap cs-select_arrow" *ngIf="mostrarCategorias">
+            <select class="cs-form_field cs-field_sm" [formControl]="categoriaCtrl">
+              <option [value]="''">Todas las categorías</option>
+              <option *ngFor="let categoria of (categoriasFiltradas$ | async); trackBy: trackById"
+                      [value]="categoria.id">
+                {{ categoria.name }}
+              </option>
+            </select>
+          </div>
+
+          <button class="btn btn-outline" type="button" (click)="toggleEspecialidades()">Ver especialidades</button>
+          <div class="cs-form_field_wrap cs-select_arrow" *ngIf="mostrarEspecialidades">
+            <select class="cs-form_field cs-field_sm" [formControl]="especialidadesCtrl">
+              <option [value]="''">Todas las especialidades</option>
+              <option *ngFor="let esp of (especialidadesDeCategoria$ | async); trackBy: trackById"
+                      [value]="esp.id">
+                {{ esp.name }}
+              </option>
+            </select>
+          </div>
+          <button class="btn btn-secondary ms-2" type="button" (click)="resetFilters()">
+            Ver todos
+          </button>
+        </div>
+      </div>
+
+      <div class="cs-height_30 cs-height_lg_30"></div>
+
+      <div class="row">
+        <div class="col-xl-3 col-lg-4 col-sm-6" *ngFor="let profesional of profesionalesFiltrados$ | async; trackBy: trackById">          <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
+            <span class="cs-card_like cs-primary_color">
+              <i class="fas fa-award fa-fw"></i>
+            </span>
+
+            <a class="cs-card_thumb cs-zoom_effect">
+              <img [src]="avatarUrl(profesional)" alt="Foto" class="cs-zoom_item">
+            </a>
+
+            <div class="cs-card_info">
+              <span class="fw-bold d-block">{{ profesional.full_name || 'Profesional' }}</span>
+
+              <div class="d-flex align-items-center small text-muted mb-1">
+                <i class="fa fa-briefcase me-1"></i>
+                <span class="me-2">{{ profesional.profession || profesional.studyArea || '—' }}</span>
+                <i class="fa fa-map-marker-alt ms-2 me-1"></i>
+                <span>{{ profesional.city || '—' }}</span>
+              </div>
+
+              <div class="d-flex align-items-center">
+                <i class="fa fa-star text-warning me-1"></i>
+                <span>{{ profesional.rating || 0 }} / 5</span>
+                <small class="text-muted ms-2">({{ profesional.comentarios || 0 }} comentarios)</small>
+              </div>
+
+              <h3 class="cs-card_title mt-2">
+                <a>{{ (profesional?.specialties?.[0]?.name) || profesional.especialidad || 'Especialista' }}</a>
+              </h3>
+
+              <div class="cs-card_price" *ngIf="profesional?.price">
+                Consulta: <b class="cs-primary_color">{{ profesional.price }}</b>
+              </div>
+
+              <hr>
+              <div class="cs-card_footer">
+                <span class="cs-card_btn_1" data-modal="#history_1">
+                  <i class="far fa-calendar fa-fw"></i> Agendar
+                </span>
+                <span class="cs-card_btn_2 btn btn-accent" (click)="onVerPerfil(profesional)">
+                  Ver perfil
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="cs-height_30 cs-height_lg_30"></div>
+        </div>
+        <div class="col-12 text-center text-muted py-4"
+       *ngIf="(profesionalesFiltrados$ | async)?.length === 0">
+    <p class="mb-3">No encontramos resultados con los filtros aplicados.</p>
+    <button class="cs-btn cs-style1" type="button" (click)="resetFilters()">
+      <span>Ver todos</span>
+    </button>
+  </div>
+      </div>
+
+      <div class="cs-height_10 cs-height_lg_10"></div>
+      <div class="text-center">
+        <a class="cs-btn cs-style1 cs-btn_lg"><span>...</span></a>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="cs-height_100 cs-height_lg_70"></div>
+<div class="cs-height_100 cs-height_lg_70"></div>

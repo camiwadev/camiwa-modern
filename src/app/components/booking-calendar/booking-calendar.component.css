@@ -1,35 +1,48 @@
-  .calendar-wrap { min-height: 700px; }
+/* booking-calendar.component.css */
+.calendar-panel {
+  position: relative;
+  width: 100%;
+  min-height: 700px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px 0;
+}
+
 full-calendar {
-    display: block;
-    width: 100%;
-    min-height: 680px;   /* ajusta a gusto */
-  }
-  
-  /* El grid ocupa todo el alto disponible */
-  .fc, .fc-media-screen, .fc-view-harness, .fc-scrollgrid {
-    height: 100%;
-  }
-  
-  /* Contenedor “limpio” para que el theme no lo tape */
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 650px;
+}
+
+/* Asegurar que FullCalendar se renderice correctamente */
+:host ::ng-deep .fc {
+  height: 100%;
+}
+
+:host ::ng-deep .fc-view-harness {
+  height: 100% !important;
+}
+
+:host ::ng-deep .fc-scrollgrid-section {
+  height: 100%;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
   .calendar-panel {
-    position: relative;
-    background: transparent !important;
-    box-shadow: none !important;
-    padding: 0;
-    margin-top: 16px;
-    isolation: isolate; /* evita que overlays externos lo cubran */
+    padding: 10px;
+    min-height: 500px;
   }
   
-  /* Muchos themes dibujan un degradado con pseudo-elementos: lo apagamos aquí */
-  .calendar-panel::before,
-  .calendar-panel::after {
-    content: none !important;
-    display: none !important;
+  :host ::ng-deep .fc-header-toolbar {
+    flex-direction: column;
+    gap: 10px;
   }
   
-  /* Por si hay algún wrapper card alrededor con overlay absoluto */
-  .calendar-panel * {
-    position: relative;
-    z-index: 1;
+  :host ::ng-deep .fc-toolbar-chunk {
+    margin-bottom: 10px;
   }
-  
+}

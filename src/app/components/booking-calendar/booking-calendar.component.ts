@@ -1,4 +1,5 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -6,18 +7,20 @@ import interactionPlugin from '@fullcalendar/interaction';
 import resourcePlugin from '@fullcalendar/resource';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 
-import '@fullcalendar/web-component'; // registra <full-calendar>
+// Registra <full-calendar> una vez
+import '@fullcalendar/web-component';
+
 import { GlobalService } from '../../services/global.service';
-import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-booking-calendar',
-  imports: [CommonModule,               
-    ],
+  standalone: true,
+  imports: [CommonModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   template: `<full-calendar [options]="calendarOptions"></full-calendar>`,
   styleUrls: ['./booking-calendar.component.css']
 })
-export class BookingCalendarComponent implements AfterViewInit {
+export class BookingCalendarComponent implements OnInit, AfterViewInit {
   constructor(public global: GlobalService) {}
 
   calendarOptions: CalendarOptions = {
@@ -34,32 +37,29 @@ export class BookingCalendarComponent implements AfterViewInit {
     locale: 'es',
     nowIndicator: true,
     eventOverlap: false,
+    headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' },
     select: (arg) => this.onSelect(arg),
     eventClick: (arg) => this.onEventClick(arg),
     events: (info, success, failure) => this.loadEvents(info.start, info.end, success, failure),
-    headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' }
   };
 
   ngOnInit() {
-    // Realtime: refresca eventos al cambiar bookings
-    this.global.pb.collection('bookings').subscribe('*', () => {
+    // Protege por si aún no hay pb:
+    this.global?.pb?.collection('bookings')?.subscribe?.('*', () => {
       const api: any = (document.querySelector('full-calendar') as any)?.getApi?.();
       api?.refetchEvents?.();
     });
   }
+
   ngAfterViewInit() {
-    setTimeout(() => {
+    // Asegura render una vez montado
+    queueMicrotask(() => {
       const api = (document.querySelector('full-calendar') as any)?.getApi?.();
       api?.updateSize?.();
       api?.render?.();
-    }, 0);
-   /*  setTimeout(() => {
-      const el = document.querySelector('full-calendar') as any;
-      const api = el?.getApi?.();
-      api?.updateSize();
-      api?.render();
-    }); */
+    });
   }
+
   private loadEvents(start: Date, end: Date, success: (e: EventInput[]) => void, failure: any) {
     this.global.pb.collection('bookings').getFullList(200, {
       filter: this.buildDateFilterForPB(start, end),
@@ -67,15 +67,14 @@ export class BookingCalendarComponent implements AfterViewInit {
       sort: 'start'
     })
     .then(records => {
-      const mapped = records.map((r: any) => ({
+      success(records.map((r: any) => ({
         id: r.id,
         title: this.eventTitle(r),
         start: r.start,
         end: r.end,
         extendedProps: { record: r, status: r.status },
         color: this.statusColor(r.status),
-      }) as EventInput);
-      success(mapped);
+      } as EventInput)));
     })
     .catch(failure);
   }
@@ -126,7 +125,6 @@ export class BookingCalendarComponent implements AfterViewInit {
     const r = (arg.event.extendedProps as any)?.record;
     console.log('Reserva:', r);
   }
-  
 
   private isInWorkingHours(start: Date, end: Date) {
     const day = start.getDay();
